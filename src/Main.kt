@@ -1,7 +1,8 @@
 fun main() {
     val game = Game()
+    println(game.getIntro())
     while (!game.isOver) {
-        println("Please enter command:")
+        print("Please enter command: ")
         val command = readLine()
         println(game.executeCommand(command))
     }
