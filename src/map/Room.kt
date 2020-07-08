@@ -12,16 +12,16 @@ open class Room {
 
     fun getDescription(): String {
         var description = desc + "\n"
-        description += "Items in room: "
         description += if (items.isEmpty()) {
-            "[Room is empty]\n"
+            "This room is empty\n"
         } else {
+            description += "Items in room: "
             items.keys.toString() + "\n"
         }
-        description += "This room leads: "
         description += if (rooms.isEmpty()) {
             "It seems this room doesn't lead anywhere else\n"
         } else {
+            description += "This room leads: "
             rooms.keys.toString() + "\n"
         }
         return description

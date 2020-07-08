@@ -2,8 +2,7 @@ import items.Item
 import map.Room
 import java.util.*
 
-class Player {
-    lateinit var currRoom: Room
+class Player (var currRoom: Room){
     val inventory =  TreeMap<String, Item>(String.CASE_INSENSITIVE_ORDER)
     //val inventory = HashMap<String, Item>()
 
