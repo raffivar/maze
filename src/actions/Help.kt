@@ -1,7 +1,8 @@
 package actions
 
-import GameResult
-import Player
+import game.GameResult
+import game.Player
+import game.GameResultCode
 
 class Help(args: List<String>) : Action("Help", args) {
     override fun execute(player: Player): GameResult {
@@ -10,6 +11,6 @@ class Help(args: List<String>) : Action("Help", args) {
         helpMenu += "EXAMINE [room/item in room]\n"
         helpMenu += "TAKE [item in room]\n"
         helpMenu += "HELP - prints this menu\n"
-        return GameResult(GameResult.GameResultCode.OK, helpMenu)
+        return GameResult(GameResultCode.OK, helpMenu)
     }
 }

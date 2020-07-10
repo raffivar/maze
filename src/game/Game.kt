@@ -1,7 +1,6 @@
+package game
+
 import actions.*
-import items.Takable
-import map.Direction
-import map.Exit
 import map.MapBuilder
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,7 +31,7 @@ class Game {
             val command = readLine()
             val result = executeCommand(command)
             println(result.message)
-        } while (result.gameResultCode != GameResult.GameResultCode.GAME_OVER)
+        } while (result.gameResultCode != GameResultCode.GAME_OVER)
 
     }
 
@@ -46,12 +45,18 @@ class Game {
 
     private fun executeCommand(command: String?): GameResult {
         if (command.isNullOrBlank()) {
-            return GameResult(GameResult.GameResultCode.ERROR, "Command empty, please try again.")
+            return GameResult(
+                GameResultCode.ERROR,
+                "Command empty, please try again."
+            )
         }
         val parsedCommand = command.split(" ")
         val commandToExecute = parsedCommand[0]
         val commandArguments = parsedCommand.subList(1, parsedCommand.size)
-        val action = commandsToAction[commandToExecute] ?: return GameResult(GameResult.GameResultCode.ERROR, "Command not found")
+        val action = commandsToAction[commandToExecute] ?: return GameResult(
+            GameResultCode.ERROR,
+            "Command not found"
+        )
         action.args = commandArguments
         return action.execute(player)
     }

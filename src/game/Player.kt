@@ -1,3 +1,5 @@
+package game
+
 import items.Item
 import map.Room
 import java.util.*
