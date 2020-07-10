@@ -6,8 +6,8 @@ import game.GameResultCode
 import map.Direction
 import map.Exit
 
-class Go(args: List<String>) : Action("Go", args) {
-    override fun execute(player: Player): GameResult {
+class Go : Action("Go") {
+    override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty()) {
             return GameResult(
                 GameResultCode.ERROR,

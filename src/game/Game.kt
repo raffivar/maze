@@ -9,6 +9,7 @@ class Game {
     private val mapBuilder = MapBuilder()
     private val initialRoom = mapBuilder.build()
     private val player = Player(initialRoom)
+    private val actions = listOf(Go(), Examine(), Take(), Inventory(), Help())
     private val commandsToAction = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
     //private val commands = HashMap<String, (args: List<String>) -> String>()
 
@@ -17,11 +18,9 @@ class Game {
     }
 
     private fun populateActions() {
-        commandsToAction["go"] = Go(ArrayList())
-        commandsToAction["examine"] = Examine(ArrayList())
-        commandsToAction["take"] = Take(ArrayList())
-        commandsToAction["inventory"] = Inventory(ArrayList())
-        commandsToAction["help"] = Help(ArrayList())
+        for (action in actions) {
+            commandsToAction[action.name] = action
+        }
     }
 
     fun run() {
@@ -39,7 +38,6 @@ class Game {
         var intro = "Welcome to the maze!\n"
         intro += "You've been thrown into the first room!\n"
         intro += "=============================================\n"
-        intro += Help(ArrayList())
         return intro + executeCommand("help").message
     }
 
@@ -52,12 +50,11 @@ class Game {
         }
         val parsedCommand = command.split(" ")
         val commandToExecute = parsedCommand[0]
-        val commandArguments = parsedCommand.subList(1, parsedCommand.size)
+        val args = parsedCommand.subList(1, parsedCommand.size)
         val action = commandsToAction[commandToExecute] ?: return GameResult(
             GameResultCode.ERROR,
             "Command not found"
         )
-        action.args = commandArguments
-        return action.execute(player)
+        return action.execute(player, args)
     }
 }

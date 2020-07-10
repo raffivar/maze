@@ -4,8 +4,8 @@ import game.GameResult
 import game.Player
 import game.GameResultCode
 
-class Inventory(args: List<String>) : Action("Inventory", args) {
-    override fun execute(player: Player): GameResult {
+class Inventory: Action("Inventory") {
+    override fun execute(player: Player, args: List<String>): GameResult {
             return if (player.inventory.isEmpty()) {
                 GameResult(
                     GameResultCode.OK,

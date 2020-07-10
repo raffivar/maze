@@ -4,8 +4,8 @@ import game.GameResult
 import game.Player
 import game.GameResultCode
 
-class Help(args: List<String>) : Action("Help", args) {
-    override fun execute(player: Player): GameResult {
+class Help : Action("Help") {
+    override fun execute(player: Player, args: List<String>): GameResult {
         var helpMenu = "The operations available to you are:\n"
         helpMenu += "GO [DIRECTION]\n"
         helpMenu += "EXAMINE [room/item in room]\n"

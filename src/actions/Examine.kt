@@ -4,8 +4,8 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Examine(args: List<String>) : Action("Examine", args) {
-    override fun execute(player: Player): GameResult {
+class Examine : Action("Examine") {
+    override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty()) {
             return GameResult(
                 GameResultCode.ERROR,
