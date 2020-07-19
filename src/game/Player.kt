@@ -28,8 +28,8 @@ class Player(var currentRoom: Room) {
             return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open.")
         }
 
-        if (itemToOpen.isClosed) {
-            GameResult(GameResultCode.FAIL, "[${itemToOpen.name}] is already open")
+        if (!itemToOpen.isClosed) {
+            return GameResult(GameResultCode.FAIL, "[${itemToOpen.name}] is already open")
         }
 
         return itemToOpen.open(this)
