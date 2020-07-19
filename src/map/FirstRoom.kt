@@ -4,10 +4,9 @@ import game.Constraint
 
 import items.*
 
-class Room1 : Room() {
+class FirstRoom : Room() {
     init {
         desc = "This room is almost empty."
-        addItem(Item("Bed", "This is a bed"))
 
         val door = Door()
         addItem(door)

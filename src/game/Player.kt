@@ -55,8 +55,20 @@ class Player(var currentRoom: Room) {
         return GameResult(GameResultCode.SUCCESS, "Obtained [${item.name}]")
     }
 
-    fun use(itemToUse: Item, itemToUseOn: Item): GameResult {
-        return itemToUse.useOn(this, itemToUseOn)
+    fun use(item1Name: String, item2Name: String): GameResult {
+        val item1 = inventory[item1Name] ?: return GameResult(GameResultCode.FAIL, "Mo [$item1Name] in inventory")
+        var item2 = inventory[item2Name]
+        if (item2 != null) {
+            return item1.useOn(this, item2)
+        }
+        item2 = currentRoom.items[item2Name]
+        if (item2 != null) {
+            return item1.useOn(this, item2)
+        }
+        return GameResult(
+            GameResultCode.ERROR,
+            "Item [$item2] does not exist in your inventory or in the current room"
+        )
     }
 
     fun open(itemName: String): GameResult {
