@@ -20,7 +20,7 @@ open class Room() {
         description += if (items.isEmpty()) {
             "This room is empty\n"
         } else {
-            "Items in room:  ${items.keys}\n"
+            "Items in room: ${items.keys}\n"
         }
         description += if (rooms.isEmpty()) {
             "It seems this room doesn't lead anywhere else\n"

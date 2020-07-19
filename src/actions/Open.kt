@@ -5,7 +5,7 @@ import game.Player
 import game.GameResultCode
 import items.Openable
 
-class Open : Action("Open") {
+class Open : Action("Open", "Open [item]") {
     override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty()) {
             return GameResult(GameResultCode.ERROR, "Please choose an item in the room to open")

@@ -6,7 +6,7 @@ import game.GameResultCode
 import map.Direction
 import map.Exit
 
-class Go : Action("Go") {
+class Go : Action("Go", "Go [direction]") {
     override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty()) {
             return GameResult(GameResultCode.ERROR, "Please choose a direction")

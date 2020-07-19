@@ -14,6 +14,6 @@ open class Item(var name: String, var desc: String) {
     }
 
     open fun usedBy(player: Player, itemUsed: Item): GameResult {
-        return GameResult(GameResultCode.FAIL, "[${itemUsed.name}] cannot be used on [${this.name}]")
+        return GameResult(GameResultCode.FAIL, "[${itemUsed.name}] cannot be used on [${this.name}].")
     }
 }

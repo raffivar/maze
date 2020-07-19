@@ -25,7 +25,7 @@ class Player(var currentRoom: Room) {
 
     fun open(itemToOpen: Item): GameResult {
         if (itemToOpen !is Openable) {
-            return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open!")
+            return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open.")
         }
 
         if (itemToOpen.isClosed) {

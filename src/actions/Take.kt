@@ -5,7 +5,7 @@ import game.Player
 import game.GameResultCode
 import items.Takable
 
-class Take : Action("Take") {
+class Take : Action("Take", "Take [item]") {
     override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty()) {
             return GameResult(

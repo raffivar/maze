@@ -9,11 +9,14 @@ class Game {
     private val mapBuilder = MapBuilder()
     private val initialRoom = mapBuilder.build()
     private val player = Player(initialRoom)
-    private val actions = listOf(Go(), Examine(), Take(), Use(), Open(), Inventory(), Help())
+    private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory())
     private val commandsToAction = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
     //private val commands = HashMap<String, (args: List<String>) -> String>()
 
     init {
+        val helpAction = Help(actions)
+        actions.add(helpAction)
+        actions.add(Exit())
         populateActions()
     }
 
