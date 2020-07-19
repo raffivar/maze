@@ -16,7 +16,7 @@ class Lock(override var isLocked: Boolean = true) : Item("Lock", "This is a lock
         itemsToEffects[itemUsed] = this::unlock
     }
 
-    private fun unlock(player: Player, itemUsed: Item): GameResult {
+    override fun unlock(player: Player, itemUsed: Item): GameResult {
         isLocked = false
         player.inventory.remove(itemUsed.name)
         return GameResult(GameResultCode.SUCCESS, "Unlocked [${this.name}]")
