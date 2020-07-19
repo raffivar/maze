@@ -14,22 +14,21 @@ class Take : Action("Take") {
             )
         }
         val itemName = args[0]
-        val item = player.currRoom.items[itemName]
+        val item = player.currentRoom.items[itemName]
             ?: return GameResult(
-                GameResultCode.OK,
+                GameResultCode.FAIL,
                 "Item [$itemName] does not exist in the current room"
             )
-        return if (item is Takable) {
-            player.take(item)
-            GameResult(
-                GameResultCode.OK,
-                "Obtained [${item.name}]"
-            )
-        } else {
-            GameResult(
-                GameResultCode.OK,
+        if (item !is Takable) {
+            return GameResult(
+                GameResultCode.FAIL,
                 "Item [${item.name}] is not something you can take!"
             )
         }
+        player.take(item)
+        return GameResult(
+            GameResultCode.SUCCESS,
+            "Obtained [${item.name}]"
+        )
     }
 }

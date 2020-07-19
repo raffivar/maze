@@ -1,3 +1,3 @@
 package game
 
-enum class GameResultCode {OK, ERROR, GAME_OVER}
+enum class GameResultCode {SUCCESS, FAIL, GAME_OVER, ERROR}

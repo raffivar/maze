@@ -1,19 +1,10 @@
 package map
 
-import items.Item
-import items.Key
-
 class MapBuilder {
     fun build(): Room {
         //Build rooms
-        val room1 = Room()
-        room1.desc = "This is a room with a few things in it"
-        room1.addItem(Key())
-        room1.addItem(Item("Bed", "This is a bed"))
-
+        val room1 = Room1()
         val room2 = Room()
-        room2.addItem(Key())
-
         val room3 = Room()
         val room4 = Room()
         val room5 = Room()

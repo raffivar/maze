@@ -11,6 +11,6 @@ class Help : Action("Help") {
         helpMenu += "EXAMINE [room/item in room]\n"
         helpMenu += "TAKE [item in room]\n"
         helpMenu += "HELP - prints this menu\n"
-        return GameResult(GameResultCode.OK, helpMenu)
+        return GameResult(GameResultCode.SUCCESS, helpMenu)
     }
 }

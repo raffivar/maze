@@ -12,24 +12,27 @@ class Examine : Action("Examine") {
                 "Please choose either the room or an item to examine"
             )
         }
-        val itemName = args[0]
-        if (itemName == "room") {
+        val objectToExamine = args[0]
+
+        if (objectToExamine == "room") {
             return GameResult(
-                GameResultCode.OK,
-                player.currRoom.getDescription()
+                GameResultCode.SUCCESS,
+                player.currentRoom.getDescription()
             )
         }
-        var item = player.inventory[itemName]
+
+        var item = player.inventory[objectToExamine]
         if (item != null) {
-            return GameResult(GameResultCode.OK, item.desc)
+            return item.examine()
         }
-        item = player.currRoom.items[itemName]
+        item = player.currentRoom.items[objectToExamine]
         if (item != null) {
-            return GameResult(GameResultCode.OK, item.desc)
+            return item.examine()
         }
+
         return GameResult(
-            GameResultCode.OK,
-            "Item [$itemName] does not exist in your inventory or in the current room"
+            GameResultCode.ERROR,
+            "Item [$objectToExamine] does not exist in your inventory or in the current room"
         )
     }
 
