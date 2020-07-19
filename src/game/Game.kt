@@ -46,17 +46,14 @@ class Game {
 
     private fun executeCommand(command: String?): GameResult {
         if (command.isNullOrBlank()) {
-            return GameResult(
-                GameResultCode.ERROR,
-                "Command empty, please try again."
-            )
+            return GameResult(GameResultCode.ERROR, "Command empty, please try again.")
         }
         val parsedCommand = command.split(" ")
         val commandToExecute = parsedCommand[0]
         val args = parsedCommand.subList(1, parsedCommand.size)
         val action = commandsToAction[commandToExecute] ?: return GameResult(
             GameResultCode.ERROR,
-            "Command not found"
+            "Command [$command] not found"
         )
         return action.execute(player, args)
     }
