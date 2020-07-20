@@ -66,14 +66,14 @@ class Player(var currentRoom: Room) {
         }
         return GameResult(
             GameResultCode.FAIL,
-            "Item [$item2Name] does not exist in your inventory or in the current room"
+            "Item [$item2Name] does not exist in your inventory or in current room"
         )
     }
 
     fun open(itemName: String): GameResult {
         val itemToOpen = currentRoom.items[itemName] ?: return GameResult(
             GameResultCode.FAIL,
-            "Item [$itemName] does not exist in the current room"
+            "Item [$itemName] does not exist in current room"
         )
         if (itemToOpen !is Closable) {
             return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open")
