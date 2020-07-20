@@ -3,14 +3,11 @@ package game
 import actions.*
 import map.MapBuilder
 import java.util.*
-import kotlin.collections.ArrayList
 
 class Game {
-    private val mapBuilder = MapBuilder()
-    private val initialRoom = mapBuilder.build()
-    private val player = Player(initialRoom)
     private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory())
     private val commandsToAction = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
+    private var player: Player
     //private val commands = HashMap<String, (args: List<String>) -> String>()
 
     init {
@@ -18,6 +15,10 @@ class Game {
         actions.add(helpAction)
         actions.add(Exit())
         populateActions()
+
+        val map = MapBuilder()
+        map.build()
+        player = Player(map.playerFirstRoom)
     }
 
     private fun populateActions() {
