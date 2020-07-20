@@ -1,7 +1,7 @@
 package map
 
 import game.Dog
-import java.util.*
+import items.Bonzo
 
 class MapBuilder {
     lateinit var playerFirstRoom: Room
@@ -11,11 +11,12 @@ class MapBuilder {
         val room1 = FirstRoom()
         val room2 = Room()
         val room3 = Room()
-        val room4 = Room()
         val dogRoom2 = Room()
         val dogRoom1 = Room()
-        val room7 = RoomWithBowl()
-        val room8 = Room()
+        val room5 = Room()
+        val bonzo = Bonzo()
+        val roomWithBowl = RoomWithBowl(bonzo)
+        val roomWithGuard = Room()
         val exit = Exit()
 
         //Link rooms together
@@ -25,38 +26,38 @@ class MapBuilder {
         room2.addRoom(Direction.NORTH, room3)
         room3.addRoom(Direction.SOUTH, room2)
 
-        room3.addRoom(Direction.NORTH, room4)
-        room4.addRoom(Direction.SOUTH, room3)
+        room3.addRoom(Direction.NORTH, dogRoom2)
+        dogRoom2.addRoom(Direction.SOUTH, room3)
 
-        room4.addRoom(Direction.NORTH, dogRoom2)
-        dogRoom2.addRoom(Direction.SOUTH, room4)
+        dogRoom2.addRoom(Direction.NORTH, dogRoom1)
+        dogRoom1.addRoom(Direction.SOUTH, dogRoom2)
 
-        room4.addRoom(Direction.EAST, dogRoom1)
-        dogRoom1.addRoom(Direction.WEST, room4)
+        dogRoom2.addRoom(Direction.EAST, room5)
+        room5.addRoom(Direction.WEST, dogRoom2)
 
-        dogRoom1.addRoom(Direction.NORTH, room7)
-        room7.addRoom(Direction.SOUTH, dogRoom1)
+        room5.addRoom(Direction.NORTH, roomWithBowl)
+        roomWithBowl.addRoom(Direction.SOUTH, room5)
 
-        dogRoom2.addRoom(Direction.EAST, room7)
-        room7.addRoom(Direction.WEST, dogRoom2)
+        dogRoom1.addRoom(Direction.EAST, roomWithBowl)
+        roomWithBowl.addRoom(Direction.WEST, dogRoom1)
 
-        dogRoom2.addRoom(Direction.WEST, room8)
-        room8.addRoom(Direction.EAST, dogRoom2)
+        dogRoom1.addRoom(Direction.WEST, roomWithGuard)
+        roomWithGuard.addRoom(Direction.EAST, dogRoom1)
 
-        dogRoom2.addRoom(Direction.NORTH, exit)
+        dogRoom1.addRoom(Direction.NORTH, exit)
 
         //Set player first room
         playerFirstRoom = room1
 
         //Set dog route
         val dogRoute = arrayListOf<Room>()
-        dogRoute.add(dogRoom1)
         dogRoute.add(dogRoom2)
+        dogRoute.add(dogRoom1)
 
         //set dog
         val dog = Dog(dogRoute)
+        dog.setItemToStop(bonzo)
         dog.startMoving()
-
         return this
     }
 }

@@ -8,7 +8,7 @@ import map.Room
 import java.util.*
 
 class Player(var currentRoom: Room) {
-    private val inventory = TreeMap<String, Item>(String.CASE_INSENSITIVE_ORDER)
+    val inventory = TreeMap<String, Item>(String.CASE_INSENSITIVE_ORDER)
     //val inventory = HashMap<String, Item>()
 
     fun examine(objectToExamine: String): GameResult {
@@ -67,7 +67,7 @@ class Player(var currentRoom: Room) {
         }
         return GameResult(
             GameResultCode.ERROR,
-            "Item [$item2] does not exist in your inventory or in the current room"
+            "Item [$item2Name] does not exist in your inventory or in the current room"
         )
     }
 
