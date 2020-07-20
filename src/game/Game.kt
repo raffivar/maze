@@ -7,23 +7,22 @@ import kotlin.system.exitProcess
 
 class Game {
     private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory())
-    private val commandsToAction = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
+    private val actionsByName = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
+    //private val actionsByName = HashMap<String, (args: List<String>) -> String>()
     private var player: Player
-    //private val commands = HashMap<String, (args: List<String>) -> String>()
 
     init {
         val helpAction = Help(actions)
         actions.add(helpAction)
         actions.add(Exit())
-        populateCommandsAsActions()
-
+        populateActionsByNames()
         val map = MapBuilder().build()
         player = Player(map)
     }
 
-    private fun populateCommandsAsActions() {
+    private fun populateActionsByNames() {
         for (action in actions) {
-            commandsToAction[action.name] = action
+            actionsByName[action.name] = action
         }
     }
 
@@ -54,12 +53,9 @@ class Game {
             return GameResult(GameResultCode.ERROR, "Command empty, please try again.")
         }
         val parsedCommand = command.split(" ")
-        val commandToExecute = parsedCommand[0]
+        val actionName = parsedCommand[0]
+        val action = actionsByName[actionName] ?: return GameResult(GameResultCode.ERROR, "Action [$command] not found")
         val args = parsedCommand.subList(1, parsedCommand.size)
-        val action = commandsToAction[commandToExecute] ?: return GameResult(
-            GameResultCode.ERROR,
-            "Command [$command] not found"
-        )
         return action.execute(player, args)
     }
 }
