@@ -32,9 +32,7 @@ class Player(var currentRoom: Room) {
         if (item != null) {
             return item.examine()
         }
-        return GameResult(
-            GameResultCode.FAIL, "Item [$itemName] does not exist in your inventory or in current room"
-        )
+        return GameResult(GameResultCode.FAIL, "No [$itemName] in inventory or current room")
     }
 
     fun go(direction: Direction): GameResult {
@@ -43,19 +41,29 @@ class Player(var currentRoom: Room) {
 
     fun take(itemName: String): GameResult {
         val item = currentRoom.items[itemName] ?: return GameResult(
-            GameResultCode.FAIL, "Item [$itemName] does not exist in current room"
+            GameResultCode.FAIL, "No [$itemName] in current room"
         )
         if (item !is Takable) {
             return GameResult(GameResultCode.FAIL, "[${item.name}] is not something you can take")
         }
         inventory[item.name] = item
         currentRoom.removeItem(item)
-
         return GameResult(GameResultCode.SUCCESS, "Obtained [${item.name}]")
     }
 
+    fun open(itemName: String): GameResult {
+        val itemToOpen = currentRoom.items[itemName] ?: return GameResult(GameResultCode.FAIL, "No [$itemName] in current room")
+        if (itemToOpen !is Closable) {
+            return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open")
+        }
+        if (!itemToOpen.isClosed) {
+            return GameResult(GameResultCode.FAIL, "[${itemToOpen.name}] is already open")
+        }
+        return itemToOpen.open(this)
+    }
+
     fun use(item1Name: String, item2Name: String): GameResult {
-        val item1 = inventory[item1Name] ?: return GameResult(GameResultCode.FAIL, "Mo [$item1Name] in inventory")
+        val item1 = inventory[item1Name] ?: return GameResult(GameResultCode.FAIL, "No [$item1Name] in inventory")
         var item2 = inventory[item2Name]
         if (item2 != null) {
             return item1.useOn(this, item2)
@@ -64,24 +72,7 @@ class Player(var currentRoom: Room) {
         if (item2 != null) {
             return item1.useOn(this, item2)
         }
-        return GameResult(
-            GameResultCode.FAIL,
-            "Item [$item2Name] does not exist in your inventory or in current room"
-        )
-    }
-
-    fun open(itemName: String): GameResult {
-        val itemToOpen = currentRoom.items[itemName] ?: return GameResult(
-            GameResultCode.FAIL,
-            "Item [$itemName] does not exist in current room"
-        )
-        if (itemToOpen !is Closable) {
-            return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open")
-        }
-        if (!itemToOpen.isClosed) {
-            return GameResult(GameResultCode.FAIL, "[${itemToOpen.name}] is already open")
-        }
-        return itemToOpen.open(this)
+        return GameResult(GameResultCode.FAIL, "No [$item2Name] in inventory or current room")
     }
 
     fun getInventory(): GameResult {
