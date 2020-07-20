@@ -2,19 +2,19 @@ package game
 
 import actions.*
 import map.MapBuilder
+import java.lang.StringBuilder
 import java.util.*
 import kotlin.system.exitProcess
 
 class Game {
-    private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory())
+    private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory(), Exit())
     private val actionsByName = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
+    private val helpAction = Help(actions)
     //private val actionsByName = HashMap<String, (args: List<String>) -> String>()
     private var player: Player
 
     init {
-        val helpAction = Help(actions)
         actions.add(helpAction)
-        actions.add(Exit())
         populateActionsByNames()
         val map = MapBuilder().build()
         player = Player(map)
@@ -42,10 +42,12 @@ class Game {
     }
 
     private fun getIntro(): String {
-        var intro = "Welcome to the maze!\n"
-        intro += "You've been thrown into the first room!\n"
-        intro += "=============================================\n"
-        return intro + executeCommand("help").message
+        val sb = StringBuilder()
+        sb.append("Welcome to the maze!\n")
+        sb.append("You've been thrown into the first room!\n")
+        sb.append("=============================================\n")
+        sb.append(helpAction.execute(player).message)
+        return sb.toString()
     }
 
     private fun executeCommand(command: String?): GameResult {
