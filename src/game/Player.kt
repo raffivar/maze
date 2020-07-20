@@ -66,7 +66,7 @@ class Player(var currentRoom: Room) {
             return item1.useOn(this, item2)
         }
         return GameResult(
-            GameResultCode.ERROR,
+            GameResultCode.FAIL,
             "Item [$item2Name] does not exist in your inventory or in the current room"
         )
     }
