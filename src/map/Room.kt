@@ -11,6 +11,7 @@ import kotlin.collections.HashMap
 open class Room() {
     var desc: String = "Just a regular room"
     val items = TreeMap<String, Item>(String.CASE_INSENSITIVE_ORDER)
+
     //val items = HashMap<String, Item>()
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
@@ -49,20 +50,17 @@ open class Room() {
     }
 
     fun move(player: Player, direction: Direction): GameResult {
-        val nextRoom = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead to that direction")
+        val nextRoom = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "Room not lead in that direction")
         val constraints = constraintsToMove[direction]
         constraints?.let {
             for (constraint in it) {
-                if (constraint.constrainingParty.invoke()) {
-                    return GameResult(
-                        GameResultCode.FAIL,
-                        "You failed to move [${direction.name}] - ${constraint.message}"
-                    )
+                if (constraint.isConstraining.invoke()) {
+                    return GameResult(GameResultCode.FAIL, "Cannot move [${direction.name}] - ${constraint.message}")
                 }
             }
         }
         player.currentRoom = nextRoom
         val newRoomDescription = player.currentRoom.getDescription()
-        return GameResult(newRoomDescription.gameResultCode, "You moved ${direction.name}\n${newRoomDescription.message}")
+        return GameResult(newRoomDescription.gameResultCode, "Moved ${direction.name}\n${newRoomDescription.message}")
     }
 }

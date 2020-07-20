@@ -11,7 +11,7 @@ class Door(override var isClosed: Boolean = true) : Item("Door", "This is a door
 
     override fun open(player: Player): GameResult {
         for (constraint in constraintsToOpen) {
-            if (constraint.constrainingParty.invoke()) {
+            if (constraint.isConstraining.invoke()) {
                 return GameResult(GameResultCode.FAIL, "You failed to open [${name}] - ${constraint.message}")
             }
         }

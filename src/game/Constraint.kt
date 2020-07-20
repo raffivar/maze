@@ -1,3 +1,3 @@
 package game
 
-class Constraint (val constrainingParty: () -> Boolean, val message: String)
+class Constraint (val isConstraining: () -> Boolean, val message: String)
