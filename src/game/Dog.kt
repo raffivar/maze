@@ -5,12 +5,11 @@ import map.Room
 import kotlin.collections.ArrayList
 
 class Dog(private val dogRoute: ArrayList<Room>) : Item("Dog", "This is a dog") {
-    enum class DogDirection { FORWARD, BACKWARD }
-
+    var isMoving = false
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
     private var currentRoomIndex = -1
     private var dogDirection = DogDirection.FORWARD
-    private var isMoving = false
+    enum class DogDirection { FORWARD, BACKWARD }
 
     override fun usedBy(player: Player, itemUsed: Item): GameResult {
         val funToRun = itemsToFunctions[itemUsed] ?: return super.usedBy(player, itemUsed)

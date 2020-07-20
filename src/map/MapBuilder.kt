@@ -1,5 +1,6 @@
 package map
 
+import game.Constraint
 import game.Dog
 import items.Bonzo
 
@@ -58,6 +59,8 @@ class MapBuilder {
         val dog = Dog(dogRoute)
         dog.setItemToStop(bonzo)
         dog.startMoving()
+
+        dogRoom1.addConstraint(Direction.NORTH, Constraint(dog::isMoving, "Try distracting the dog first!"))
         return this
     }
 }
