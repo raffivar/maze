@@ -8,8 +8,8 @@ import kotlin.system.exitProcess
 
 class Game {
     private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory(), Exit())
-    private val actionsByName = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
     private val helpAction = Help(actions)
+    private val actionsByName = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
     //private val actionsByName = HashMap<String, (args: List<String>) -> String>()
     private var player: Player
 
