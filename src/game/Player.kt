@@ -1,7 +1,7 @@
 package game
 
 import items.Item
-import items.Openable
+import items.Closable
 import items.Takable
 import map.Direction
 import map.Room
@@ -76,7 +76,7 @@ class Player(var currentRoom: Room) {
             GameResultCode.FAIL,
             "Item [$itemName] does not exist in the current room"
         )
-        if (itemToOpen !is Openable) {
+        if (itemToOpen !is Closable) {
             return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open.")
         }
         if (!itemToOpen.isClosed) {

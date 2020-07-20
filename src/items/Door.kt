@@ -6,7 +6,7 @@ import game.GameResultCode
 import game.Player
 import java.util.ArrayList
 
-class Door(override var isClosed: Boolean = true) : Item("Door", "This is a door"), Openable {
+class Door(override var isClosed: Boolean = true) : Item("Door", "This is a door"), Closable {
     private val constraintsToOpen = ArrayList<Constraint>()
 
     override fun open(player: Player): GameResult {
