@@ -10,7 +10,7 @@ class FirstRoom : Room() {
 
         val door = Door()
         addItem(door)
-        //addConstraint(Direction.WEST, Constraint(door::isClosed, "The door is closed!"))
+        addConstraint(Direction.WEST, Constraint(door::isClosed, "The door is closed!"))
 
         val lock = Lock()
         addItem(lock)

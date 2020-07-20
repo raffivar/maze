@@ -15,7 +15,7 @@ open class Room() {
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
 
-    fun getDescription(): String {
+    open fun getDescription(): GameResult {
         var description = desc + "\n"
         description += if (items.isEmpty()) {
             "This room is empty\n"
@@ -25,9 +25,9 @@ open class Room() {
         description += if (rooms.isEmpty()) {
             "It seems this room doesn't lead anywhere else\n"
         } else {
-            "This room leads: ${rooms.keys}\n"
+            "This room leads: ${rooms.keys}"
         }
-        return description
+        return GameResult(GameResultCode.SUCCESS, description)
     }
 
     fun addItem(item: Item) {
@@ -43,7 +43,8 @@ open class Room() {
     }
 
     fun addConstraint(direction: Direction, constraint: Constraint) {
-        val constraints = constraintsToMove[direction] ?: ArrayList<Constraint>().also { constraintsToMove[direction] = it }
+        val constraints =
+            constraintsToMove[direction] ?: ArrayList<Constraint>().also { constraintsToMove[direction] = it }
         constraints.add(constraint)
     }
 
@@ -53,14 +54,15 @@ open class Room() {
         constraints?.let {
             for (constraint in it) {
                 if (constraint.constrainingParty.invoke()) {
-                    return GameResult(GameResultCode.FAIL, "You failed to move [${direction.name}] - ${constraint.message}")
+                    return GameResult(
+                        GameResultCode.FAIL,
+                        "You failed to move [${direction.name}] - ${constraint.message}"
+                    )
                 }
             }
         }
         player.currentRoom = nextRoom
-        if (player.currentRoom is Exit) {
-            return GameResult(GameResultCode.GAME_OVER, "You're out! Congrats!")
-        }
-        return GameResult(GameResultCode.SUCCESS, "You moved ${direction.name}\n${player.currentRoom.getDescription()}")
+        val newRoomDescription = player.currentRoom.getDescription()
+        return GameResult(newRoomDescription.gameResultCode, "You moved ${direction.name}\n${newRoomDescription.message}")
     }
 }

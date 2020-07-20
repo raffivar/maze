@@ -20,7 +20,7 @@ class Player(var currentRoom: Room) {
     }
 
     private fun examineCurrentRoom(): GameResult {
-        return GameResult(GameResultCode.SUCCESS, currentRoom.getDescription())
+        return currentRoom.getDescription()
     }
 
     private fun examineItem(itemName: String): GameResult {

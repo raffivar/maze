@@ -1,11 +1,10 @@
 package map
 
-import items.*
+import game.GameResult
+import game.GameResultCode
 
-class RoomWithBowl(bonzo: Bonzo) : Room() {
-    init {
-        desc = "This room only has a bowl in it"
-        val bowl = Bowl(this, bonzo)
-        addItem(bowl)
+class RoomWithGuard : Room() {
+    override fun getDescription(): GameResult {
+        return GameResult(GameResultCode.GAME_OVER, "Caught by a guard!!")
     }
 }

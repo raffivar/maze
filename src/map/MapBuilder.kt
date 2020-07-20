@@ -17,7 +17,7 @@ class MapBuilder {
         val room5 = Room()
         val bonzo = Bonzo()
         val roomWithBowl = RoomWithBowl(bonzo)
-        val roomWithGuard = Room()
+        val roomWithGuard = RoomWithGuard()
         val exit = Exit()
 
         //Link rooms together

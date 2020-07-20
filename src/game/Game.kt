@@ -3,6 +3,7 @@ package game
 import actions.*
 import map.MapBuilder
 import java.util.*
+import kotlin.system.exitProcess
 
 class Game {
     private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory())
@@ -32,10 +33,14 @@ class Game {
         do {
             print("Please enter command: ")
             val command = readLine()
-            val result = executeCommand(command)
-            println(result.message)
-        } while (result.gameResultCode != GameResultCode.GAME_OVER)
-
+            val commandResult = executeCommand(command)
+            var messageToPrint = commandResult.message
+            if (commandResult.gameResultCode == GameResultCode.GAME_OVER) {
+                messageToPrint += " [Game Over]"
+            }
+            println(messageToPrint)
+        } while (commandResult.gameResultCode != GameResultCode.GAME_OVER)
+        exitProcess(-1)
     }
 
     private fun getIntro(): String {
