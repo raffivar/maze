@@ -5,9 +5,7 @@ import game.Dog
 import items.Bonzo
 
 class MapBuilder {
-    lateinit var playerFirstRoom: Room
-
-    fun build(): MapBuilder {
+    fun build(): Room {
         //Build rooms
         val room1 = FirstRoom()
         val room2 = Room()
@@ -47,9 +45,6 @@ class MapBuilder {
 
         dogRoom1.addRoom(Direction.NORTH, exit)
 
-        //Set player first room
-        playerFirstRoom = room1
-
         //Set dog route
         val dogRoute = arrayListOf<Room>()
         dogRoute.add(dogRoom2)
@@ -59,8 +54,8 @@ class MapBuilder {
         val dog = Dog(dogRoute)
         dog.setItemToStop(bonzo)
         dog.startMoving()
-
         dogRoom1.addConstraint(Direction.NORTH, Constraint(dog::isMoving, "Try distracting the dog first!"))
-        return this
+
+        return room1
     }
 }

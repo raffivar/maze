@@ -15,14 +15,13 @@ class Game {
         val helpAction = Help(actions)
         actions.add(helpAction)
         actions.add(Exit())
-        populateActions()
+        populateCommandsAsActions()
 
-        val map = MapBuilder()
-        map.build()
-        player = Player(map.playerFirstRoom)
+        val map = MapBuilder().build()
+        player = Player(map)
     }
 
-    private fun populateActions() {
+    private fun populateCommandsAsActions() {
         for (action in actions) {
             commandsToAction[action.name] = action
         }
