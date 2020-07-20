@@ -46,7 +46,7 @@ class Player(var currentRoom: Room) {
             GameResultCode.FAIL, "Item [$itemName] does not exist in current room"
         )
         if (item !is Takable) {
-            return GameResult(GameResultCode.FAIL, "Item [${item.name}] is not something you can take!")
+            return GameResult(GameResultCode.FAIL, "[${item.name}] is not something you can take")
         }
         inventory[item.name] = item
         currentRoom.removeItem(item)
