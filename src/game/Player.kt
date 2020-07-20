@@ -33,7 +33,7 @@ class Player(var currentRoom: Room) {
             return item.examine()
         }
         return GameResult(
-            GameResultCode.FAIL, "Item [$itemName] does not exist in your inventory or in the current room"
+            GameResultCode.FAIL, "Item [$itemName] does not exist in your inventory or in current room"
         )
     }
 
@@ -43,8 +43,7 @@ class Player(var currentRoom: Room) {
 
     fun take(itemName: String): GameResult {
         val item = currentRoom.items[itemName] ?: return GameResult(
-            GameResultCode.FAIL,
-            "Item [$itemName] does not exist in the current room"
+            GameResultCode.FAIL, "Item [$itemName] does not exist in current room"
         )
         if (item !is Takable) {
             return GameResult(GameResultCode.FAIL, "Item [${item.name}] is not something you can take!")
@@ -77,7 +76,7 @@ class Player(var currentRoom: Room) {
             "Item [$itemName] does not exist in the current room"
         )
         if (itemToOpen !is Closable) {
-            return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open.")
+            return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open")
         }
         if (!itemToOpen.isClosed) {
             return GameResult(GameResultCode.FAIL, "[${itemToOpen.name}] is already open")
