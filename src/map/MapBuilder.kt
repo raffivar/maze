@@ -1,7 +1,8 @@
 package map
 
-import game.Constraint
 import game.Dog
+import game.Constraint
+import game.DogRouteNode
 import items.Bonzo
 
 class MapBuilder {
@@ -45,17 +46,15 @@ class MapBuilder {
 
         dogRoom1.addRoom(Direction.NORTH, exit)
 
-        //Set dog route
-        val dogRoute = arrayListOf<Room>()
-        dogRoute.add(dogRoom2)
-        dogRoute.add(dogRoom1)
-
-        //set dog
-        val dog = Dog(dogRoute)
+        //Set dog
+        val node1 = DogRouteNode(dogRoom1, null)
+        val node2 = DogRouteNode(dogRoom2, null)
+        node1.next = node2
+        node2.next = node1
+        val dog = Dog(node1)
         dog.setItemToStop(bonzo)
-        dog.startMoving()
         dogRoom1.addConstraint(Direction.NORTH, Constraint(dog::isMoving, "Try distracting the dog first!"))
-
+        dog.startMoving()
         return room1
     }
 }

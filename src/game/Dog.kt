@@ -1,32 +1,16 @@
 package game
 
 import items.Item
-import map.Room
-import kotlin.collections.ArrayList
 
-class Dog(private val dogRoute: ArrayList<Room>) : Item("Dog", "This is a dog") {
+class Dog(private var currentNode: DogRouteNode) : Item("Dog", "This is a dog") {
     var isMoving = false
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
-    private var currentRoomIndex = -1
-    private var dogDirection = DogDirection.FORWARD
-    enum class DogDirection { FORWARD, BACKWARD }
 
-    override fun usedBy(player: Player, itemUsed: Item): GameResult {
-        val funToRun = itemsToFunctions[itemUsed] ?: return super.usedBy(player, itemUsed)
-        return funToRun.invoke(player, itemUsed)
-    }
-
-    fun setItemToStop(itemUsed: Item) {
-        itemsToFunctions[itemUsed] = this::stop
+    init {
+        currentNode.room.addItem(this)
     }
 
     fun startMoving() {
-        if (dogRoute.isEmpty()) {
-            return
-        }
-        currentRoomIndex = 0
-        dogRoute[currentRoomIndex].addItem(this)
-        println("Dog placed")
         isMoving = true
         Thread {
             while (isMoving) {
@@ -37,52 +21,10 @@ class Dog(private val dogRoute: ArrayList<Room>) : Item("Dog", "This is a dog") 
     }
 
     private fun moveToNextRoom() {
-        val prevRoom = dogRoute[currentRoomIndex]
-        val nextRoom: Room
-
-        if (dogDirection == DogDirection.FORWARD) {
-            when {
-                dogRoute.size == 1 -> {
-                    nextRoom = prevRoom
-                    prevRoom.removeItem(this)
-                    nextRoom.addItem(this)
-                    //println("Dog moved ${dogDirection.name}")
-                    dogDirection = DogDirection.BACKWARD
-                }
-                currentRoomIndex < dogRoute.lastIndex -> {
-                    currentRoomIndex++
-                    nextRoom = dogRoute[currentRoomIndex]
-                    prevRoom.removeItem(this)
-                    nextRoom.addItem(this)
-                    //println("Dog moved ${dogDirection.name}")
-                }
-                else -> {
-                    dogDirection = DogDirection.BACKWARD
-                    moveToNextRoom()
-                }
-            }
-        } else if (dogDirection == DogDirection.BACKWARD) {
-            when {
-                dogRoute.size == 1 -> {
-                    nextRoom = prevRoom
-                    prevRoom.removeItem(this)
-                    nextRoom.addItem(this)
-                    //println("Dog moved ${dogDirection.name}")
-                    dogDirection = DogDirection.FORWARD
-                }
-                currentRoomIndex > 0 -> {
-                    currentRoomIndex--
-                    nextRoom = dogRoute[currentRoomIndex]
-                    prevRoom.removeItem(this)
-                    nextRoom.addItem(this)
-                    //println("Dog moved ${dogDirection.name}")
-                }
-                else -> {
-                    dogDirection = DogDirection.FORWARD
-                    moveToNextRoom()
-                }
-            }
-        }
+        val nextNode = currentNode.next ?: return
+        currentNode.room.removeItem(this)
+        nextNode.room.addItem(this)
+        currentNode = nextNode
     }
 
     private fun stop(player: Player, itemUsed: Item): GameResult {
@@ -92,5 +34,14 @@ class Dog(private val dogRoute: ArrayList<Room>) : Item("Dog", "This is a dog") 
         isMoving = false
         player.inventory.remove(itemUsed.name)
         return GameResult(GameResultCode.SUCCESS, "[${this.name}] is eating [${itemUsed.name}] and has stopped moving")
+    }
+
+    fun setItemToStop(itemUsed: Item) {
+        itemsToFunctions[itemUsed] = this::stop
+    }
+
+    override fun usedBy(player: Player, itemUsed: Item): GameResult {
+        val funToRun = itemsToFunctions[itemUsed] ?: return super.usedBy(player, itemUsed)
+        return funToRun.invoke(player, itemUsed)
     }
 }
