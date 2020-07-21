@@ -56,7 +56,7 @@ class Game {
         }
         val parsedCommand = command.split(" ")
         val actionName = parsedCommand[0]
-        val action = actionsByName[actionName] ?: return GameResult(GameResultCode.ERROR, "Action [$command] not found")
+        val action = actionsByName[actionName] ?: return GameResult(GameResultCode.ERROR, "Action [$actionName] not found")
         val args = parsedCommand.subList(1, parsedCommand.size)
         return action.execute(player, args)
     }
