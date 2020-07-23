@@ -4,11 +4,25 @@ import game.GameResult
 import game.GameResultCode
 import map.Room
 
-class Bowl(val room: Room, private val itemToAdd: Item) : Item("Bowl", "This is a bowl") {
+class Bowl(val room: Room, private val modifyRoomWhenExamined: () -> GameResult) : Item("Bowl", "") {
+    private var isEmpty = false
+    private var firstTimeExamined = true
+
     override fun examine(): GameResult {
-        room.addItem(itemToAdd)
-        room.removeItem(this) //Remove this item
-        room.addItem(Item(name, description)) //And then add this item again, as a regular item this time
-        return GameResult(GameResultCode.SUCCESS, "You discover [${itemToAdd.name}] in the bowl")
+        return if (firstTimeExamined) {
+            firstTimeExamined = false
+            modifyRoomWhenExamined()
+        } else {
+            description = if (!isEmpty) {
+                "This bowl is full of Bonzo."
+            } else {
+                "Just a regular empty bowl with Bonzo crumbs in it."
+            }
+            super.examine()
+        }
+    }
+
+    fun empty() {
+        isEmpty = true
     }
 }
