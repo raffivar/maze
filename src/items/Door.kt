@@ -6,8 +6,16 @@ import game.GameResultCode
 import game.Player
 import java.util.ArrayList
 
-class Door(override var isClosed: Boolean = true) : Item("Door", "This is a door"), Openable {
+
+private const val closedDescription = "An old, closed door."
+private const val openDescription = "An old, open door."
+
+class Door(override var isClosed: Boolean = true) : Item("Door", if (isClosed) closedDescription else openDescription), Openable {
     private val constraintsToOpen = ArrayList<Constraint>()
+
+    fun addConstraintToOpen(constraint: Constraint) {
+        constraintsToOpen.add(constraint)
+    }
 
     override fun open(player: Player): GameResult {
         for (constraint in constraintsToOpen) {
@@ -16,10 +24,7 @@ class Door(override var isClosed: Boolean = true) : Item("Door", "This is a door
             }
         }
         isClosed = false
-        return GameResult(GameResultCode.SUCCESS, "Opened [${name}]")
-    }
-
-    fun addConstraintToOpen(constraint: Constraint) {
-        constraintsToOpen.add(constraint)
+        desc = openDescription
+        return GameResult(GameResultCode.SUCCESS, "The [${this.name}] slowly cracks open. It is heavy, but eventually you manage to open it completely.")
     }
 }
