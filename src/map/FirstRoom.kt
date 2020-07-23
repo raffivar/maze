@@ -6,7 +6,7 @@ import items.*
 
 class FirstRoom : Room() {
     init {
-        desc = "This room is almost empty."
+        baseDescription = "You wake up in small room. There's only the bed, and a door with a lock on it."
 
         val door = Door()
         addItem(door)
