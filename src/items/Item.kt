@@ -4,9 +4,9 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-open class Item(var name: String, var desc: String) {
+open class Item(var name: String, var description: String) {
     open fun examine(): GameResult {
-        return GameResult(GameResultCode.SUCCESS, desc)
+        return GameResult(GameResultCode.SUCCESS, description)
     }
 
     open fun take(player: Player): GameResult {

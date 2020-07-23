@@ -25,7 +25,7 @@ class Lock(var isLocked: Boolean = true) : Item("Lock", if (isLocked) lockedDesc
             return GameResult(GameResultCode.FAIL, "[${this.name}] already unlocked.")
         }
         isLocked = false
-        desc = unlockedDescription
+        description = unlockedDescription
         return GameResult(GameResultCode.SUCCESS, "Unlocked [${this.name}].")
     }
 }

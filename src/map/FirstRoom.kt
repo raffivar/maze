@@ -37,7 +37,7 @@ class FirstRoom : Room() {
         firstTimeRoomExamined = false
         addItem(key)
         baseDescription = "This room has a closed door with a lock on it, but after examining the bed, you also notice a small key under it."
-        return GameResult(GameResultCode.SUCCESS, "${bed.desc} - You discover a small [${key.name}] under it.")
+        return GameResult(GameResultCode.SUCCESS, "${bed.description} - You discover a small [${key.name}] under it.")
     }
 
     private fun keyTaken() {

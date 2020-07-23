@@ -24,7 +24,7 @@ class Door(override var isClosed: Boolean = true) : Item("Door", if (isClosed) c
             }
         }
         isClosed = false
-        desc = openDescription
+        description = openDescription
         return GameResult(GameResultCode.SUCCESS, "The [${this.name}] slowly cracks open. It is heavy, but eventually you manage to open it completely.")
     }
 }
