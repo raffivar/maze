@@ -4,7 +4,7 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Lock(override var isLocked: Boolean = true) : Item("Lock", "This is a lock"), Lockable {
+class Lock(var isLocked: Boolean = true) : Item("Lock", "This is a lock") {
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 
     override fun usedBy(player: Player, itemUsed: Item): GameResult {
@@ -16,7 +16,7 @@ class Lock(override var isLocked: Boolean = true) : Item("Lock", "This is a lock
         itemsToFunctions[itemUsed] = this::unlock
     }
 
-    override fun unlock(player: Player, itemUsed: Item): GameResult {
+    private fun unlock(player: Player, itemUsed: Item): GameResult {
         if (!isLocked) {
             return GameResult(GameResultCode.FAIL, "[${this.name}] already unlocked")
         }
