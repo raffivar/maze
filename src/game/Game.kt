@@ -3,15 +3,13 @@ package game
 import actions.*
 import map.MapBuilder
 import java.lang.StringBuilder
-import java.util.*
 
 class Game {
     private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory(), Exit())
     private val helpAction = Help(actions)
-    private val actionsByName = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
-    //private val actionsByName = HashMap<String, (args: List<String>) -> String>()
-    private var player: Player
+    private val actionsByName = ActionMap()
     private val gameThreads = arrayListOf<Thread>()
+    private val player: Player
 
     init {
         actions.add(helpAction)

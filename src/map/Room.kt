@@ -5,14 +5,13 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 import items.Item
+import items.ItemMap
 import java.util.*
 import kotlin.collections.HashMap
 
 open class Room {
     var baseDescription: String = "Just a regular room"
-    val items = TreeMap<String, Item>(String.CASE_INSENSITIVE_ORDER)
-
-    //val items = HashMap<String, Item>()
+    val items = ItemMap()
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
 
