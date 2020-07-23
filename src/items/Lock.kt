@@ -21,7 +21,6 @@ class Lock(var isLocked: Boolean = true) : Item("Lock", "This is a lock") {
             return GameResult(GameResultCode.FAIL, "[${this.name}] already unlocked")
         }
         isLocked = false
-        //player.inventory.remove(itemUsed.name)
         return GameResult(GameResultCode.SUCCESS, "Unlocked [${this.name}]")
     }
 }

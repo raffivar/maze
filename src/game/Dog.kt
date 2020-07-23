@@ -32,7 +32,6 @@ class Dog(private var currentNode: DogRouteNode) : Item("Dog", "This is a dog") 
             return GameResult(GameResultCode.FAIL, "[${this.name}] is already busy with [${itemUsed.name}]")
         }
         isMoving = false
-        player.inventory.remove(itemUsed.name)
         return GameResult(GameResultCode.SUCCESS, "[${this.name}] is eating [${itemUsed.name}] and has stopped moving")
     }
 

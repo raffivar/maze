@@ -10,4 +10,12 @@ class Bonzo : Item("Bonzo", "Can be used on dogs") {
         player.currentRoom.removeItem(this)
         return GameResult(GameResultCode.SUCCESS, "Obtained [${this.name}]")
     }
+
+    override fun useOn(player: Player, itemUsedOn: Item): GameResult {
+        val useResult = itemUsedOn.usedBy(player, this)
+        if (useResult.gameResultCode == GameResultCode.SUCCESS) {
+            player.inventory.remove(this.name)
+        }
+        return useResult
+    }
 }
