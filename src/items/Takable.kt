@@ -1,3 +1,0 @@
-package items
-
-interface Takable

@@ -3,7 +3,6 @@ package actions
 import game.GameResult
 import game.Player
 import game.GameResultCode
-import items.Takable
 
 class Take : Action("Take", "Take [item]") {
     override fun execute(player: Player, args: List<String>): GameResult {
@@ -14,11 +13,6 @@ class Take : Action("Take", "Take [item]") {
         val item = player.currentRoom.items[itemName] ?: return GameResult(
             GameResultCode.FAIL, "No [$itemName] in current room"
         )
-        if (item !is Takable) {
-            return GameResult(GameResultCode.FAIL, "[${item.name}] is not something you can take")
-        }
-        player.inventory[item.name] = item
-        player.currentRoom.removeItem(item)
-        return GameResult(GameResultCode.SUCCESS, "Obtained [${item.name}]")
+        return item.take(player)
     }
 }

@@ -9,6 +9,10 @@ open class Item(var name: String, var desc: String) {
         return GameResult(GameResultCode.SUCCESS, desc)
     }
 
+    open fun take(player: Player): GameResult {
+        return GameResult(GameResultCode.FAIL, "[${this.name}] is not something you can take")
+    }
+
     open fun useOn(player: Player, itemUsedOn: Item): GameResult {
         return itemUsedOn.usedBy(player, this)
     }
