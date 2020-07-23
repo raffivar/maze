@@ -1,7 +1,7 @@
 package game
 
 import items.Item
-import items.Closable
+import items.Openable
 import items.Takable
 import map.Direction
 import map.Room
@@ -53,7 +53,7 @@ class Player(var currentRoom: Room) {
 
     fun open(itemName: String): GameResult {
         val itemToOpen = currentRoom.items[itemName] ?: return GameResult(GameResultCode.FAIL, "No [$itemName] in current room")
-        if (itemToOpen !is Closable) {
+        if (itemToOpen !is Openable) {
             return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open")
         }
         if (!itemToOpen.isClosed) {
