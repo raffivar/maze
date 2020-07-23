@@ -24,15 +24,11 @@ class Player(var currentRoom: Room) {
     }
 
     private fun examineItem(itemName: String): GameResult {
-        var item = inventory[itemName]
-        if (item != null) {
-            return item.examine()
-        }
-        item = currentRoom.items[itemName]
-        if (item != null) {
-            return item.examine()
-        }
-        return GameResult(GameResultCode.FAIL, "No [$itemName] in inventory or current room")
+        val item = inventory[itemName] ?: currentRoom.items[itemName] ?: return GameResult(
+            GameResultCode.FAIL,
+            "No [$itemName] in inventory or current room"
+        )
+        return item.examine()
     }
 
     fun go(direction: Direction): GameResult {
@@ -52,7 +48,8 @@ class Player(var currentRoom: Room) {
     }
 
     fun open(itemName: String): GameResult {
-        val itemToOpen = currentRoom.items[itemName] ?: return GameResult(GameResultCode.FAIL, "No [$itemName] in current room")
+        val itemToOpen =
+            currentRoom.items[itemName] ?: return GameResult(GameResultCode.FAIL, "No [$itemName] in current room")
         if (itemToOpen !is Openable) {
             return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open")
         }
@@ -64,7 +61,10 @@ class Player(var currentRoom: Room) {
 
     fun use(item1Name: String, item2Name: String): GameResult {
         val item1 = inventory[item1Name] ?: return GameResult(GameResultCode.FAIL, "No [$item1Name] in inventory")
-        val item2 = inventory[item2Name] ?: currentRoom.items[item2Name] ?: return GameResult(GameResultCode.FAIL, "No [$item2Name] in inventory or current room")
+        val item2 = inventory[item2Name] ?: currentRoom.items[item2Name] ?: return GameResult(
+            GameResultCode.FAIL,
+            "No [$item2Name] in inventory or current room"
+        )
         return item1.useOn(this, item2)
     }
 
