@@ -4,7 +4,6 @@ import actions.*
 import map.MapBuilder
 import java.lang.StringBuilder
 import java.util.*
-import kotlin.system.exitProcess
 
 class Game {
     private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory(), Exit())
@@ -12,11 +11,12 @@ class Game {
     private val actionsByName = TreeMap<String, Action>(String.CASE_INSENSITIVE_ORDER)
     //private val actionsByName = HashMap<String, (args: List<String>) -> String>()
     private var player: Player
+    private val gameThreads = arrayListOf<Thread>()
 
     init {
         actions.add(helpAction)
         populateActionsByNames()
-        val firstRoom = MapBuilder().build()
+        val firstRoom = MapBuilder(gameThreads).build()
         player = Player(firstRoom)
     }
 
@@ -38,7 +38,10 @@ class Game {
             }
             println(messageToPrint)
         } while (commandResult.gameResultCode != GameResultCode.GAME_OVER)
-        exitProcess(-1)
+
+        for (thread in gameThreads) {
+            thread.interrupt()
+        }
     }
 
     private fun getIntro(): String {

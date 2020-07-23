@@ -2,7 +2,8 @@ package game
 
 import items.Item
 
-class Dog(private var currentNode: DogRouteNode) : Item("Dog", "This is a dog") {
+class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayList<Thread>) :
+    Item("Dog", "This is a dog") {
     var isMoving = false
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 
@@ -12,12 +13,15 @@ class Dog(private var currentNode: DogRouteNode) : Item("Dog", "This is a dog") 
 
     fun startMoving() {
         isMoving = true
-        Thread {
+        val runnable = Runnable {
             while (isMoving) {
                 moveToNextRoom()
                 Thread.sleep(1000)
             }
-        }.start()
+        }
+        val dogThread = GameThread(runnable, "Dog killed.")
+        gameThreads.add(dogThread)
+        dogThread.start()
     }
 
     private fun moveToNextRoom() {
