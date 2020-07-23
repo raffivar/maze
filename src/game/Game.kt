@@ -16,8 +16,8 @@ class Game {
     init {
         actions.add(helpAction)
         populateActionsByNames()
-        val map = MapBuilder().build()
-        player = Player(map)
+        val firstRoom = MapBuilder().build()
+        player = Player(firstRoom)
     }
 
     private fun populateActionsByNames() {
