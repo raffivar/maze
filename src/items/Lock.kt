@@ -11,7 +11,7 @@ private const val unlockedDescription = "A dusty, unlocked lock."
 class Lock(var isLocked: Boolean = true) : Item("Lock", if (isLocked) lockedDescription else unlockedDescription) {
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 
-    fun setItemToUnlock(itemUsed: Item) {
+    fun setUnlockingItem(itemUsed: Item) {
         itemsToFunctions[itemUsed] = this::unlock
     }
 

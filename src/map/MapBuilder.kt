@@ -51,7 +51,7 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
         val node2 = DogRouteNode(dogRoom2, node1)
         node1.next = node2
         val dog = Dog(node1, gameThreads)
-        dog.setItemToStop(bonzo)
+        dog.setStoppingItem(bonzo)
         dogRoom1.addConstraint(Direction.NORTH, Constraint(dog::isMoving, "Try distracting the dog first!"))
         dog.startMoving()
         return room1

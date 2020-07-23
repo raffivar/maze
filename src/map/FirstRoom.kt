@@ -19,7 +19,7 @@ class FirstRoom : Room() {
         val lock = Lock()
         addItem(lock)
         addItem(bed)
-        lock.setItemToUnlock(key)
+        lock.setUnlockingItem(key)
         door.addConstraintToOpen(Constraint(lock::isLocked, "Looks like you have to to do something about the [${lock.name}] first."))
     }
 

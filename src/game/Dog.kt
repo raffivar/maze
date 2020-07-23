@@ -2,8 +2,7 @@ package game
 
 import items.Item
 
-class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayList<Thread>) :
-    Item("Dog", "This is a dog") {
+class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayList<Thread>) : Item("Dog", "This is a dog") {
     var isMoving = false
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 
@@ -31,20 +30,21 @@ class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayL
         currentNode = nextNode
     }
 
-    private fun stop(player: Player, itemUsed: Item): GameResult {
-        if (!isMoving) {
-            return GameResult(GameResultCode.FAIL, "[${this.name}] is already busy with [${itemUsed.name}]")
-        }
-        isMoving = false
-        return GameResult(GameResultCode.SUCCESS, "[${this.name}] is eating [${itemUsed.name}] and has stopped moving")
-    }
 
-    fun setItemToStop(itemUsed: Item) {
+    fun setStoppingItem(itemUsed: Item) {
         itemsToFunctions[itemUsed] = this::stop
     }
 
     override fun usedBy(player: Player, itemUsed: Item): GameResult {
         val funToRun = itemsToFunctions[itemUsed] ?: return super.usedBy(player, itemUsed)
         return funToRun.invoke(player, itemUsed)
+    }
+
+    private fun stop(player: Player, itemUsed: Item): GameResult {
+        if (!isMoving) {
+            return GameResult(GameResultCode.FAIL, "[${this.name}] is already busy with [${itemUsed.name}]")
+        }
+        isMoving = false
+        return GameResult(GameResultCode.SUCCESS, "[${this.name}] is eating [${itemUsed.name}] and has stopped moving")
     }
 }
