@@ -46,7 +46,7 @@ class Game {
         sb.append("Welcome to the maze!\n")
         sb.append("You've been thrown into the first room!\n")
         sb.append("=============================================\n")
-        sb.append(helpAction.execute(player).message)
+        sb.append(helpAction.execute(player, listOf()).message)
         return sb.toString()
     }
 

@@ -15,6 +15,6 @@ class Go : Action("Go", "Go [direction]") {
         val direction = Direction.values().find { it.name.equals(directionAsText, true) } ?: return GameResult(
             GameResultCode.ERROR, "[$directionAsText] is not a valid direction"
         )
-        return player.go(direction)
+        return player.currentRoom.move(player, direction)
     }
 }
