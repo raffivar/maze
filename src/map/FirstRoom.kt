@@ -8,6 +8,7 @@ import items.*
 
 class FirstRoom : Room() {
     private var firstTimeRoomExamined = true
+    private val firstTimeDescription = "You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it."
     private val defaultRoomDescription = "This room only contains a bed and a door with a lock on it."
     private val key = Key(this::keyTaken)
     private val bed = Bed(this, this::bedExamined)
@@ -21,14 +22,13 @@ class FirstRoom : Room() {
         addItem(bed)
         lock.setUnlockingItem(key)
         door.addConstraintToOpen(Constraint(lock::isLocked, "Looks like you have to to do something about the [${lock.name}] first."))
+        baseDescription = defaultRoomDescription
     }
 
     override fun examine(): GameResult {
-        baseDescription = if (firstTimeRoomExamined) {
-            firstTimeRoomExamined = false
-            "You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it."
-        } else {
-            defaultRoomDescription
+         if (firstTimeRoomExamined) {
+             firstTimeRoomExamined = false
+             return GameResult(GameResultCode.SUCCESS, firstTimeDescription)
         }
         return super.examine()
     }
