@@ -1,4 +1,4 @@
-package items
+package items.dog
 
 import map.Room
 

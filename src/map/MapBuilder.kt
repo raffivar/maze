@@ -1,8 +1,8 @@
 package map
 
-import game.Dog
+import items.dog.Dog
 import game.Constraint
-import game.DogRouteNode
+import items.dog.DogRouteNode
 import items.Bonzo
 
 class MapBuilder(private val gameThreads: ArrayList<Thread>) {

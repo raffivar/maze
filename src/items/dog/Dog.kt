@@ -1,6 +1,7 @@
-package items
+package items.dog
 
 import game.*
+import items.Item
 
 class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayList<Thread>) : Item("Dog", "This is a dog") {
     var isMoving = false
