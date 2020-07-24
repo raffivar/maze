@@ -1,4 +1,4 @@
-package game
+package items
 
 import map.Room
 

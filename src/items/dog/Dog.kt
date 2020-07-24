@@ -1,6 +1,6 @@
-package game
+package items
 
-import items.Item
+import game.*
 
 class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayList<Thread>) : Item("Dog", "This is a dog") {
     var isMoving = false
@@ -42,9 +42,15 @@ class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayL
 
     private fun stop(player: Player, itemUsed: Item): GameResult {
         if (!isMoving) {
-            return GameResult(GameResultCode.FAIL, "[${this.name}] is already busy with [${itemUsed.name}]")
+            return GameResult(
+                GameResultCode.FAIL,
+                "[${this.name}] is already busy with [${itemUsed.name}]"
+            )
         }
         isMoving = false
-        return GameResult(GameResultCode.SUCCESS, "[${this.name}] is eating [${itemUsed.name}] and has stopped moving")
+        return GameResult(
+            GameResultCode.SUCCESS,
+            "[${this.name}] is eating [${itemUsed.name}] and has stopped moving"
+        )
     }
 }
