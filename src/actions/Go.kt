@@ -4,7 +4,6 @@ import game.GameResult
 import game.Player
 import game.GameResultCode
 import map.Direction
-import map.Exit
 
 class Go : Action("Go", "Go [direction]") {
     override fun execute(player: Player, args: List<String>): GameResult {
@@ -15,6 +14,16 @@ class Go : Action("Go", "Go [direction]") {
         val direction = Direction.values().find { it.name.equals(directionAsText, true) } ?: return GameResult(
             GameResultCode.ERROR, "[$directionAsText] is not a valid direction"
         )
-        return player.currentRoom.move(player, direction)
+
+        val moveResult = player.currentRoom.move(player, direction)
+
+        return when (moveResult.gameResultCode) {
+            GameResultCode.ERROR -> moveResult
+            GameResultCode.FAIL -> moveResult
+            GameResultCode.GAME_OVER -> moveResult
+            GameResultCode.SUCCESS -> {
+                player.currentRoom.examine()
+            }
+        }
     }
 }
