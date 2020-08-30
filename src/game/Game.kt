@@ -24,17 +24,17 @@ class Game {
         }
     }
 
-    fun run() {
+    fun run(ioHandler: IOHandler) {
         println(getIntro())
         do {
-            print("Please enter command: ")
-            val command = readLine()
+            ioHandler.print("Please enter command: ")
+            val command = ioHandler.read()
             val commandResult = executeCommand(command)
             var messageToPrint = commandResult.message
             if (commandResult.gameResultCode == GameResultCode.GAME_OVER) {
                 messageToPrint += " [Game Over]"
             }
-            println(messageToPrint)
+            ioHandler.print(messageToPrint + "\n")
         } while (commandResult.gameResultCode != GameResultCode.GAME_OVER)
 
         for (thread in gameThreads) {
