@@ -4,7 +4,7 @@ import actions.*
 import map.MapBuilder
 import java.lang.StringBuilder
 
-class Game {
+class Game(private val ioHandler: IOHandler) {
     private val actions = arrayListOf(Go(), Examine(), Take(), Use(), Open(), Inventory(), Exit())
     private val helpAction = Help(actions)
     private val actionsByName = ActionMap()
@@ -24,7 +24,7 @@ class Game {
         }
     }
 
-    fun run(ioHandler: IOHandler) {
+    fun run() {
         println(getIntro())
         do {
             ioHandler.print("Please enter command: ")
