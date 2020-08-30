@@ -11,7 +11,7 @@ class FirstRoom : Room() {
     private val firstTimeDescription = "You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it."
     private val defaultRoomDescription = "This room only contains a bed and a door with a lock on it."
     private val key = Key(this::keyTaken)
-    private val bed = Bed(this, this::bedExamined)
+    private val bed = Bed(this::bedExamined)
 
     init {
         val door = Door()
