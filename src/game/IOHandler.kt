@@ -1,6 +1,6 @@
 package game
 
 interface IOHandler {
-    fun read(): String?
-    fun print(message: String)
+    fun readCommand(): String?
+    fun printMessage(message: String)
 }

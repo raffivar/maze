@@ -1,11 +1,13 @@
 package game
 
 class CmdIOHandler : IOHandler {
-    override fun read(): String? {
+    override fun readCommand(): String? {
+        print("Please enter command: ")
         return readLine()
     }
 
-    override fun print(message: String) {
-        kotlin.io.print(message)
+    override fun printMessage(message: String) {
+        println(message)
+        println("==========================================================================================================================")
     }
 }
