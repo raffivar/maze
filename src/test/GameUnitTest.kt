@@ -5,6 +5,7 @@ import game.IOHandler
 
 fun main() {
     val ioHandler = object : IOHandler {
+        val pace = 1300L
         var i = 0
         val commands = arrayListOf(
             "examine room",
@@ -26,6 +27,7 @@ fun main() {
 
         override fun readCommand(): String? {
             val command = commands[i]
+            Thread.sleep(pace)
             println("Command: $command")
             return command
         }
@@ -34,11 +36,11 @@ fun main() {
             println(message)
             if (i == 13 && message == "No [dog] in inventory or current room") {
                 println("[Waiting for dog to enter the room]")
-                Thread.sleep(500)
+                Thread.sleep(pace + 500)
             } else {
                 i++
             }
-            println("==========================================================================================================================")
+            println("==================================================================================================================================")
         }
 
     }
