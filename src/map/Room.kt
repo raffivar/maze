@@ -1,5 +1,8 @@
 package map
 
+import data.ItemData
+import data.RoomData
+import data.SavableObject
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
@@ -9,7 +12,7 @@ import items.ItemMap
 import java.util.*
 import kotlin.collections.HashMap
 
-open class Room {
+open class Room(val roomId:String) {
     var baseDescription: String = "Just a regular room"
     val items = ItemMap()
     private val rooms = HashMap<Direction, Room>()
@@ -60,5 +63,15 @@ open class Room {
         }
         player.currentRoom = nextRoom
         return GameResult(GameResultCode.SUCCESS, "Moved ${direction.name}")
+    }
+
+    fun getData(): RoomData {
+        val itemsData = ArrayList<ItemData>()
+
+        for (item in items.values) {
+            itemsData.add(item.getData())
+        }
+
+        return RoomData(roomId, itemsData)
     }
 }

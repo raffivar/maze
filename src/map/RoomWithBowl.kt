@@ -4,7 +4,7 @@ import game.GameResult
 import game.GameResultCode
 import items.*
 
-class RoomWithBowl(private val bonzo: Bonzo) : Room() {
+class RoomWithBowl(private val bonzo: Bonzo) : Room("roomWithBowl") {
     init {
         baseDescription = "This room only has a bowl in it."
         val bowl = Bowl(this, this::addBonzoToBowl)

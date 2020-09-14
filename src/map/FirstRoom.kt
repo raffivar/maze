@@ -6,7 +6,7 @@ import game.GameResultCode
 
 import items.*
 
-class FirstRoom : Room() {
+class FirstRoom : Room("firstRoom") {
     private var firstTimeRoomExamined = true
     private val firstTimeDescription = "You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it."
     private val defaultRoomDescription = "This room only contains a bed and a door with a lock on it."

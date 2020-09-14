@@ -10,12 +10,19 @@ class Game(private val ioHandler: IOHandler) {
     private val actionsByName = ActionMap()
     private val gameThreads = arrayListOf<Thread>()
     private val player: Player
+    private val gameDataManager: GameDataManager
 
     init {
+        val mapBuilder = MapBuilder(gameThreads)
+        val firstRoom = mapBuilder.build()
+        player = Player(firstRoom)
+        gameDataManager = GameDataManager(player, mapBuilder.rooms)
+
+        //Add extra actions
+        actions.add(Save(gameDataManager))
+        actions.add(Load(gameDataManager))
         actions.add(helpAction)
         populateActionsByNames()
-        val firstRoom = MapBuilder(gameThreads).build()
-        player = Player(firstRoom)
     }
 
     private fun populateActionsByNames() {

@@ -1,5 +1,7 @@
 package items
 
+import data.DoorData
+import data.ItemData
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
@@ -26,5 +28,9 @@ class Door(override var isClosed: Boolean = true) : Item("Door", if (isClosed) c
         isClosed = false
         description = openDescription
         return GameResult(GameResultCode.SUCCESS, "The [${this.name}] slowly cracks open. It is heavy, but eventually you manage to open it completely.")
+    }
+
+    override fun getData() : ItemData {
+        return DoorData(name, description, isClosed)
     }
 }

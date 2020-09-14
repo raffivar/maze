@@ -1,0 +1,85 @@
+{
+  "playerData": {
+    "currentRoomId": "roomWithBowl",
+    "inventoryData": [
+      {
+        "name": "Key",
+        "description": "A regular, generic, dusty, key."
+      }
+    ]
+  },
+  "roomsData": [
+    {
+      "roomId": "room5",
+      "itemsData": []
+    },
+    {
+      "roomId": "roomWithGuard",
+      "itemsData": []
+    },
+    {
+      "roomId": "exit",
+      "itemsData": []
+    },
+    {
+      "roomId": "room3",
+      "itemsData": []
+    },
+    {
+      "roomId": "roomWithBowl",
+      "itemsData": [
+        {
+          "name": "Bonzo",
+          "description": "Can be used on dogs"
+        },
+        {
+          "wasExamined": true,
+          "isEmpty": false,
+          "name": "Bowl",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "roomId": "firstRoom",
+      "itemsData": [
+        {
+          "wasExamined": true,
+          "name": "Bed",
+          "description": "This is an old, uncomfortable bed."
+        },
+        {
+          "isClosed": false,
+          "name": "Door",
+          "description": "An old, open door."
+        },
+        {
+          "name": "Lock",
+          "description": "A dusty, unlocked lock."
+        }
+      ]
+    },
+    {
+      "roomId": "room2",
+      "itemsData": []
+    },
+    {
+      "roomId": "dogRoom1",
+      "itemsData": [
+        {
+          "currentNode": {
+            "nodeId": "dogRoom1",
+            "nextNodeId": "dogRoom2"
+          },
+          "isMoving": true,
+          "name": "Dog",
+          "description": "This is a dog"
+        }
+      ]
+    },
+    {
+      "roomId": "dogRoom2",
+      "itemsData": []
+    }
+  ]
+}

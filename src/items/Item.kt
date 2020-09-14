@@ -1,5 +1,6 @@
 package items
 
+import data.ItemData
 import game.GameResult
 import game.GameResultCode
 import game.Player
@@ -19,5 +20,9 @@ open class Item(var name: String, var description: String) {
 
     open fun usedBy(player: Player, itemUsed: Item): GameResult {
         return GameResult(GameResultCode.FAIL, "[${itemUsed.name}] cannot be used on [${this.name}]")
+    }
+
+    open fun getData(): ItemData {
+        return ItemData(name, description)
     }
 }
