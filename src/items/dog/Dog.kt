@@ -1,9 +1,9 @@
 package items.dog
 
-import data.BedData
 import data.DogData
 import data.DogRouteNodeData
 import data.ItemData
+import data.SavableItem
 import game.*
 import items.Item
 
@@ -61,6 +61,6 @@ class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayL
 
     override fun getData() : ItemData {
         val currentNodeData = DogRouteNodeData(currentNode.nodeId, currentNode.next?.nodeId)
-        return DogData(name, description, currentNodeData, isMoving)
+        return DogData(name, currentNodeData, isMoving)
     }
 }

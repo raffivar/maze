@@ -16,7 +16,7 @@ class Game(private val ioHandler: IOHandler) {
         val mapBuilder = MapBuilder(gameThreads)
         val firstRoom = mapBuilder.build()
         player = Player(firstRoom)
-        gameDataManager = GameDataManager(player, mapBuilder.rooms)
+        gameDataManager = GameDataManager(player, mapBuilder)
 
         //Add extra actions
         actions.add(Save(gameDataManager))
@@ -63,7 +63,7 @@ class Game(private val ioHandler: IOHandler) {
         }
         val parsedCommand = command.split(" ")
         val actionName = parsedCommand[0]
-        val action = actionsByName[actionName] ?: return GameResult(GameResultCode.ERROR, "Action [$actionName] not found")
+        val action = actionsByName[actionName] ?: return GameResult(GameResultCode.ERROR, "Action [$actionName] not found.")
         val args = parsedCommand.subList(1, parsedCommand.size)
         return action.execute(player, args)
     }

@@ -4,23 +4,22 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-
 private const val lockedDescription = "This dusty old lock seems to be locked."
 private const val unlockedDescription = "A dusty, unlocked lock."
 
-class Lock(var isLocked: Boolean = true) : Item("Lock", if (isLocked) lockedDescription else unlockedDescription) {
-    private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
+class Lock(itemToUnlock: Item, var isLocked: Boolean = true) : Item("Lock", if (isLocked) lockedDescription else unlockedDescription) {
+    private val itemsToFunctions = HashMap<Item, (Player) -> GameResult>()
 
-    fun setUnlockingItem(itemUsed: Item) {
-        itemsToFunctions[itemUsed] = this::unlock
+    init {
+        itemsToFunctions[itemToUnlock] = this::unlock
     }
 
     override fun usedBy(player: Player, itemUsed: Item): GameResult {
         val funToRun = itemsToFunctions[itemUsed] ?: return super.usedBy(player, itemUsed)
-        return funToRun.invoke(player, itemUsed)
+        return funToRun.invoke(player)
     }
 
-    private fun unlock(player: Player, itemUsed: Item): GameResult {
+    private fun unlock(player: Player): GameResult {
         if (!isLocked) {
             return GameResult(GameResultCode.FAIL, "[${this.name}] already unlocked.")
         }

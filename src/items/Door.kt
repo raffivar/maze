@@ -2,6 +2,7 @@ package items
 
 import data.DoorData
 import data.ItemData
+import data.SavableItem
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
@@ -31,6 +32,6 @@ class Door(override var isClosed: Boolean = true) : Item("Door", if (isClosed) c
     }
 
     override fun getData() : ItemData {
-        return DoorData(name, description, isClosed)
+        return DoorData(name, isClosed)
     }
 }

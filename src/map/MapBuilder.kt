@@ -1,12 +1,15 @@
 package map
 
+import data.SavableRoom
 import items.dog.Dog
 import game.Constraint
 import items.dog.DogRouteNode
 import items.Bonzo
+import items.ItemMap
 
 class MapBuilder(private val gameThreads: ArrayList<Thread>) {
     val rooms = HashMap<String, Room>()
+    val items = ItemMap()
 
     fun build(): Room {
         //Build rooms
@@ -57,21 +60,17 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
         dogRoom1.addConstraint(Direction.NORTH, Constraint(dog::isMoving, "Try distracting the dog first!"))
         dog.startMoving()
 
-        //Save rooms as a HashMap
-        addRoomToMap(room1)
-        addRoomToMap(room2)
-        addRoomToMap(room3)
-        addRoomToMap(dogRoom2)
-        addRoomToMap(dogRoom1)
-        addRoomToMap(room5)
-        addRoomToMap(roomWithBowl)
-        addRoomToMap(roomWithGuard)
-        addRoomToMap(exit)
+        //Save room data
+        saveRoomData(room1)
+        saveRoomData(roomWithBowl)
 
         return room1
     }
 
-    private fun addRoomToMap(room: Room) {
+    private fun saveRoomData(room: Room) {
         rooms[room.roomId] = room
+        if (room is SavableRoom) {
+            room.saveRoomData(this)
+        }
     }
 }

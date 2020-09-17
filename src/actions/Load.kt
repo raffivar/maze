@@ -2,7 +2,6 @@ package actions
 
 import game.GameDataManager
 import game.GameResult
-import game.GameResultCode
 import game.Player
 
 class Load(private val gameDataManager: GameDataManager) : Action("Load", "Load - load saved game") {

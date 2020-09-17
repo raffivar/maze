@@ -2,33 +2,34 @@ package map
 
 import data.ItemData
 import data.RoomData
-import data.SavableObject
-import game.Constraint
-import game.GameResult
-import game.GameResultCode
-import game.Player
+import data.SavableItem
+import game.*
 import items.Item
 import items.ItemMap
 import java.util.*
 import kotlin.collections.HashMap
 
 open class Room(val roomId:String) {
-    var baseDescription: String = "Just a regular room"
+    var baseDescription: String = "Just a regular room."
     val items = ItemMap()
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
 
     open fun examine(): GameResult {
-        var description = baseDescription + "\n"
+        return examine(null)
+    }
+
+    open fun examine(externalDescription: String?): GameResult {
+        var description = (externalDescription ?: baseDescription) + "\n"
         description += if (items.isEmpty()) {
-            "This room is empty\n"
+            "This room is empty.\n"
         } else {
-            "Items in room: ${items.keys}\n"
+            "Items in room: ${items.keys}.\n"
         }
         description += if (rooms.isEmpty()) {
-            "It seems this room doesn't lead anywhere else\n"
+            "It seems this room doesn't lead anywhere else.\n"
         } else {
-            "This room leads: ${rooms.keys}"
+            "This room leads: ${rooms.keys}."
         }
         return GameResult(GameResultCode.SUCCESS, description)
     }
@@ -67,9 +68,8 @@ open class Room(val roomId:String) {
 
     fun getData(): RoomData {
         val itemsData = ArrayList<ItemData>()
-
         for (item in items.values) {
-            itemsData.add(item.getData())
+                itemsData.add(item.getData())
         }
 
         return RoomData(roomId, itemsData)

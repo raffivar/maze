@@ -1,6 +1,3 @@
 package data
 
-open class ItemData(
-    val name: String,
-    val description: String
-)
+open class ItemData(val name: String)
