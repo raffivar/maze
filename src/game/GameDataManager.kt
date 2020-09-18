@@ -8,7 +8,7 @@ import map.MapBuilder
 import java.io.File
 
 class GameDataManager(private val player: Player, private val mapBuilder: MapBuilder) {
-    private val fileName = "save.txt"
+    private val fileName = "save/file.txt"
     private val file = File(fileName)
     private val builder = GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemData::class.java, MazeSerializer<ItemData>())
     private val gson = builder.create()
