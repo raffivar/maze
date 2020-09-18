@@ -2,14 +2,14 @@ package map
 
 import data.ItemData
 import data.RoomData
-import data.SavableItem
+import data.SavableItemData
 import game.*
 import items.Item
 import items.ItemMap
 import java.util.*
 import kotlin.collections.HashMap
 
-open class Room(val roomId:String) {
+open class Room(val roomId: String) {
     var baseDescription: String = "Just a regular room."
     val items = ItemMap()
     private val rooms = HashMap<Direction, Room>()
@@ -69,9 +69,8 @@ open class Room(val roomId:String) {
     fun getData(): RoomData {
         val itemsData = ArrayList<ItemData>()
         for (item in items.values) {
-                itemsData.add(item.getData())
+            itemsData.add(item.getData())
         }
-
         return RoomData(roomId, itemsData)
     }
 }

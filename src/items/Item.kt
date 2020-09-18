@@ -1,12 +1,11 @@
 package items
 
-import data.ItemData
-import data.SavableItem
+import data.SavableItemData
 import game.GameResult
 import game.GameResultCode
 import game.Player
 
-open class Item(var name: String, var description: String): SavableItem {
+open class Item(var name: String, var description: String) {
     open fun examine(): GameResult {
         return GameResult(GameResultCode.SUCCESS, description)
     }
@@ -23,7 +22,7 @@ open class Item(var name: String, var description: String): SavableItem {
         return GameResult(GameResultCode.FAIL, "[${itemUsed.name}] cannot be used on [${this.name}]")
     }
 
-    override fun getData(): ItemData {
-        return ItemData(name)
+    open fun getData(): SavableItemData {
+        return SavableItemData(name)
     }
 }

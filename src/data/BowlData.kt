@@ -3,4 +3,4 @@ package data
 class BowlData(
     name: String,
     private val wasExamined: Boolean,
-    private val isEmpty: Boolean) : ItemData(name)
+    private val isFull: Boolean) : SavableItemData(name)

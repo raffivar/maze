@@ -1,6 +1,7 @@
 package items
 
 import data.BedData
+import data.SavableItemData
 import game.GameResult
 
 class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "This is an old, uncomfortable bed.") {
@@ -15,7 +16,7 @@ class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "T
         }
     }
 
-    override fun getData() : BedData {
+    override fun getData(): SavableItemData {
         return BedData(name, wasExaminedBefore)
     }
 }

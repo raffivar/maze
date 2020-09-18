@@ -63,7 +63,6 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
         //Save room data
         saveRoomData(room1)
         saveRoomData(roomWithBowl)
-
         return room1
     }
 
