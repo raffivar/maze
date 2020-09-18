@@ -3,14 +3,14 @@ package game
 import com.google.gson.GsonBuilder
 import data.ItemData
 import data.RoomData
-import data.SavableItemDataSerializer
+import data.ItemDataSerializer
 import map.MapBuilder
 import java.io.File
 
 class GameDataManager(private val player: Player, private val mapBuilder: MapBuilder) {
     private val fileName = "save.txt"
     private val file = File(fileName)
-    private val builder = GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemData::class.java, SavableItemDataSerializer())
+    private val builder = GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemData::class.java, ItemDataSerializer())
     private val gson = builder.create()
 
     fun save(): GameResult {
