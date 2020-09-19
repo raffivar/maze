@@ -1,5 +1,4 @@
 package data
 
-class DoorData(
-    name: String,
-    private val isClosed: Boolean) : SavableItemData(name)
+class DoorData(name: String,
+               val isClosed: Boolean) : SavableItemData(name)

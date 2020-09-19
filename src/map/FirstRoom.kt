@@ -1,6 +1,6 @@
 package map
 
-import data.SavableRoom
+import data.RoomData
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
@@ -49,10 +49,14 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         baseDescription = defaultRoomDescription
     }
 
-    override fun saveRoomData(mapBuilder: MapBuilder) {
+    override fun saveRoom(mapBuilder: MapBuilder) {
         mapBuilder.items[bed.name] = bed
         mapBuilder.items[key.name] = key
         mapBuilder.items[lock.name] = lock
         mapBuilder.items[door.name] = door
+    }
+
+    override fun loadRoom(roomData: RoomData) {
+        TODO("Not yet implemented")
     }
 }

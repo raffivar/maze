@@ -1,6 +1,5 @@
 package map
 
-import data.SavableRoom
 import items.dog.Dog
 import game.Constraint
 import items.dog.DogRouteNode
@@ -69,7 +68,7 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
     private fun saveRoomData(room: Room) {
         rooms[room.roomId] = room
         if (room is SavableRoom) {
-            room.saveRoomData(this)
+            room.saveRoom(this)
         }
     }
 }

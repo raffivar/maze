@@ -1,6 +1,6 @@
 package map
 
-import data.SavableRoom
+import data.RoomData
 import game.GameResult
 import game.GameResultCode
 import items.*
@@ -19,9 +19,13 @@ class RoomWithBowl(private val bonzo: Bonzo) : Room("roomWithBowl"), SavableRoom
         return GameResult(GameResultCode.SUCCESS, "You discover [${bonzo.name}] in the bowl.")
     }
 
-    override fun saveRoomData(mapBuilder: MapBuilder) {
+    override fun saveRoom(mapBuilder: MapBuilder) {
         mapBuilder.items[bowl.name] = bowl
         mapBuilder.items[bonzo.name] = bonzo
+    }
+
+    override fun loadRoom(roomData: RoomData) {
+        TODO("Not yet implemented")
     }
 
 }
