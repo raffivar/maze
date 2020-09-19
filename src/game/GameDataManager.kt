@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import data.ItemData
 import data.MazeSerializer
-import data.RoomData
+import data.SerializableRoomData
 import map.MapBuilder
 import java.io.File
 
@@ -16,7 +16,7 @@ class GameDataManager(private val player: Player, private val mapBuilder: MapBui
 
     init {
         builder.registerTypeAdapter(ItemData::class.java, MazeSerializer<ItemData>())
-        builder.registerTypeAdapter(RoomData::class.java, MazeSerializer<RoomData>())
+        builder.registerTypeAdapter(SerializableRoomData::class.java, MazeSerializer<SerializableRoomData>())
         gson = builder.create()
 
     }

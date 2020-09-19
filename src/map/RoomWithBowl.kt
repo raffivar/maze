@@ -1,7 +1,6 @@
 package map
 
-import data.RoomData
-import data.SavableRoomData
+import data.SerializableRoomData
 import data.SavableItemData
 import game.GameResult
 import game.GameResultCode
@@ -26,7 +25,7 @@ class RoomWithBowl(private val bonzo: Bonzo) : Room("roomWithBowl"), SavableRoom
         gameItems.add(bonzo)
     }
 
-    override fun loadRoom(roomData: RoomData, gameItems: ItemMap) {
+    override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]

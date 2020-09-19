@@ -1,7 +1,7 @@
 package map
 
 import data.ItemData
-import data.SavableRoomData
+import data.RoomData
 import game.*
 import items.Item
 import items.ItemMap
@@ -65,11 +65,11 @@ open class Room(val roomId: String) {
         return GameResult(GameResultCode.SUCCESS, "Moved ${direction.name}")
     }
 
-    open fun getData(): SavableRoomData {
+    open fun getData(): RoomData {
         val itemsData = ArrayList<ItemData>()
         for (item in items.values) {
             itemsData.add(item.getData())
         }
-        return SavableRoomData(roomId, itemsData)
+        return RoomData(roomId, itemsData)
     }
 }

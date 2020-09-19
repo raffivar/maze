@@ -1,3 +1,3 @@
 package data
 
-class MapData (val roomsData: ArrayList<RoomData>)
+class MapData (val roomsData: ArrayList<SerializableRoomData>)

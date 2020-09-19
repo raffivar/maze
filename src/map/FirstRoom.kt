@@ -60,7 +60,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         gameItems.add(door)
     }
 
-    override fun getData(): SavableRoomData {
+    override fun getData(): RoomData {
         val itemsData = ArrayList<ItemData>()
         for (item in items.values) {
             itemsData.add(item.getData())
@@ -68,7 +68,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         return FirstRoomData(roomId, itemsData, wasExaminedBefore, baseDescription)
     }
 
-    override fun loadRoom(roomData: RoomData, gameItems: ItemMap) {
+    override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
         val data = roomData as FirstRoomData
         wasExaminedBefore = data.wasExaminedBefore
         baseDescription = data.baseDescription

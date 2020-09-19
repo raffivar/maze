@@ -1,6 +1,6 @@
 package map
 
-import data.RoomData
+import data.SerializableRoomData
 import data.SavableItemData
 import items.ItemMap
 import items.SavableItem
@@ -13,7 +13,7 @@ class DogRoom(roomId: String): Room(roomId), SavableRoom {
         }
     }
 
-    override fun loadRoom(roomData: RoomData, gameItems: ItemMap) {
+    override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
