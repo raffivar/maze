@@ -11,19 +11,21 @@ import items.dog.DogRouteNode
 import items.Bonzo
 import items.ItemMap
 import items.SavableItem
+import items.dog.DogRoute
 
 class MapBuilder(private val gameThreads: ArrayList<Thread>) {
-    lateinit var player: Player
     private val rooms = MazeMap()
     private val gameItems = ItemMap()
+    lateinit var player: Player
+    lateinit var dog: Dog
 
     fun build(): Room {
         //Build rooms
         val room1 = FirstRoom()
         val room2 = Room("room2")
         val room3 = Room("room3")
-        val dogRoom2 = Room("dogRoom2")
-        val dogRoom1 = Room("dogRoom1")
+        val dogRoom2 = DogRoom("dogRoom2")
+        val dogRoom1 = DogRoom("dogRoom1")
         val room5 = Room("room5")
         val bonzo = Bonzo()
         val roomWithBowl = RoomWithBowl(bonzo)
@@ -61,7 +63,8 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
         val node1 = DogRouteNode(dogRoom1.roomId, dogRoom1, null)
         val node2 = DogRouteNode(dogRoom2.roomId, dogRoom2, node1)
         node1.next = node2
-        val dog = Dog(node1, gameThreads)
+        val dogRoute = DogRoute(node1, node2)
+        val dog = Dog(dogRoute, node1, gameThreads)
         dog.setStoppingItem(bonzo)
         dogRoom1.addConstraint(Direction.NORTH, Constraint(dog::isMoving, "Try distracting the dog first!"))
         dog.startMoving()
@@ -69,6 +72,8 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
         //Save room data
         saveRoom(room1)
         saveRoom(roomWithBowl)
+        saveRoom(dogRoom1)
+        saveRoom(dogRoom2)
         return room1
     }
 
@@ -79,13 +84,12 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
         }
     }
 
-    fun getDataToSave() : GameData {
+    fun collectDataToSave() : GameData {
         val playerData = player.getData()
         val mapData = MapData(ArrayList())
         for (room in rooms.values) {
             mapData.roomsData.add(room.getData())
         }
-
         return GameData(playerData, mapData)
     }
 

@@ -30,11 +30,11 @@ class RoomWithBowl(private val bonzo: Bonzo) : Room("roomWithBowl"), SavableRoom
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
-            if (item is SavableItem) {
-                item.loadItem(itemData as SavableItemData)
-            }
             item?.let {
                 items.add(item)
+            }
+            if (item is SavableItem) {
+                item.loadItem(itemData as SavableItemData)
             }
         }
     }

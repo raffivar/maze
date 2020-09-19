@@ -55,9 +55,9 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
 
     override fun save(gameItems: ItemMap) {
         gameItems.add(bed)
-        gameItems[key.name] = key
-        gameItems[lock.name] = lock
-        gameItems[door.name] = door
+        gameItems.add(key)
+        gameItems.add(lock)
+        gameItems.add(door)
     }
 
     override fun getData(): SavableRoomData {
@@ -76,11 +76,11 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
-            if (item is SavableItem) {
-                item.loadItem(itemData as SavableItemData)
-            }
             item?.let {
                 items.add(item)
+            }
+            if (item is SavableItem) {
+                item.loadItem(itemData as SavableItemData)
             }
         }
     }

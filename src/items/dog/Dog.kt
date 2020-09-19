@@ -5,8 +5,12 @@ import data.DogRouteNodeData
 import data.SavableItemData
 import game.*
 import items.Item
+import items.SavableItem
 
-class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayList<Thread>) : Item("Dog", "This is a dog") {
+class Dog(private var dogRoute: DogRoute,
+          private var currentNode: DogRouteNode,
+          private val gameThreads: ArrayList<Thread>) : Item("Dog", "This is a dog"), SavableItem {
+
     var isMoving = false
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 
@@ -61,5 +65,14 @@ class Dog(private var currentNode: DogRouteNode, private val gameThreads: ArrayL
     override fun getData() : SavableItemData {
         val currentNodeData = DogRouteNodeData(currentNode.nodeId)
         return DogData(name, currentNodeData, isMoving)
+    }
+
+    override fun loadItem(itemData: SavableItemData) {
+        val data = itemData as DogData
+        isMoving = data.isMoving
+        val node = dogRoute[data.currentNode.nodeId]
+        node?.let {
+            currentNode = node
+        }
     }
 }
