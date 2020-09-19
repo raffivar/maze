@@ -1,12 +1,12 @@
 package map
 
-import data.RoomData
-import data.SavableItemData
+import data.*
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
 
 import items.*
+import java.util.ArrayList
 
 class FirstRoom : Room("firstRoom"), SavableRoom {
     private var bed: Bed
@@ -27,20 +27,23 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         addItem(door)
         addConstraint(Direction.WEST, Constraint(door::isClosed, "The [${door.name}] is closed."))
         door.addConstraintToOpen(Constraint(lock::isLocked, "Looks like you have to to do something about the [${lock.name}] first."))
-        baseDescription = defaultRoomDescription
     }
 
     override fun examine(): GameResult {
-        return if (wasExaminedBefore) {
-            super.examine()
-        } else {
-            wasExaminedBefore = true
-            super.examine(firstTimeDescription)
+        return when (wasExaminedBefore) {
+            false -> {
+                wasExaminedBefore = !wasExaminedBefore
+                baseDescription = defaultRoomDescription
+                super.examine(firstTimeDescription)
+            }
+            true -> {
+                super.examine()
+            }
         }
     }
 
     private fun bedExamined(): GameResult {
-        wasExaminedBefore = false
+        wasExaminedBefore = true
         addItem(key)
         baseDescription = "This room has a closed door with a lock on it, but after examining the bed, you also notice a small key under it."
         return GameResult(GameResultCode.SUCCESS, "${bed.description}\nYou discover a small [${key.name}] under it.")
@@ -57,7 +60,19 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         gameItems[door.name] = door
     }
 
+    override fun getData(): SavableRoomData {
+        val itemsData = ArrayList<ItemData>()
+        for (item in items.values) {
+            itemsData.add(item.getData())
+        }
+        return FirstRoomData(roomId, itemsData, wasExaminedBefore, baseDescription)
+    }
+
     override fun loadRoom(roomData: RoomData, gameItems: ItemMap) {
+        val data = roomData as FirstRoomData
+        wasExaminedBefore = data.wasExaminedBefore
+        baseDescription = data.baseDescription
+
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]

@@ -1,6 +1,7 @@
 package map
 
 import data.RoomData
+import data.SavableRoomData
 import items.ItemMap
 
 interface SavableRoom {

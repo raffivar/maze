@@ -1,6 +1,7 @@
 package map
 
 import data.RoomData
+import data.SavableRoomData
 import data.SavableItemData
 import game.GameResult
 import game.GameResultCode
