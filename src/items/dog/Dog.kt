@@ -2,7 +2,7 @@ package items.dog
 
 import data.DogData
 import data.DogRouteNodeData
-import data.SavableItemData
+import data.ItemData
 import game.*
 import items.Item
 import items.SavableItem
@@ -71,12 +71,12 @@ class Dog(private var dogRoute: DogRoute,
         )
     }
 
-    override fun getData() : SavableItemData {
+    override fun getData() : ItemData {
         val currentNodeData = DogRouteNodeData(currentNode.nodeId)
         return DogData(name, currentNodeData, isMoving)
     }
 
-    override fun loadItem(itemData: SavableItemData) {
+    override fun loadItem(itemData: ItemData) {
         val data = itemData as DogData
         isMoving = data.isMoving
         val node = dogRoute[data.currentNode.nodeId]

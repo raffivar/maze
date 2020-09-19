@@ -1,7 +1,7 @@
 package items
 
 import data.DoorData
-import data.SavableItemData
+import data.ItemData
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
@@ -35,11 +35,11 @@ class Door(override var isClosed: Boolean = true) : Item("Door", null), Openable
         return GameResult(GameResultCode.SUCCESS, "The [${this.name}] slowly cracks open. It is heavy, but eventually you manage to open it completely.")
     }
 
-    override fun getData() : SavableItemData {
+    override fun getData() : ItemData {
         return DoorData(name, isClosed)
     }
 
-    override fun loadItem(itemData: SavableItemData) {
+    override fun loadItem(itemData: ItemData) {
         val data = itemData as DoorData
         isClosed = data.isClosed
     }

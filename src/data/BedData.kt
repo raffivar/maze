@@ -1,4 +1,4 @@
 package data
 
 class BedData(name: String,
-              val wasExaminedBefore: Boolean) : SavableItemData(name)
+              val wasExaminedBefore: Boolean) : ItemData(name)

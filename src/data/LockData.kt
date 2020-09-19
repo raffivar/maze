@@ -1,4 +1,4 @@
 package data
 
 class LockData(name: String,
-               val isLocked: Boolean) : SavableItemData(name)
+               val isLocked: Boolean) : ItemData(name)

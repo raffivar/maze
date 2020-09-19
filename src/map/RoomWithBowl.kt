@@ -1,7 +1,7 @@
 package map
 
 import data.SerializableRoomData
-import data.SavableItemData
+import data.ItemData
 import game.GameResult
 import game.GameResultCode
 import items.*
@@ -33,7 +33,7 @@ class RoomWithBowl(private val bonzo: Bonzo) : Room("roomWithBowl"), SavableRoom
                 items.add(item)
             }
             if (item is SavableItem) {
-                item.loadItem(itemData as SavableItemData)
+                item.loadItem(itemData as ItemData)
             }
         }
     }

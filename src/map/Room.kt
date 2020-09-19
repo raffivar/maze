@@ -1,6 +1,6 @@
 package map
 
-import data.ItemData
+import data.SerializableItemData
 import data.RoomData
 import game.*
 import items.Item
@@ -66,7 +66,7 @@ open class Room(val roomId: String) {
     }
 
     open fun getData(): RoomData {
-        val itemsData = ArrayList<ItemData>()
+        val itemsData = ArrayList<SerializableItemData>()
         for (item in items.values) {
             itemsData.add(item.getData())
         }

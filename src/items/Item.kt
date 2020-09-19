@@ -1,6 +1,6 @@
 package items
 
-import data.SavableItemData
+import data.ItemData
 import game.GameResult
 import game.GameResultCode
 import game.Player
@@ -26,7 +26,7 @@ open class Item(var name: String, var description: String?) {
         return GameResult(GameResultCode.FAIL, "[${itemUsed.name}] cannot be used on [${this.name}]")
     }
 
-    open fun getData(): SavableItemData {
-        return SavableItemData(name)
+    open fun getData(): ItemData {
+        return ItemData(name)
     }
 }

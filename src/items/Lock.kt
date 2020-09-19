@@ -1,7 +1,7 @@
 package items
 
 import data.LockData
-import data.SavableItemData
+import data.ItemData
 import game.GameResult
 import game.GameResultCode
 import game.Player
@@ -35,11 +35,11 @@ class Lock(itemToUnlock: Item, var isLocked: Boolean = true) : Item("Lock", null
         return GameResult(GameResultCode.SUCCESS, "Unlocked [${this.name}].")
     }
 
-    override fun getData() : SavableItemData {
+    override fun getData() : ItemData {
         return LockData(name, isLocked)
     }
 
-    override fun loadItem(itemData: SavableItemData) {
+    override fun loadItem(itemData: ItemData) {
         val data = itemData as LockData
         isLocked = data.isLocked
     }

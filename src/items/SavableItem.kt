@@ -1,7 +1,7 @@
 package items
 
-import data.SavableItemData
+import data.ItemData
 
 interface SavableItem {
-    fun loadItem(itemData: SavableItemData)
+    fun loadItem(itemData: ItemData)
 }

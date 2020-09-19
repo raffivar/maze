@@ -1,7 +1,7 @@
 package map
 
 import data.SerializableRoomData
-import data.SavableItemData
+import data.ItemData
 import items.ItemMap
 import items.SavableItem
 
@@ -21,7 +21,7 @@ class DogRoom(roomId: String): Room(roomId), SavableRoom {
                 items.add(item)
             }
             if (item is SavableItem) {
-                item.loadItem(itemData as SavableItemData)
+                item.loadItem(itemData as ItemData)
             }
         }
     }

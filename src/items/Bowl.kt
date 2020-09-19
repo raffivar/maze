@@ -1,7 +1,7 @@
 package items
 
 import data.BowlData
-import data.SavableItemData
+import data.ItemData
 import game.GameResult
 import map.Room
 
@@ -27,11 +27,11 @@ class Bowl(val room: Room, private val modifyRoomWhenExamined: () -> GameResult)
         isFull = false
     }
 
-    override fun getData(): SavableItemData {
+    override fun getData(): ItemData {
         return BowlData(name, wasExaminedBefore, isFull)
     }
 
-    override fun loadItem(itemData: SavableItemData) {
+    override fun loadItem(itemData: ItemData) {
         val data = itemData as BowlData
         wasExaminedBefore = data.wasExaminedBefore
         isFull = data.isFull

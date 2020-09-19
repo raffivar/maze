@@ -61,7 +61,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
     }
 
     override fun getData(): RoomData {
-        val itemsData = ArrayList<ItemData>()
+        val itemsData = ArrayList<SerializableItemData>()
         for (item in items.values) {
             itemsData.add(item.getData())
         }
@@ -80,7 +80,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
                 items.add(item)
             }
             if (item is SavableItem) {
-                item.loadItem(itemData as SavableItemData)
+                item.loadItem(itemData as ItemData)
             }
         }
     }

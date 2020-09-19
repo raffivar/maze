@@ -1,4 +1,4 @@
 package data
 
 open class RoomData (roomId: String,
-                     itemsData: ArrayList<ItemData>): SerializableRoomData(roomId, itemsData)
+                     itemsData: ArrayList<SerializableItemData>): SerializableRoomData(roomId, itemsData)

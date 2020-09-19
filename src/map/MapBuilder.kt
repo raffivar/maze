@@ -2,7 +2,7 @@ package map
 
 import data.MapData
 import data.PlayerData
-import data.SavableItemData
+import data.ItemData
 import items.dog.Dog
 import game.Constraint
 import game.GameData
@@ -111,7 +111,7 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
         for (itemData in itemsData) {
             val item = gameItems[itemData.name]
             if (item is SavableItem) {
-                item.loadItem(itemData as SavableItemData)
+                item.loadItem(itemData as ItemData)
             }
             item?.let {
                 player.inventory.add(item)
