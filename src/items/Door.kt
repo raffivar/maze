@@ -1,5 +1,6 @@
 package items
 
+import data.BowlData
 import data.DoorData
 import data.SavableItemData
 import game.Constraint
@@ -11,7 +12,7 @@ import java.util.ArrayList
 private const val closedDescription = "An old, closed door."
 private const val openDescription = "An old, open door."
 
-class Door(override var isClosed: Boolean = true) : Item("Door", if (isClosed) closedDescription else openDescription), Openable {
+class Door(override var isClosed: Boolean = true) : Item("Door", if (isClosed) closedDescription else openDescription), Openable, SavableItem {
     private val constraintsToOpen = ArrayList<Constraint>()
 
     fun addConstraintToOpen(constraint: Constraint) {
@@ -31,6 +32,11 @@ class Door(override var isClosed: Boolean = true) : Item("Door", if (isClosed) c
 
     override fun getData() : SavableItemData {
         return DoorData(name, isClosed)
+    }
+
+    override fun loadItem(itemData: SavableItemData) {
+        val data = itemData as DoorData
+        isClosed = data.isClosed
     }
 }
 

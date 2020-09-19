@@ -1,6 +1,7 @@
 package map
 
 import data.RoomData
+import data.SavableItemData
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
@@ -49,7 +50,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         baseDescription = defaultRoomDescription
     }
 
-    override fun saveRoom(gameItems: ItemMap) {
+    override fun save(gameItems: ItemMap) {
         gameItems.add(bed)
         gameItems[key.name] = key
         gameItems[lock.name] = lock
@@ -60,6 +61,9 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
+            if (item is SavableItem) {
+                item.loadItem(itemData as SavableItemData)
+            }
             item?.let {
                 items.add(item)
             }

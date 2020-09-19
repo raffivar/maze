@@ -1,6 +1,7 @@
 package map
 
 import data.RoomData
+import data.SavableItemData
 import game.GameResult
 import game.GameResultCode
 import items.*
@@ -19,7 +20,7 @@ class RoomWithBowl(private val bonzo: Bonzo) : Room("roomWithBowl"), SavableRoom
         return GameResult(GameResultCode.SUCCESS, "You discover [${bonzo.name}] in the bowl.")
     }
 
-    override fun saveRoom(gameItems: ItemMap) {
+    override fun save(gameItems: ItemMap) {
         gameItems.add(bowl)
         gameItems.add(bonzo)
     }
@@ -28,6 +29,9 @@ class RoomWithBowl(private val bonzo: Bonzo) : Room("roomWithBowl"), SavableRoom
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
+            if (item is SavableItem) {
+                item.loadItem(itemData as SavableItemData)
+            }
             item?.let {
                 items.add(item)
             }

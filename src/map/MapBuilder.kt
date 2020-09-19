@@ -2,6 +2,7 @@ package map
 
 import data.MapData
 import data.PlayerData
+import data.SavableItemData
 import items.dog.Dog
 import game.Constraint
 import game.GameData
@@ -9,10 +10,11 @@ import game.Player
 import items.dog.DogRouteNode
 import items.Bonzo
 import items.ItemMap
+import items.SavableItem
 
 class MapBuilder(private val gameThreads: ArrayList<Thread>) {
     lateinit var player: Player
-    val rooms = HashMap<String, Room>()
+    private val rooms = MazeMap()
     private val gameItems = ItemMap()
 
     fun build(): Room {
@@ -65,16 +67,26 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
         dog.startMoving()
 
         //Save room data
-        saveRoomData(room1)
-        saveRoomData(roomWithBowl)
+        saveRoom(room1)
+        saveRoom(roomWithBowl)
         return room1
     }
 
-    private fun saveRoomData(room: Room) {
-        rooms[room.roomId] = room
+    private fun saveRoom(room: Room) {
+        rooms.add(room)
         if (room is SavableRoom) {
-            room.saveRoom(gameItems)
+            room.save(gameItems)
         }
+    }
+
+    fun getDataToSave() : GameData {
+        val playerData = player.getData()
+        val mapData = MapData(ArrayList())
+        for (room in rooms.values) {
+            mapData.roomsData.add(room.getData())
+        }
+
+        return GameData(playerData, mapData)
     }
 
     fun loadData(gameData: GameData) {
@@ -94,6 +106,9 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
         val itemsData = playerData.inventoryData
         for (itemData in itemsData) {
             val item = gameItems[itemData.name]
+            if (item is SavableItem) {
+                item.loadItem(itemData as SavableItemData)
+            }
             item?.let {
                 player.inventory.add(item)
             }
@@ -111,5 +126,4 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
             }
         }
     }
-
 }
