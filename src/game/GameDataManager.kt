@@ -2,6 +2,7 @@ package game
 
 import com.google.gson.GsonBuilder
 import data.ItemData
+import data.MapData
 import data.RoomData
 import data.MazeSerializer
 import map.MapBuilder
@@ -14,26 +15,22 @@ class GameDataManager(private val player: Player, private val mapBuilder: MapBui
     private val gson = builder.create()
 
     fun save(): GameResult {
-        //Collect game data
         val playerData = player.getData()
-        val roomsData = ArrayList<RoomData>()
+        val mapData = MapData(ArrayList())
         for (room in mapBuilder.rooms.values) {
-            roomsData.add(room.getData())
+            mapData.roomsData.add(room.getData())
         }
-        val gameData = GameData(playerData, roomsData)
-
-        //Save to file
+        val gameData = GameData(playerData, mapData)
         val roomToJson = gson.toJson(gameData)
         file.writeText(roomToJson)
-
         return GameResult(GameResultCode.SUCCESS, "Game saved.")
     }
 
     fun load(): GameResult {
-        //Load
         val file = File(fileName)
         val data = file.readText()
         val gameData = gson.fromJson(data, GameData::class.java)
+        mapBuilder.loadData(gameData)
         return GameResult(GameResultCode.SUCCESS, "Game loaded.")
     }
 }

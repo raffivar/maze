@@ -1,9 +1,7 @@
 package game
 
+import data.MapData
 import data.PlayerData
-import data.RoomData
 
-class GameData(
-    val playerData: PlayerData,
-    val roomsData: ArrayList<RoomData>
-)
+class GameData(val playerData: PlayerData,
+               val mapData: MapData)

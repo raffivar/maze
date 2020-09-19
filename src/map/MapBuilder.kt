@@ -1,14 +1,19 @@
 package map
 
+import data.MapData
+import data.PlayerData
 import items.dog.Dog
 import game.Constraint
+import game.GameData
+import game.Player
 import items.dog.DogRouteNode
 import items.Bonzo
 import items.ItemMap
 
 class MapBuilder(private val gameThreads: ArrayList<Thread>) {
+    lateinit var player: Player
     val rooms = HashMap<String, Room>()
-    val items = ItemMap()
+    private val gameItems = ItemMap()
 
     fun build(): Room {
         //Build rooms
@@ -68,7 +73,43 @@ class MapBuilder(private val gameThreads: ArrayList<Thread>) {
     private fun saveRoomData(room: Room) {
         rooms[room.roomId] = room
         if (room is SavableRoom) {
-            room.saveRoom(this)
+            room.saveRoom(gameItems)
         }
     }
+
+    fun loadData(gameData: GameData) {
+        loadPlayerData(gameData.playerData)
+        loadMapData(gameData.mapData)
+    }
+
+    private fun loadPlayerData(playerData: PlayerData) {
+        //Current room
+        val room = rooms[playerData.currentRoomId]
+        room?.let {
+            player.currentRoom = room
+        }
+
+        //Inventory
+        player.inventory.clear()
+        val itemsData = playerData.inventoryData
+        for (itemData in itemsData) {
+            val item = gameItems[itemData.name]
+            item?.let {
+                player.inventory.add(item)
+            }
+        }
+    }
+
+    private fun loadMapData(mapData: MapData) {
+        val roomsData = mapData.roomsData
+        for (roomData in roomsData) {
+            val room = rooms[roomData.roomId]
+            room?.let {
+                if (room is SavableRoom) {
+                    room.loadRoom(roomData, gameItems)
+                }
+            }
+        }
+    }
+
 }

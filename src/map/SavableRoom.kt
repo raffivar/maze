@@ -1,8 +1,9 @@
 package map
 
 import data.RoomData
+import items.ItemMap
 
 interface SavableRoom {
-    fun saveRoom(mapBuilder: MapBuilder)
-    fun loadRoom(roomData: RoomData)
+    fun saveRoom(gameItems: ItemMap)
+    fun loadRoom(roomData: RoomData, gameItems: ItemMap)
 }

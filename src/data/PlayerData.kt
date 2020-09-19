@@ -1,5 +1,4 @@
 package data
 
 class PlayerData(val currentRoomId: String,
-                 val inventoryData: ArrayList<ItemData>
-)
+                 val inventoryData: ArrayList<ItemData>)

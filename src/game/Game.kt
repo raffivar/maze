@@ -16,6 +16,7 @@ class Game(private val ioHandler: IOHandler) {
         val mapBuilder = MapBuilder(gameThreads)
         val firstRoom = mapBuilder.build()
         player = Player(firstRoom)
+        mapBuilder.player = player
         gameDataManager = GameDataManager(player, mapBuilder)
 
         //Add extra actions

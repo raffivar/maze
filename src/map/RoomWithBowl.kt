@@ -19,13 +19,18 @@ class RoomWithBowl(private val bonzo: Bonzo) : Room("roomWithBowl"), SavableRoom
         return GameResult(GameResultCode.SUCCESS, "You discover [${bonzo.name}] in the bowl.")
     }
 
-    override fun saveRoom(mapBuilder: MapBuilder) {
-        mapBuilder.items[bowl.name] = bowl
-        mapBuilder.items[bonzo.name] = bonzo
+    override fun saveRoom(gameItems: ItemMap) {
+        gameItems.add(bowl)
+        gameItems.add(bonzo)
     }
 
-    override fun loadRoom(roomData: RoomData) {
-        TODO("Not yet implemented")
+    override fun loadRoom(roomData: RoomData, gameItems: ItemMap) {
+        items.clear()
+        for (itemData in roomData.itemsData) {
+            val item = gameItems[itemData.name]
+            item?.let {
+                items.add(item)
+            }
+        }
     }
-
 }

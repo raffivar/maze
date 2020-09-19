@@ -49,14 +49,20 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         baseDescription = defaultRoomDescription
     }
 
-    override fun saveRoom(mapBuilder: MapBuilder) {
-        mapBuilder.items[bed.name] = bed
-        mapBuilder.items[key.name] = key
-        mapBuilder.items[lock.name] = lock
-        mapBuilder.items[door.name] = door
+    override fun saveRoom(gameItems: ItemMap) {
+        gameItems.add(bed)
+        gameItems[key.name] = key
+        gameItems[lock.name] = lock
+        gameItems[door.name] = door
     }
 
-    override fun loadRoom(roomData: RoomData) {
-        TODO("Not yet implemented")
+    override fun loadRoom(roomData: RoomData, gameItems: ItemMap) {
+        items.clear()
+        for (itemData in roomData.itemsData) {
+            val item = gameItems[itemData.name]
+            item?.let {
+                items.add(item)
+            }
+        }
     }
 }

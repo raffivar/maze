@@ -8,7 +8,7 @@ class Bonzo : Item("Bonzo", "Can be used on dogs") {
     var bowl: Bowl? = null
 
     override fun take(player: Player): GameResult {
-        player.inventory[this.name] = this
+        player.inventory.add(this)
         player.currentRoom.removeItem(this)
         bowl?.empty()
         return GameResult(GameResultCode.SUCCESS, "Obtained [${this.name}]")
@@ -17,7 +17,7 @@ class Bonzo : Item("Bonzo", "Can be used on dogs") {
     override fun useOn(player: Player, itemUsedOn: Item): GameResult {
         val useResult = itemUsedOn.usedBy(player, this)
         if (useResult.gameResultCode == GameResultCode.SUCCESS) {
-            player.inventory.remove(this.name)
+            player.inventory.removeItem(this)
         }
         return useResult
     }
