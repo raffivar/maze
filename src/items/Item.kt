@@ -7,7 +7,7 @@ import game.Player
 
 open class Item(var name: String, var description: String?) {
     open fun examine(): GameResult {
-        return examine(null)
+        return examine(description)
     }
 
     open fun examine(description: String?): GameResult {

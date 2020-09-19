@@ -16,10 +16,10 @@ class Lock(itemToUnlock: Item, var isLocked: Boolean = true) : Item("Lock", null
     }
 
     override fun examine(): GameResult {
-        return if (isLocked) {
-            examine(lockedDescription)
-        } else
-            examine(unlockedDescription)
+        return when (isLocked) {
+            true -> examine(lockedDescription)
+            false -> examine(unlockedDescription)
+        }
     }
 
     override fun usedBy(player: Player, itemUsed: Item): GameResult {

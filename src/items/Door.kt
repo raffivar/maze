@@ -18,10 +18,10 @@ class Door(override var isClosed: Boolean = true) : Item("Door", null), Openable
     }
 
     override fun examine(): GameResult {
-        return if (isClosed) {
-            examine(closedDescription)
-        } else
-            examine(openDescription)
+        return when (isClosed) {
+            true -> examine(closedDescription)
+            false -> examine(openDescription)
+        }
     }
 
     override fun open(player: Player): GameResult {

@@ -9,13 +9,22 @@ import items.SavableItem
 
 class Dog(private var dogRoute: DogRoute,
           private var currentNode: DogRouteNode,
-          private val gameThreads: ArrayList<Thread>) : Item("Dog", "This is a dog"), SavableItem {
+          private val gameThreads: ArrayList<Thread>) : Item("Dog", null), SavableItem {
 
+    private val movingDescription = "This dog seems to be moving a lot."
+    private val notMovingDescription = "This dog seems to be busy with food."
     var isMoving = false
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 
     init {
         currentNode.room.addItem(this)
+    }
+
+    override fun examine(): GameResult {
+        return when (isMoving) {
+            true -> examine(movingDescription)
+            false -> examine(notMovingDescription)
+        }
     }
 
     fun startMoving() {
