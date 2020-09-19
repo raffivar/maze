@@ -6,14 +6,20 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-private const val lockedDescription = "This dusty old lock seems to be locked."
-private const val unlockedDescription = "A dusty, unlocked lock."
-
-class Lock(itemToUnlock: Item, var isLocked: Boolean = true) : Item("Lock", if (isLocked) lockedDescription else unlockedDescription), SavableItem {
+class Lock(itemToUnlock: Item, var isLocked: Boolean = true) : Item("Lock", null), SavableItem {
+    private val lockedDescription = "This dusty old lock seems to be locked."
+    private val unlockedDescription = "A dusty, unlocked lock."
     private val itemsToFunctions = HashMap<Item, (Player) -> GameResult>()
 
     init {
         itemsToFunctions[itemToUnlock] = this::unlock
+    }
+
+    override fun examine(): GameResult {
+        return if (isLocked) {
+            examine(lockedDescription)
+        } else
+            examine(unlockedDescription)
     }
 
     override fun usedBy(player: Player, itemUsed: Item): GameResult {
@@ -26,7 +32,6 @@ class Lock(itemToUnlock: Item, var isLocked: Boolean = true) : Item("Lock", if (
             return GameResult(GameResultCode.FAIL, "[${this.name}] already unlocked.")
         }
         isLocked = false
-        description = unlockedDescription
         return GameResult(GameResultCode.SUCCESS, "Unlocked [${this.name}].")
     }
 

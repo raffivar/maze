@@ -5,9 +5,13 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-open class Item(var name: String, var description: String) {
+open class Item(var name: String, var description: String?) {
     open fun examine(): GameResult {
-        return GameResult(GameResultCode.SUCCESS, description)
+        return examine(null)
+    }
+
+    open fun examine(description: String?): GameResult {
+        return GameResult(GameResultCode.SUCCESS, description ?: "This is a mysterious item that has no description")
     }
 
     open fun take(player: Player): GameResult {
