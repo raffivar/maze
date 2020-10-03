@@ -13,9 +13,12 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
     private var key: Key
     private var lock: Lock
     private var door: Door
+    private var mirror: Mirror
+    private var brokenMirror: BrokenMirror
+    private var shard: Shard
     private var wasExaminedBefore = false
     private val firstTimeDescription = "You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it."
-    private val defaultRoomDescription = "This room only contains a bed and a door with a lock on it."
+    private val defaultRoomDescription = "This room's only furniture is an extremely uncomfortable bed."
 
     init {
         bed = Bed(this::bedExamined)
@@ -25,6 +28,10 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         addItem(lock)
         door = Door()
         addItem(door)
+        mirror = Mirror(this::mirrorBroken)
+        addItem(mirror)
+        brokenMirror = BrokenMirror()
+        shard = Shard(this::shardTaken)
         addConstraint(Direction.WEST, Constraint(door::isClosed, "The [${door.name}] is closed."))
         door.addConstraintToOpen(Constraint(lock::isLocked, "Looks like you have to to do something about the [${lock.name}] first."))
     }
@@ -45,7 +52,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
     private fun bedExamined(): GameResult {
         wasExaminedBefore = true
         addItem(key)
-        baseDescription = "This room has a closed door with a lock on it, but after examining the bed, you also notice a small key under it."
+        baseDescription = defaultRoomDescription
         return GameResult(GameResultCode.SUCCESS, "${bed.description}\nYou discover a small [${key.name}] under it.")
     }
 
@@ -53,11 +60,28 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         baseDescription = defaultRoomDescription
     }
 
+    private fun mirrorBroken(): GameResult {
+        wasExaminedBefore = true
+        addItem(shard)
+        baseDescription = defaultRoomDescription
+        removeItem(mirror)
+        addItem(brokenMirror)
+        val message = "You broke the [${mirror.name}]. You monster. Look what you did to the floor."
+        return GameResult(GameResultCode.SUCCESS, message)
+    }
+
+    private fun shardTaken() {
+        baseDescription = defaultRoomDescription
+    }
+
+
     override fun save(gameItems: ItemMap) {
         gameItems.add(bed)
         gameItems.add(key)
         gameItems.add(lock)
         gameItems.add(door)
+        gameItems.add(mirror)
+        gameItems.add(brokenMirror)
     }
 
     override fun getData(): RoomData {

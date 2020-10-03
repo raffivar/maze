@@ -3,6 +3,8 @@ package items
 import data.BedData
 import data.ItemData
 import game.GameResult
+import game.GameResultCode
+import game.Player
 
 class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "This is an old, uncomfortable bed."), SavableItem {
     private var wasExaminedBefore = false
@@ -23,5 +25,9 @@ class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "T
     override fun loadItem(itemData: ItemData) {
         val data = itemData as BedData
         wasExaminedBefore = data.wasExaminedBefore
+    }
+
+    override fun take(player: Player): GameResult {
+        return GameResult(GameResultCode.SUCCESS, "You're seriously try to take this?")
     }
 }

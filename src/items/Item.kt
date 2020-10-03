@@ -11,11 +11,15 @@ open class Item(var name: String, var description: String?) {
     }
 
     open fun examine(description: String?): GameResult {
-        return GameResult(GameResultCode.SUCCESS, description ?: "This is a mysterious item that has no description")
+        return GameResult(GameResultCode.SUCCESS, description ?: "This is a mysterious item that has no description.")
     }
 
     open fun take(player: Player): GameResult {
-        return GameResult(GameResultCode.FAIL, "[${this.name}] is not something you can take")
+        return GameResult(GameResultCode.FAIL, "You try to take the [${this.name}]. You fail miserably.")
+    }
+
+    open fun breakItem(player: Player): GameResult {
+        return GameResult(GameResultCode.FAIL, "You try to break the [${this.name}]. You fail miserably.")
     }
 
     open fun useOn(player: Player, itemUsedOn: Item): GameResult {
@@ -28,5 +32,9 @@ open class Item(var name: String, var description: String?) {
 
     open fun getData(): ItemData {
         return ItemData(name)
+    }
+
+    override fun toString(): String {
+        return name
     }
 }
