@@ -11,7 +11,7 @@ import items.ItemMap
 import items.SavableItem
 import items.Tiger
 
-class MapBuilder(private val gameThreads: ArrayList<Thread>) {
+class MapBuilder() {
     private val rooms = MazeMap()
     private val gameItems = ItemMap()
     lateinit var player: Player

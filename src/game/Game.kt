@@ -8,12 +8,11 @@ class Game(private val ioHandler: IOHandler) {
     private val actions = arrayListOf(Examine(), Peek(), Go(), Take(), Use(), Open(), Break(), Inventory(), Exit())
     private val helpAction = Help(actions)
     private val actionsByName = ActionMap()
-    private val gameThreads = arrayListOf<Thread>()
     private val player: Player
     private val gameDataManager: GameDataManager
 
     init {
-        val mapBuilder = MapBuilder(gameThreads)
+        val mapBuilder = MapBuilder()
         val firstRoom = mapBuilder.build()
         player = Player(firstRoom)
         mapBuilder.player = player
@@ -43,10 +42,6 @@ class Game(private val ioHandler: IOHandler) {
             }
             ioHandler.printMessage(messageToPrint)
         } while (commandResult.gameResultCode != GameResultCode.GAME_OVER)
-
-        for (thread in gameThreads) {
-            thread.interrupt()
-        }
     }
 
     private fun getIntro(): String {
