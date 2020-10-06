@@ -8,11 +8,9 @@ import data.SerializableRoomData
 import map.MapBuilder
 import java.io.File
 
-
 class GameDataManager(private val player: Player, private val mapBuilder: MapBuilder) {
     private var builder: GsonBuilder = GsonBuilder().setPrettyPrinting()
     private var gson: Gson
-    private val file = getFile()
 
     init {
         builder.registerTypeAdapter(SerializableItemData::class.java, MazeSerializer<SerializableItemData>())
@@ -20,7 +18,26 @@ class GameDataManager(private val player: Player, private val mapBuilder: MapBui
         gson = builder.create()
     }
 
-    private fun getFile() : File {
+    fun save(): GameResult {
+        val file = getFile()
+        val gameData = mapBuilder.collectDataToSave()
+        val roomToJson = gson.toJson(gameData)
+        file.writeText(roomToJson)
+        return GameResult(GameResultCode.SUCCESS, "Game saved.")
+    }
+
+    fun load(): GameResult {
+        val file = getFile()
+        if (!file.exists()) {
+            return GameResult(GameResultCode.ERROR, "Error - there is no save file.")
+        }
+        val data = file.readText()
+        val gameData = gson.fromJson(data, GameData::class.java)
+        mapBuilder.loadData(gameData)
+        return GameResult(GameResultCode.SUCCESS, "Game loaded.")
+    }
+
+    private fun getFile(): File {
         val filePath = "save"
         val fileName = "file.txt"
         val directory = File(filePath)
@@ -30,19 +47,5 @@ class GameDataManager(private val player: Player, private val mapBuilder: MapBui
             // use directory.mkdirs(); here instead.
         }
         return File("$filePath//$fileName")
-    }
-
-    fun save(): GameResult {
-        val gameData = mapBuilder.collectDataToSave()
-        val roomToJson = gson.toJson(gameData)
-        file.writeText(roomToJson)
-        return GameResult(GameResultCode.SUCCESS, "Game saved.")
-    }
-
-    fun load(): GameResult {
-        val data = file.readText()
-        val gameData = gson.fromJson(data, GameData::class.java)
-        mapBuilder.loadData(gameData)
-        return GameResult(GameResultCode.SUCCESS, "Game loaded.")
     }
 }
