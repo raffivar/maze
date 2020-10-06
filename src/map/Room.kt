@@ -52,7 +52,7 @@ open class Room(val roomId: String) {
     }
 
     fun move(player: Player, direction: Direction): GameResult {
-        val nextRoom = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "Room not lead in that direction")
+        val nextRoom = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
         val constraints = constraintsToMove[direction]
         constraints?.let {
             for (constraint in it) {
@@ -71,5 +71,10 @@ open class Room(val roomId: String) {
             itemsData.add(item.getData())
         }
         return RoomData(roomId, itemsData)
+    }
+
+    open fun peek(direction: Direction): GameResult {
+        val roomToPeek = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
+        return roomToPeek.examine()
     }
 }

@@ -108,4 +108,12 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
             }
         }
     }
+
+    override fun peek(direction: Direction): GameResult {
+        if (direction == Direction.WEST && door.isClosed) {
+            return GameResult(GameResultCode.FAIL, "Yeah, no, you can't peek into the next room while the [${door.name}] is closed. Nice try, though. :)")
+        }
+
+        return super.peek(direction)
+    }
 }
