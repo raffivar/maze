@@ -6,10 +6,7 @@ import data.ItemData
 import game.Constraint
 import game.GameData
 import game.Player
-import items.Poison
-import items.ItemMap
-import items.SavableItem
-import items.Tiger
+import items.*
 
 class MapBuilder {
     private val rooms = MazeMap()
@@ -18,62 +15,67 @@ class MapBuilder {
 
     fun build(): Room {
         //Build rooms
-        val room1 = FirstRoom()
-        val room2 = Room("room2")
-        val room3 = Room("room3")
-        val roomWithTiger = Room("roomWithTiger")
-        val room4 = Room("room4")
-        val room5 = Room("room5")
+        val firstRoom = FirstRoom()
         val poison = Poison()
-        val roomWithBowl = RoomWithBowl(poison)
+        val roomWithCloset = RoomWithCloset(poison)
+
+        //Tiger Rooms
+        val roomWithTiger = Room("roomWithTiger")
+        val roomSouthToTiger = Room("roomNorthToTiger")
+        val roomEastToTiger = Room("roomEastToTiger")
+        val roomNorthToTiger = Room("roomSouthToTiger")
+        val tiger = Tiger(poison)
+        roomNorthToTiger.addConstraint(Direction.NORTH, Constraint(tiger::isAlive, "Try distracting the [$tiger] first!"))
+        roomWithTiger.addItem(tiger)
+
+        //The rest of the rooms
+        val rope = Rope()
+        val roomWithRope = RoomWithRope(rope)
         val roomWithGuard = RoomWithGuard()
         val exit = Exit()
 
         //Link rooms together
-        room1.addRoom(Direction.WEST, room2)
-        room2.addRoom(Direction.EAST, room1)
+        firstRoom.addRoom(Direction.WEST, roomWithCloset)
+        roomWithCloset.addRoom(Direction.EAST, firstRoom)
 
-        room2.addRoom(Direction.NORTH, room3)
-        room3.addRoom(Direction.SOUTH, room2)
+        roomWithCloset.addRoom(Direction.NORTH, roomSouthToTiger)
+        roomSouthToTiger.addRoom(Direction.SOUTH, roomWithCloset)
 
-        room3.addRoom(Direction.NORTH, roomWithTiger)
-        roomWithTiger.addRoom(Direction.SOUTH, room3)
+        roomSouthToTiger.addRoom(Direction.NORTH, roomWithTiger)
+        roomWithTiger.addRoom(Direction.SOUTH, roomSouthToTiger)
 
-        roomWithTiger.addRoom(Direction.NORTH, room5)
-        room5.addRoom(Direction.SOUTH, roomWithTiger)
+        roomWithTiger.addRoom(Direction.NORTH, roomNorthToTiger)
+        roomNorthToTiger.addRoom(Direction.SOUTH, roomWithTiger)
 
-        roomWithTiger.addRoom(Direction.EAST, room4)
-        room4.addRoom(Direction.WEST, roomWithTiger)
+        roomWithTiger.addRoom(Direction.EAST, roomEastToTiger)
+        roomEastToTiger.addRoom(Direction.WEST, roomWithTiger)
 
-        room4.addRoom(Direction.NORTH, roomWithBowl)
-        roomWithBowl.addRoom(Direction.SOUTH, room4)
+        roomEastToTiger.addRoom(Direction.NORTH, roomWithRope)
+        roomWithRope.addRoom(Direction.SOUTH, roomEastToTiger)
 
-        room5.addRoom(Direction.EAST, roomWithBowl)
-        roomWithBowl.addRoom(Direction.WEST, room5)
+        roomNorthToTiger.addRoom(Direction.EAST, roomWithRope)
+        roomWithRope.addRoom(Direction.WEST, roomNorthToTiger)
 
-        room5.addRoom(Direction.WEST, roomWithGuard)
-        roomWithGuard.addRoom(Direction.EAST, room5)
+        roomNorthToTiger.addRoom(Direction.WEST, roomWithGuard)
+        roomWithGuard.addRoom(Direction.EAST, roomNorthToTiger)
 
-        room5.addRoom(Direction.NORTH, exit)
-
-        //Set dog
-        val tiger = Tiger()
-        tiger.setStoppingItem(poison)
-        room5.addConstraint(Direction.NORTH, Constraint(tiger::isAlive, "Try distracting the [$tiger] first!"))
-        roomWithTiger.addItem(tiger)
+        roomNorthToTiger.addRoom(Direction.NORTH, exit)
 
         //Save room data
-        saveRoom(room1)
-        saveRoom(roomWithBowl)
-        saveRoom(room5)
+        saveRoom(firstRoom)
+        saveRoom(roomWithCloset)
         saveRoom(roomWithTiger)
-        return room1
+        saveRoom(roomSouthToTiger)
+        saveRoom(roomEastToTiger)
+        saveRoom(roomNorthToTiger)
+        saveRoom(roomWithRope)
+        return firstRoom
     }
 
     private fun saveRoom(room: Room) {
         rooms.add(room)
         if (room is SavableRoom) {
-            room.save(gameItems)
+            room.saveRoom(gameItems)
         }
     }
 

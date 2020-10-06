@@ -4,21 +4,21 @@ import data.ItemData
 import data.TigerData
 import game.*
 
-class Tiger : Item("Tiger", null), SavableItem {
+class Tiger(killingItem: Item) : Item("Tiger", null), SavableItem {
     private val aliveDescription = "This is a really big, fat, lazy [$name]."
     private val deadDescription = "This is a really big, fat, lazy [$name]. It's also dead."
     var isAlive = true
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
+
+    init {
+        itemsToFunctions[killingItem] = this::distract
+    }
 
     override fun examine(): GameResult {
         return when (isAlive) {
             true -> examine(aliveDescription)
             false -> examine(deadDescription)
         }
-    }
-
-    fun setStoppingItem(itemUsed: Item) {
-        itemsToFunctions[itemUsed] = this::distract
     }
 
     override fun usedBy(player: Player, itemUsed: Item): GameResult {

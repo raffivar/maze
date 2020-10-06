@@ -75,7 +75,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
     }
 
 
-    override fun save(gameItems: ItemMap) {
+    override fun saveRoom(gameItems: ItemMap) {
         gameItems.add(bed)
         gameItems.add(key)
         gameItems.add(lock)
