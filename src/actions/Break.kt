@@ -11,7 +11,8 @@ class Break : Action("Break", "Break [item]") {
         }
         val itemName = args[0]
         val item = player.inventory[itemName] ?: player.currentRoom.items[itemName] ?: return GameResult(
-            GameResultCode.FAIL, "No [$itemName] in current room"
+            GameResultCode.FAIL,"No [$itemName] in inventory or current room"
+
         )
         return item.breakItem(player)
     }
