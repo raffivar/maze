@@ -22,7 +22,7 @@ class Go : Action("Go", "Go [direction]") {
             GameResultCode.FAIL -> moveResult
             GameResultCode.GAME_OVER -> moveResult
             GameResultCode.SUCCESS -> {
-                player.currentRoom.examine()
+                player.currentRoom.triggerEntranceEvent()
             }
         }
     }

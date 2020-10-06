@@ -14,6 +14,10 @@ open class Room(val roomId: String) {
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
 
+    open fun triggerEntranceEvent(): GameResult  {
+        return examine()
+    }
+
     open fun examine(): GameResult {
         return examine(null)
     }
@@ -26,7 +30,7 @@ open class Room(val roomId: String) {
             "Items in room: ${items.values}.\n"
         }
         description += if (rooms.isEmpty()) {
-            "It seems this room doesn't lead anywhere else.\n"
+            "It seems this room doesn't lead anywhere else."
         } else {
             "This room leads: ${rooms.keys}."
         }
