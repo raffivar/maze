@@ -4,17 +4,16 @@ import data.ItemData
 import data.TigerData
 import game.*
 
-class Tiger() : Item("Tiger", "This is a really big, fat, lazy tiger"), SavableItem {
-
-    private val movingDescription = "This dog seems to be moving a lot."
-    private val notMovingDescription = "This dog seems to be busy with food."
+class Tiger : Item("Tiger", null), SavableItem {
+    private val aliveDescription = "This is a really big, fat, lazy [$name]."
+    private val deadDescription = "This is a really big, fat, lazy [$name]. It's also dead."
     var isAlive = true
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 
     override fun examine(): GameResult {
         return when (isAlive) {
-            true -> examine(movingDescription)
-            false -> examine(notMovingDescription)
+            true -> examine(aliveDescription)
+            false -> examine(deadDescription)
         }
     }
 
@@ -37,7 +36,7 @@ class Tiger() : Item("Tiger", "This is a really big, fat, lazy tiger"), SavableI
         isAlive = false
         return GameResult(
             GameResultCode.SUCCESS,
-            "The [${this.name}] east off your hand and died. Congrats, asshole, you killed the [${this.name}]."
+            "The [${this.name}] eats off your hand and dies. Congrats, asshole, you killed the [${this.name}]."
         )
     }
 
