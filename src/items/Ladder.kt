@@ -4,7 +4,7 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Ladder : Item("Ladder", "This rope is useless for now.") {
+class Ladder : Item("Ladder", "This ladder is useless for now.") {
     override fun take(player: Player): GameResult {
         player.inventory.add(this)
         player.currentRoom.removeItem(this)
