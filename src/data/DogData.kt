@@ -1,5 +1,4 @@
 package data
 
-class DogData(name: String,
-              val currentNode: DogRouteNodeData,
-              val isMoving: Boolean) : ItemData(name)
+class TigerData(name: String,
+              val isAlive: Boolean) : ItemData(name)

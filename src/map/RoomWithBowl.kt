@@ -6,23 +6,23 @@ import game.GameResult
 import game.GameResultCode
 import items.*
 
-class RoomWithBowl(private val bonzo: Bonzo) : Room("roomWithBowl"), SavableRoom {
-    private val bowl = Bowl(this, this::addBonzoToBowl)
+class RoomWithBowl(private val poison: Poison) : Room("roomWithBowl"), SavableRoom {
+    private val bowl = Bowl(this, this::addPoisonToBowl)
 
     init {
         baseDescription = "This room only has a bowl in it."
-        bonzo.bowl = bowl
+        poison.bowl = bowl
         addItem(bowl)
     }
 
-    private fun addBonzoToBowl(): GameResult {
-        addItem(bonzo)
-        return GameResult(GameResultCode.SUCCESS, "You discover [${bonzo.name}] in the bowl.")
+    private fun addPoisonToBowl(): GameResult {
+        addItem(poison)
+        return GameResult(GameResultCode.SUCCESS, "You discover [${poison.name}] in the bowl.")
     }
 
     override fun save(gameItems: ItemMap) {
         gameItems.add(bowl)
-        gameItems.add(bonzo)
+        gameItems.add(poison)
     }
 
     override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {

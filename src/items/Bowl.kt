@@ -12,9 +12,9 @@ class Bowl(val room: Room, private val modifyRoomWhenExamined: () -> GameResult)
     override fun examine(): GameResult {
         return if (wasExaminedBefore) {
             description = if (isFull) {
-                "This bowl is full of Bonzo."
+                "This bowl is full of poison."
             } else {
-                "Just a regular empty bowl with Bonzo crumbs in it."
+                "Just a regular empty bowl with poison leftovers in it."
             }
             super.examine()
         } else {

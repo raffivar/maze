@@ -4,7 +4,7 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Bonzo : Item("Bonzo", "Can be used on dogs") {
+class Poison : Item("Poison", "This (edible) poison looks like it can... poison... someone.") {
     var bowl: Bowl? = null
 
     override fun take(player: Player): GameResult {
