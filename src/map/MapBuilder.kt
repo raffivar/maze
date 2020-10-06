@@ -22,15 +22,14 @@ class MapBuilder {
         //Tiger Rooms
         val roomWithTiger = Room("roomWithTiger")
         val roomSouthToTiger = Room("roomNorthToTiger")
-        val roomEastToTiger = Room("roomEastToTiger")
         val roomNorthToTiger = Room("roomSouthToTiger")
         val tiger = Tiger(poison)
         roomNorthToTiger.addConstraint(Direction.NORTH, Constraint(tiger::isAlive, "Try distracting the [$tiger] first!"))
         roomWithTiger.addItem(tiger)
 
         //The rest of the rooms
-        val rope = Rope()
-        val roomWithRope = RoomWithRope(rope)
+        val roomWithRope = RoomWithRope()
+        val roomWithLadder = RoomWithLadder()
         val roomWithGuard = RoomWithGuard()
         val exit = Exit()
 
@@ -47,11 +46,11 @@ class MapBuilder {
         roomWithTiger.addRoom(Direction.NORTH, roomNorthToTiger)
         roomNorthToTiger.addRoom(Direction.SOUTH, roomWithTiger)
 
-        roomWithTiger.addRoom(Direction.EAST, roomEastToTiger)
-        roomEastToTiger.addRoom(Direction.WEST, roomWithTiger)
+        roomWithTiger.addRoom(Direction.EAST, roomWithLadder)
+        roomWithLadder.addRoom(Direction.WEST, roomWithTiger)
 
-        roomEastToTiger.addRoom(Direction.NORTH, roomWithRope)
-        roomWithRope.addRoom(Direction.SOUTH, roomEastToTiger)
+        roomWithLadder.addRoom(Direction.NORTH, roomWithRope)
+        roomWithRope.addRoom(Direction.SOUTH, roomWithLadder)
 
         roomNorthToTiger.addRoom(Direction.EAST, roomWithRope)
         roomWithRope.addRoom(Direction.WEST, roomNorthToTiger)
@@ -66,9 +65,9 @@ class MapBuilder {
         saveRoom(roomWithCloset)
         saveRoom(roomWithTiger)
         saveRoom(roomSouthToTiger)
-        saveRoom(roomEastToTiger)
         saveRoom(roomNorthToTiger)
         saveRoom(roomWithRope)
+        saveRoom(roomWithLadder)
         return firstRoom
     }
 

@@ -4,15 +4,15 @@ import data.SerializableRoomData
 import data.ItemData
 import items.*
 
-class RoomWithRope : Room("roomWithRope"), SavableRoom {
-    private val rope = Rope()
+class RoomWithLadder: Room("roomWithLadder"), SavableRoom {
+    private val ladder = Ladder()
 
     init {
-        addItem(rope)
+        addItem(ladder)
     }
 
     override fun saveRoom(gameItems: ItemMap) {
-        gameItems.add(rope)
+        gameItems.add(ladder)
     }
 
     override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
