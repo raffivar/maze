@@ -8,7 +8,7 @@ class Ladder : Item("Ladder", "This ladder is useless for now.") {
     override fun take(player: Player): GameResult {
         player.inventory.add(this)
         player.currentRoom.removeItem(this)
-        return GameResult(GameResultCode.SUCCESS, "Obtained [${this.name}]")
+        return GameResult(GameResultCode.SUCCESS, "Obtained [${this.name}].")
     }
 
     override fun useOn(player: Player, itemUsedOn: Item): GameResult {
