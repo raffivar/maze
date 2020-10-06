@@ -28,7 +28,8 @@ class MapBuilder {
         roomWithTiger.addItem(tiger)
 
         //The rest of the rooms
-        val roomWithRope = RoomWithRope()
+        val rope = Rope()
+        val roomWithRope = RoomWithRope(rope)
         val roomWithLadder = RoomWithLadder()
         val roomWithGuard = RoomWithGuard()
         val exit = Exit()
