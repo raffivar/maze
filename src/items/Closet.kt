@@ -39,5 +39,9 @@ class Closet(override var isClosed: Boolean = true, private val modifyRoomWhenEx
         val data = itemData as DoorData
         isClosed = data.isClosed
     }
+
+    override fun take(player: Player): GameResult {
+        return GameResult(GameResultCode.SUCCESS, "You're strong, but you're not *that* strong.")
+    }
 }
 
