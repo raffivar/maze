@@ -5,7 +5,12 @@ import game.GameResultCode
 import game.Player
 
 class Ladder : Item("Ladder", "This ladder is useless for now.") {
+    private var isInUse = false
+
     override fun take(player: Player): GameResult {
+        if (isInUse) {
+            return GameResult(GameResultCode.SUCCESS, "Cannot take [${this.name}], it's clearly in use.")
+        }
         player.inventory.add(this)
         player.currentRoom.removeItem(this)
         return GameResult(GameResultCode.SUCCESS, "Obtained [${this.name}].")
@@ -17,5 +22,9 @@ class Ladder : Item("Ladder", "This ladder is useless for now.") {
             player.inventory.removeItem(this)
         }
         return useResult
+    }
+
+    fun markAsUsed() {
+        isInUse = true
     }
 }

@@ -4,9 +4,7 @@ import data.SerializableRoomData
 import data.ItemData
 import items.*
 
-class RoomWithLadder: Room("roomWithLadder"), SavableRoom {
-    private val ladder = Ladder()
-
+class RoomWithLadder(private val ladder: Ladder): Room("roomWithLadder"), SavableRoom {
     init {
         addItem(ladder)
     }
