@@ -1,5 +1,6 @@
 package items
 
+import data.ClosetData
 import data.DoorData
 import data.ItemData
 import game.Constraint
@@ -32,11 +33,11 @@ class Closet(override var isClosed: Boolean = true, private val modifyRoomWhenEx
     }
 
     override fun getData() : ItemData {
-        return DoorData(name, isClosed)
+        return ClosetData(name, isClosed)
     }
 
     override fun loadItem(itemData: ItemData) {
-        val data = itemData as DoorData
+        val data = itemData as ClosetData
         isClosed = data.isClosed
     }
 

@@ -8,8 +8,7 @@ import items.ItemMap
 import java.util.*
 import kotlin.collections.HashMap
 
-open class Room(val roomId: String) {
-    var baseDescription: String = "Just a regular room."
+open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.") {
     val items = ItemMap()
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()

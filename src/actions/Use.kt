@@ -12,7 +12,10 @@ class Use : Action("Use", "Use [item1] on [item2]") {
         val item1Name = args[0]
         val item2Name = args[2]
 
-        val item1 = player.inventory[item1Name] ?: return GameResult(GameResultCode.FAIL, "No [$item1Name] in inventory")
+        val item1 = player.inventory[item1Name] ?: player.currentRoom.items[item1Name] ?: return GameResult(
+            GameResultCode.FAIL,
+            "No [$item1Name] in inventory"
+        )
         val item2 = player.inventory[item2Name] ?: player.currentRoom.items[item2Name] ?: return GameResult(
             GameResultCode.FAIL,
             "No [$item2Name] in inventory or current room"

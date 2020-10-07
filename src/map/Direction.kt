@@ -1,5 +1,5 @@
 package map
 
 enum class Direction {
-    WEST, NORTH, EAST, SOUTH
+    WEST, NORTH, EAST, SOUTH, UP, DOWN
 }

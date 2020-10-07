@@ -22,18 +22,21 @@ class MapBuilder {
         val roomWithCloset = RoomWithCloset(poison)
         val roomWithTiger = Room("roomWithTiger")
         roomWithTiger.addItem(tiger)
-
         val ladder = Ladder()
         val hatch = Hatch(ladder)
-        val roomWithHatch = RoomWithHatch(hatch)
-        roomWithHatch.addConstraint(Direction.NORTH, Constraint(hatch::isAccessible, "This [${hatch.name} is out of reach~!"))
-
+        val roomBelowHatch = RoomWithHatch("roomBelowHatch", hatch)
+        roomBelowHatch.addConstraint(Direction.UP, Constraint(hatch::isTooHigh, "This [${hatch.name}] is out of reach!"))
         val rope = Rope()
         val roomWithRope = RoomWithRope(rope)
         val roomWithLadder = RoomWithLadder(ladder)
-        val roomWithGuard = RoomWithGuard()
+        val roomWithGuard1 = RoomWithGuard()
 
         //Floor #2
+        val roomAboveHatch = RoomWithHatch("roomAboveHatch", hatch)
+        val roomWithGuard2 = RoomWithGuard()
+        val roomWithWindow = RoomWithWindow(rope)
+        val boringRoom1 = Room("boringRoom1","This is an extremely boring room.")
+        val boringRoom2 = Room("boringRoom2","This room is even more boring. It doesn't even lead anywhere.")
         val exit = Exit()
 
         //Link rooms together
@@ -46,8 +49,8 @@ class MapBuilder {
         roomSouthToTiger.addRoom(Direction.NORTH, roomWithTiger)
         roomWithTiger.addRoom(Direction.SOUTH, roomSouthToTiger)
 
-        roomWithTiger.addRoom(Direction.NORTH, roomWithHatch)
-        roomWithHatch.addRoom(Direction.SOUTH, roomWithTiger)
+        roomWithTiger.addRoom(Direction.NORTH, roomBelowHatch)
+        roomBelowHatch.addRoom(Direction.SOUTH, roomWithTiger)
 
         roomWithTiger.addRoom(Direction.EAST, roomWithLadder)
         roomWithLadder.addRoom(Direction.WEST, roomWithTiger)
@@ -55,22 +58,43 @@ class MapBuilder {
         roomWithLadder.addRoom(Direction.NORTH, roomWithRope)
         roomWithRope.addRoom(Direction.SOUTH, roomWithLadder)
 
-        roomWithHatch.addRoom(Direction.EAST, roomWithRope)
-        roomWithRope.addRoom(Direction.WEST, roomWithHatch)
+        roomBelowHatch.addRoom(Direction.EAST, roomWithRope)
+        roomWithRope.addRoom(Direction.WEST, roomBelowHatch)
 
-        roomWithHatch.addRoom(Direction.WEST, roomWithGuard)
-        roomWithGuard.addRoom(Direction.EAST, roomWithHatch)
+        roomBelowHatch.addRoom(Direction.WEST, roomWithGuard1)
+        roomWithGuard1.addRoom(Direction.EAST, roomBelowHatch)
 
-        roomWithHatch.addRoom(Direction.NORTH, exit)
+        roomBelowHatch.addRoom(Direction.UP, roomAboveHatch)
+        roomAboveHatch.addRoom(Direction.DOWN, roomBelowHatch)
+
+        roomAboveHatch.addRoom(Direction.WEST, roomWithGuard2)
+        roomWithGuard2.addRoom(Direction.EAST, roomAboveHatch)
+
+        roomAboveHatch.addRoom(Direction.SOUTH, roomWithWindow)
+        roomWithWindow.addRoom(Direction.NORTH, roomAboveHatch)
+
+        roomWithWindow.addRoom(Direction.SOUTH, boringRoom1)
+        boringRoom1.addRoom(Direction.NORTH, roomWithWindow)
+
+        boringRoom1.addRoom(Direction.SOUTH, boringRoom2)
+        boringRoom2.addRoom(Direction.NORTH, boringRoom1)
+
+        roomWithWindow.addRoom(Direction.DOWN, exit)
 
         //Save room data
         saveRoom(firstRoom)
         saveRoom(roomWithCloset)
         saveRoom(roomWithTiger)
         saveRoom(roomSouthToTiger)
-        saveRoom(roomWithHatch)
+        saveRoom(roomBelowHatch)
         saveRoom(roomWithRope)
         saveRoom(roomWithLadder)
+
+        saveRoom(roomAboveHatch)
+        saveRoom(roomWithWindow)
+        saveRoom(boringRoom1)
+        saveRoom(boringRoom2)
+
         return firstRoom
     }
 

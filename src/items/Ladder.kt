@@ -20,11 +20,9 @@ class Ladder : Item("Ladder", "This ladder is useless for now.") {
         val useResult = itemUsedOn.usedBy(player, this)
         if (useResult.gameResultCode == GameResultCode.SUCCESS) {
             player.inventory.removeItem(this)
+            player.currentRoom.addItem(this)
+            isInUse = true
         }
         return useResult
-    }
-
-    fun markAsUsed() {
-        isInUse = true
     }
 }

@@ -5,8 +5,8 @@ import data.ItemData
 import data.TigerData
 import game.*
 
-class Hatch(private val ladder: Ladder) : Item("Hatch", "A small hatch in the ceiling"), SavableItem {
-    var isAccessible = false
+class Hatch(private val ladder: Ladder) : Item("Hatch", "A small hatch"), SavableItem {
+    var isTooHigh = true
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 
     init {
@@ -19,18 +19,16 @@ class Hatch(private val ladder: Ladder) : Item("Hatch", "A small hatch in the ce
     }
 
     private fun makeAccessible(player: Player, itemUsed: Item): GameResult {
-        isAccessible = true
-        ladder.markAsUsed()
-        player.currentRoom.addItem(ladder)
-        return GameResult(GameResultCode.SUCCESS, "The [${this.name}] is now accessible.")
+        isTooHigh = false
+        return GameResult(GameResultCode.SUCCESS, "Placed [${ladder.name}] beneath [${this.name}], making it now accessible.")
     }
 
     override fun getData(): ItemData {
-        return TigerData(name, isAccessible)
+        return HatchData(name, isTooHigh)
     }
 
     override fun loadItem(itemData: ItemData) {
         val data = itemData as HatchData
-        isAccessible = data.isAccessible
+        isTooHigh = data.isAccessible
     }
 }
