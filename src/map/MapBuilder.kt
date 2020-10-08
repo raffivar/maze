@@ -1,12 +1,13 @@
 package map
 
+import data.ItemData
 import data.MapData
 import data.PlayerData
-import data.ItemData
 import game.Constraint
 import game.GameData
 import game.Player
 import items.*
+import javax.management.openmbean.KeyAlreadyExistsException
 
 class MapBuilder {
     private val rooms = MazeMap()
@@ -35,8 +36,8 @@ class MapBuilder {
         val roomAboveHatch = RoomWithHatch("roomAboveHatch", hatch)
         val roomWithGuard2 = RoomWithGuard()
         val roomWithWindow = RoomWithWindow(rope)
-        val boringRoom1 = Room("boringRoom1","This is an extremely boring room.")
-        val boringRoom2 = Room("boringRoom2","This room is even more boring. It doesn't even lead anywhere.")
+        val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")
+        val boringRoom2 = Room("boringRoom2", "This room is even more boring. It doesn't even lead anywhere.")
         val exit = Exit()
 
         //Link rooms together
@@ -99,13 +100,16 @@ class MapBuilder {
     }
 
     private fun saveRoom(room: Room) {
+        if (rooms.containsKey(room.roomId)) {
+            throw KeyAlreadyExistsException("Failed to add room to room list - roomId already exists")
+        }
         rooms.add(room)
         if (room is SavableRoom) {
             room.saveRoom(gameItems)
         }
     }
 
-    fun collectDataToSave() : GameData {
+    fun collectDataToSave(): GameData {
         val playerData = player.getData()
         val mapData = MapData(ArrayList())
         for (room in rooms.values) {
