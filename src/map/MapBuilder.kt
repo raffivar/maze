@@ -34,7 +34,7 @@ class MapBuilder {
         //Floor #2
         val roomAboveHatch = RoomWithHatch("roomAboveHatch", hatch)
         val roomWithGuard2 = RoomWithGuard()
-        val roomWithWindow = RoomWithWindow(rope)
+        val escapeRoom = EscapeRoom(rope)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")
         val boringRoom2 = Room("boringRoom2", "This room is even more boring. It doesn't even lead anywhere.")
         val exit = Exit()
@@ -70,16 +70,16 @@ class MapBuilder {
         roomAboveHatch.addRoom(Direction.WEST, roomWithGuard2)
         roomWithGuard2.addRoom(Direction.EAST, roomAboveHatch)
 
-        roomAboveHatch.addRoom(Direction.SOUTH, roomWithWindow)
-        roomWithWindow.addRoom(Direction.NORTH, roomAboveHatch)
+        roomAboveHatch.addRoom(Direction.SOUTH, escapeRoom)
+        escapeRoom.addRoom(Direction.NORTH, roomAboveHatch)
 
-        roomWithWindow.addRoom(Direction.SOUTH, boringRoom1)
-        boringRoom1.addRoom(Direction.NORTH, roomWithWindow)
+        escapeRoom.addRoom(Direction.SOUTH, boringRoom1)
+        boringRoom1.addRoom(Direction.NORTH, escapeRoom)
 
         boringRoom1.addRoom(Direction.SOUTH, boringRoom2)
         boringRoom2.addRoom(Direction.NORTH, boringRoom1)
 
-        roomWithWindow.addRoom(Direction.DOWN, exit)
+        escapeRoom.addRoom(Direction.DOWN, exit)
 
         //Save room data
         saveRoom(firstRoom)
@@ -91,7 +91,7 @@ class MapBuilder {
         saveRoom(roomWithLadder)
 
         saveRoom(roomAboveHatch)
-        saveRoom(roomWithWindow)
+        saveRoom(escapeRoom)
         saveRoom(boringRoom1)
         saveRoom(boringRoom2)
 

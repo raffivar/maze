@@ -5,15 +5,15 @@ import data.SerializableRoomData
 import game.Constraint
 import items.*
 
-class RoomWithWindow(rope: Rope): Room("roomWithWindow", "With a little help, you might be able to sneak down outside through that window!"), SavableRoom {
-    private val pole = RopeDependedItem("Pole", rope)
-    private val window = RopeDependedItem("Window", rope)
+class EscapeRoom(rope: Rope): Room("escapeRoom", "With a little help, you might be able to sneak down outside through that window!"), SavableRoom {
+    private val pole = Pole("Pole", rope)
+    private val window = Window("Window", pole)
 
     init {
         addItem(pole)
         addItem(window)
-        addConstraint(Direction.DOWN, Constraint(pole::hasNothingAttached, "Try finding something to attach to the pole first?"))
-        addConstraint(Direction.DOWN, Constraint(window::hasNothingAttached, "Try throwing the [${rope.name}] out of the window first?"))
+        addConstraint(Direction.DOWN, Constraint(pole::hasNothingAttached, "You can't really jump from there, it's too high."))
+        addConstraint(Direction.DOWN, Constraint(window::hasNothingAttached, "Man, you already tied the [${rope.name}] to the [${pole.name}]. Think a bit more."))
     }
 
     override fun saveRoom(gameItems: ItemMap) {

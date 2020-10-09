@@ -41,7 +41,7 @@ class Game(private val ioHandler: IOHandler) {
                 messageToPrint += " [Game Over]"
             }
             ioHandler.printMessage(messageToPrint)
-        } while (commandResult.gameResultCode != GameResultCode.GAME_OVER)
+        } while (true)
     }
 
     private fun getIntro(): String {
