@@ -22,7 +22,7 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
             Direction.EAST,
             Constraint(tiger::isAlive, "You don't really want to do that while the [${tiger.name}] is still alive.")
         )
-        addEventUponMovement(Direction.SOUTH, this::playerGoesSouthEvent)
+        addEventUponMovement(Direction.SOUTH, this::playerWentSouthEvent)
     }
 
     override fun triggerEntranceEvent(): GameResult {
@@ -64,7 +64,7 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         }
     }
 
-    private fun playerGoesSouthEvent(): GameResult {
+    private fun playerWentSouthEvent(): GameResult {
         if (bowl.hasPoison) {
             tiger.poison()
             tiger.facingSouth = true
