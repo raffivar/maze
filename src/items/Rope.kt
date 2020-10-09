@@ -11,7 +11,7 @@ class Rope : Item("Rope", "This rope is useless for now.") {
         if (isInUse) {
             return GameResult(GameResultCode.SUCCESS, "Cannot take [${this.name}], it's clearly in use.")
         }
-        player.inventory.add(this)
+        player.inventory.addItem(this)
         player.currentRoom.removeItem(this)
         return GameResult(GameResultCode.SUCCESS, "Obtained [${this.name}].")
     }

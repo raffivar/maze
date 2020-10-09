@@ -13,7 +13,7 @@ class RoomWithHatch(roomId: String, hatch: Hatch): Room(roomId), SavableRoom {
 
     override fun saveRoom(gameItems: ItemMap) {
         for (item in items) {
-            gameItems.add(item.value)
+            gameItems.addItem(item.value)
         }
     }
 
@@ -22,7 +22,7 @@ class RoomWithHatch(roomId: String, hatch: Hatch): Room(roomId), SavableRoom {
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
             item?.let {
-                items.add(item)
+                items.addItem(item)
             }
             if (item is SavableItem) {
                 item.loadItem(itemData as ItemData)

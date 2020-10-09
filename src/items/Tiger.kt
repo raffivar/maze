@@ -25,7 +25,7 @@ class Tiger : Item("Tiger", null), SavableItem {
         if (this.isAlive) {
             return GameResult(GameResultCode.FAIL, "Seriously?? When the [${this.name}] is still alive??")
         }
-        player.inventory.add(this)
+        player.inventory.addItem(this)
         player.currentRoom.removeItem(this)
         return GameResult(GameResultCode.SUCCESS, "Obtained an extremely heavy [${this.name}]. Good luck with that.")
     }

@@ -17,8 +17,8 @@ class EscapeRoom(rope: Rope): Room("escapeRoom", "With a little help, you might 
     }
 
     override fun saveRoom(gameItems: ItemMap) {
-        gameItems.add(pole)
-        gameItems.add(window)
+        gameItems.addItem(pole)
+        gameItems.addItem(window)
     }
 
     override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
@@ -26,7 +26,7 @@ class EscapeRoom(rope: Rope): Room("escapeRoom", "With a little help, you might 
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
             item?.let {
-                items.add(item)
+                items.addItem(item)
             }
             if (item is SavableItem) {
                 item.loadItem(itemData as ItemData)

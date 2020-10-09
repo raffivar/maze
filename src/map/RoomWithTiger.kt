@@ -77,7 +77,7 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
 
     override fun saveRoom(gameItems: ItemMap) {
         for (item in items) {
-            gameItems.add(item.value)
+            gameItems.addItem(item.value)
         }
     }
 
@@ -86,7 +86,7 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
             item?.let {
-                items.add(item)
+                items.addItem(item)
             }
             if (item is SavableItem) {
                 item.loadItem(itemData as ItemData)

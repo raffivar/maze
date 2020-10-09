@@ -138,7 +138,7 @@ class MapBuilder {
                 item.loadItem(itemData as ItemData)
             }
             item?.let {
-                player.inventory.add(item)
+                player.inventory.addItem(item)
             }
         }
     }

@@ -18,6 +18,12 @@ open class Item(var name: String, var description: String?) {
         return GameResult(GameResultCode.FAIL, "You try to take the [${this.name}]. You fail miserably.")
     }
 
+    open fun drop(player: Player): GameResult {
+        player.inventory.removeItem(this)
+        player.currentRoom.addItem(this)
+        return GameResult(GameResultCode.SUCCESS, "Dropped [${this.name}].")
+    }
+
     open fun breakItem(player: Player): GameResult {
         return GameResult(GameResultCode.FAIL, "You try to break the [${this.name}]. You fail miserably.")
     }

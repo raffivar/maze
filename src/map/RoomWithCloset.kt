@@ -21,8 +21,8 @@ class RoomWithCloset(private val poison: Poison) : Room("RoomWithCloset"), Savab
     }
 
     override fun saveRoom(gameItems: ItemMap) {
-        gameItems.add(closet)
-        gameItems.add(poison)
+        gameItems.addItem(closet)
+        gameItems.addItem(poison)
     }
 
     override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
@@ -30,7 +30,7 @@ class RoomWithCloset(private val poison: Poison) : Room("RoomWithCloset"), Savab
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
             item?.let {
-                items.add(item)
+                items.addItem(item)
             }
             if (item is SavableItem) {
                 item.loadItem(itemData as ItemData)

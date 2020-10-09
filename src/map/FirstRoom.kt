@@ -76,13 +76,13 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
 
 
     override fun saveRoom(gameItems: ItemMap) {
-        gameItems.add(bed)
-        gameItems.add(key)
-        gameItems.add(lock)
-        gameItems.add(door)
-        gameItems.add(mirror)
-        gameItems.add(brokenMirror)
-        gameItems.add(shard)
+        gameItems.addItem(bed)
+        gameItems.addItem(key)
+        gameItems.addItem(lock)
+        gameItems.addItem(door)
+        gameItems.addItem(mirror)
+        gameItems.addItem(brokenMirror)
+        gameItems.addItem(shard)
     }
 
     override fun getData(): RoomData {
@@ -102,7 +102,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
             item?.let {
-                items.add(item)
+                items.addItem(item)
             }
             if (item is SavableItem) {
                 item.loadItem(itemData as ItemData)

@@ -10,7 +10,7 @@ class RoomWithRope(private val rope: Rope) : Room("roomWithRope"), SavableRoom {
     }
 
     override fun saveRoom(gameItems: ItemMap) {
-        gameItems.add(rope)
+        gameItems.addItem(rope)
     }
 
     override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
@@ -18,7 +18,7 @@ class RoomWithRope(private val rope: Rope) : Room("roomWithRope"), SavableRoom {
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
             item?.let {
-                items.add(item)
+                items.addItem(item)
             }
             if (item is SavableItem) {
                 item.loadItem(itemData as ItemData)
