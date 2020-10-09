@@ -1,10 +1,12 @@
 package items
 
+import data.ItemData
+import data.RopeDependedItemData
 import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Ladder : Item("Ladder", "This ladder is useless for now.") {
+class Ladder : Item("Ladder", "This ladder is useless for now."), SavableItem {
     private var isInUse = false
 
     override fun take(player: Player): GameResult {
@@ -24,5 +26,14 @@ class Ladder : Item("Ladder", "This ladder is useless for now.") {
             isInUse = true
         }
         return useResult
+    }
+
+    override fun getData() : ItemData {
+        return RopeDependedItemData(name, isInUse)
+    }
+
+    override fun loadItem(itemData: ItemData) {
+        val data = itemData as RopeDependedItemData
+        isInUse = data.hasRopeAttached
     }
 }
