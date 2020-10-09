@@ -74,8 +74,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         baseDescription = defaultRoomDescription
     }
 
-
-    override fun saveRoom(gameItems: ItemMap) {
+    override fun saveRoomDataToDB(gameItems: ItemMap) {
         gameItems.addItem(bed)
         gameItems.addItem(key)
         gameItems.addItem(lock)
@@ -85,7 +84,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         gameItems.addItem(shard)
     }
 
-    override fun getData(): RoomData {
+    override fun getBaseData(): RoomData {
         val itemsData = ArrayList<SerializableItemData>()
         for (item in items.values) {
             itemsData.add(item.getData())
@@ -93,7 +92,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         return FirstRoomData(roomId, itemsData, wasExaminedBefore, baseDescription)
     }
 
-    override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
+    override fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
         val data = roomData as FirstRoomData
         wasExaminedBefore = data.wasExaminedBefore
         baseDescription = data.baseDescription

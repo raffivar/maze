@@ -6,35 +6,51 @@ import data.PlayerData
 import game.GameData
 import game.Player
 import items.*
-import javax.management.openmbean.KeyAlreadyExistsException
 
 class MapBuilder {
-    private val rooms = MazeMap()
-    private val gameItems = ItemMap()
+    private val roomDB = RoomMap()
+    private val itemDB = ItemMap()
     lateinit var player: Player
 
     fun build(): Room {
         //Floor #1
         val firstRoom = FirstRoom()
-        val roomSouthToTiger = Room("roomSouthToTiger")
         val poison = Poison()
-        val tiger = Tiger()
         val roomWithCloset = RoomWithCloset(poison)
+
+        val roomBeforeTiger = Room("roomBeforeTiger")
+        val tiger = Tiger()
         val roomWithTiger = RoomWithTiger("roomWithTiger", tiger, Bowl(poison))
         roomWithTiger.addItem(tiger)
+        tiger.currentRoomId = roomWithTiger.roomId
+
         val ladder = Ladder()
+        val roomWithLadder = RoomWithLadder(ladder)
+
         val hatch = Hatch(ladder)
         val roomBelowHatch = RoomWithHatch("roomBelowHatch", hatch)
 
+        val possibleTigerDeathRooms: HashMap<String, Room> = hashMapOf(
+            roomWithTiger.roomId to roomWithTiger,
+            roomBeforeTiger.roomId to roomBeforeTiger,
+            roomWithTiger.roomId to roomWithTiger,
+            roomBelowHatch.roomId to roomBelowHatch)
+
+        val forbiddenToLeaveTigerRooms: HashMap<String, Room> = hashMapOf(
+            roomWithTiger.roomId to roomWithTiger,
+            roomBelowHatch.roomId to roomBelowHatch)
+
+        tiger.possibleDeathRooms = possibleTigerDeathRooms
+        tiger.forbiddenToLeaveRooms = forbiddenToLeaveTigerRooms
+
         val rope = Rope()
         val roomWithRope = RoomWithRope(rope)
-        val roomWithLadder = RoomWithLadder(ladder)
         val roomWithGuard1 = RoomWithGuard()
 
         //Floor #2
         val roomAboveHatch = RoomWithHatch("roomAboveHatch", hatch)
         val roomWithGuard2 = RoomWithGuard()
-        val escapeRoom = EscapeRoom(rope)
+        val escapeRoom = EscapeRoom(rope, tiger)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")
         val boringRoom2 = Room("boringRoom2", "This room is even more boring. It doesn't even lead anywhere.")
         val exit = Exit()
@@ -43,11 +59,11 @@ class MapBuilder {
         firstRoom.addRoom(Direction.WEST, roomWithCloset)
         roomWithCloset.addRoom(Direction.EAST, firstRoom)
 
-        roomWithCloset.addRoom(Direction.NORTH, roomSouthToTiger)
-        roomSouthToTiger.addRoom(Direction.SOUTH, roomWithCloset)
+        roomWithCloset.addRoom(Direction.NORTH, roomBeforeTiger)
+        roomBeforeTiger.addRoom(Direction.SOUTH, roomWithCloset)
 
-        roomSouthToTiger.addRoom(Direction.NORTH, roomWithTiger)
-        roomWithTiger.addRoom(Direction.SOUTH, roomSouthToTiger)
+        roomBeforeTiger.addRoom(Direction.NORTH, roomWithTiger)
+        roomWithTiger.addRoom(Direction.SOUTH, roomBeforeTiger)
 
         roomWithTiger.addRoom(Direction.NORTH, roomBelowHatch)
         roomBelowHatch.addRoom(Direction.SOUTH, roomWithTiger)
@@ -82,39 +98,34 @@ class MapBuilder {
         escapeRoom.addRoom(Direction.DOWN, exit)
 
         //Save room data
-        saveRoom(firstRoom)
-        saveRoom(roomWithCloset)
-        saveRoom(roomWithTiger)
-        saveRoom(roomSouthToTiger)
-        saveRoom(roomBelowHatch)
-        saveRoom(roomWithRope)
-        saveRoom(roomWithLadder)
-
-        saveRoom(roomAboveHatch)
-        saveRoom(escapeRoom)
-        saveRoom(boringRoom1)
-        saveRoom(boringRoom2)
-
+        saveRoomToDB(firstRoom)
+        saveRoomToDB(roomWithCloset)
+        saveRoomToDB(roomWithTiger)
+        saveRoomToDB(roomBeforeTiger)
+        saveRoomToDB(roomBelowHatch)
+        saveRoomToDB(roomWithRope)
+        saveRoomToDB(roomWithLadder)
+        saveRoomToDB(roomAboveHatch)
+        saveRoomToDB(escapeRoom)
+        saveRoomToDB(boringRoom1)
+        saveRoomToDB(boringRoom2)
         return firstRoom
     }
 
-    private fun saveRoom(room: Room) {
-        if (rooms.containsKey(room.roomId)) {
-            throw KeyAlreadyExistsException("Failed to add room to room list - roomId already exists")
-        }
-        rooms.add(room)
+    private fun saveRoomToDB(room: Room) {
+        roomDB.add(room)
         if (room is SavableRoom) {
-            room.saveRoom(gameItems)
+            room.saveRoomDataToDB(itemDB)
         }
     }
 
-    fun collectDataToSave(): GameData {
-        val playerData = player.getData()
-        val mapData = MapData(ArrayList())
-        for (room in rooms.values) {
-            mapData.roomsData.add(room.getData())
+    fun collectBaseData(): GameData {
+        val playerData = player.getBaseData()
+        val roomsData = MapData(ArrayList())
+        for (room in roomDB.values) {
+            roomsData.roomsData.add(room.getBaseData())
         }
-        return GameData(playerData, mapData)
+        return GameData(playerData, roomsData)
     }
 
     fun loadData(gameData: GameData) {
@@ -124,7 +135,7 @@ class MapBuilder {
 
     private fun loadPlayerData(playerData: PlayerData) {
         //Current room
-        val room = rooms[playerData.currentRoomId]
+        val room = roomDB[playerData.currentRoomId]
         room?.let {
             player.currentRoom = room
         }
@@ -133,7 +144,7 @@ class MapBuilder {
         player.inventory.clear()
         val itemsData = playerData.inventoryData
         for (itemData in itemsData) {
-            val item = gameItems[itemData.name]
+            val item = itemDB[itemData.name]
             if (item is SavableItem) {
                 item.loadItem(itemData as ItemData)
             }
@@ -144,12 +155,11 @@ class MapBuilder {
     }
 
     private fun loadMapData(mapData: MapData) {
-        val roomsData = mapData.roomsData
-        for (roomData in roomsData) {
-            val room = rooms[roomData.roomId]
+        for (roomData in mapData.roomsData) {
+            val room = roomDB[roomData.roomId]
             room?.let {
                 if (room is SavableRoom) {
-                    room.loadRoom(roomData, gameItems)
+                    room.loadFromDB(roomData, itemDB)
                 }
             }
         }

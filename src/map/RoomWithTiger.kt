@@ -72,16 +72,16 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
             tiger.facingSouth = true
             return GameResult(GameResultCode.SUCCESS, "player went south after putting poison in the bowl.")
         }
-        return GameResult(GameResultCode.SUCCESS, "player went south without putting poison in the bowl.")
+        return GameResult(GameResultCode.SUCCESS, "When moving south, you can hear some movement behind you. You escape quickly.")
     }
 
-    override fun saveRoom(gameItems: ItemMap) {
+    override fun saveRoomDataToDB(gameItems: ItemMap) {
         for (item in items) {
             gameItems.addItem(item.value)
         }
     }
 
-    override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
+    override fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]

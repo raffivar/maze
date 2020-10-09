@@ -5,6 +5,7 @@ import data.TigerData
 import game.*
 import map.Room
 import java.util.*
+import kotlin.collections.HashMap
 
 class Tiger : Item("Tiger", null), SavableItem {
     var isAlive = true
@@ -12,7 +13,9 @@ class Tiger : Item("Tiger", null), SavableItem {
     var facingSouth = true
     private val aliveDescription = "This is a really big, fat, lazy [$name]."
     private val deadDescription = "This gigantic [$name] seems to be dead."
-    lateinit var endRoom: Room
+    lateinit var currentRoomId: String
+    lateinit var possibleDeathRooms: HashMap<String, Room>
+    lateinit var forbiddenToLeaveRooms: HashMap<String, Room>
 
     override fun examine(): GameResult {
         return when (isAlive) {
@@ -30,27 +33,40 @@ class Tiger : Item("Tiger", null), SavableItem {
         return GameResult(GameResultCode.SUCCESS, "Obtained an extremely heavy [${this.name}]. Good luck with that.")
     }
 
+    override fun drop(player: Player): GameResult {
+        this.currentRoomId = player.currentRoom.roomId
+        return super.drop(player)
+    }
+
     fun poison() {
         isPoisoned = true
     }
 
     fun kill(startRoom: Room) {
         isAlive = false
-        moveRoom(startRoom)
+        moveRoomUponDeath(startRoom)
     }
 
-    private fun moveRoom(startRoom: Room) {
-        val adjacentRooms = startRoom.rooms
+    private fun moveRoomUponDeath(startRoom: Room) {
         val random = Random()
-        endRoom = adjacentRooms.entries.elementAt(random.nextInt(adjacentRooms.size)).value
-        if (endRoom.roomId != startRoom.roomId) {
+        if (possibleDeathRooms.size == 0) {
+            return
+        }
+        val randomIndex = random.nextInt(possibleDeathRooms.size)
+        val deathRoom = possibleDeathRooms.entries.elementAt(randomIndex).value
+        if (deathRoom.roomId != startRoom.roomId) {
             startRoom.removeItem(this)
-            endRoom.addItem(this)
+            deathRoom.addItem(this)
+            currentRoomId = deathRoom.roomId
         }
     }
 
-    override fun getData() : ItemData {
-        return TigerData(name, isAlive, isPoisoned, facingSouth)
+    fun isInForbiddenRoom(): Boolean {
+        return forbiddenToLeaveRooms.containsKey(currentRoomId)
+    }
+
+    override fun getData(): ItemData {
+        return TigerData(name, isAlive, isPoisoned, facingSouth, currentRoomId)
     }
 
     override fun loadItem(itemData: ItemData) {
@@ -58,5 +74,6 @@ class Tiger : Item("Tiger", null), SavableItem {
         isAlive = data.isAlive
         isPoisoned = data.isPoisoned
         facingSouth = data.facingSouth
+        currentRoomId = data.currentRoomId
     }
 }

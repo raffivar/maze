@@ -9,11 +9,11 @@ class RoomWithRope(private val rope: Rope) : Room("roomWithRope"), SavableRoom {
         addItem(rope)
     }
 
-    override fun saveRoom(gameItems: ItemMap) {
+    override fun saveRoomDataToDB(gameItems: ItemMap) {
         gameItems.addItem(rope)
     }
 
-    override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
+    override fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]

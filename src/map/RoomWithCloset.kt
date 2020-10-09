@@ -20,12 +20,12 @@ class RoomWithCloset(private val poison: Poison) : Room("RoomWithCloset"), Savab
         return GameResult(GameResultCode.SUCCESS, "You discover [${poison.name}] in the [${closet.name}].")
     }
 
-    override fun saveRoom(gameItems: ItemMap) {
+    override fun saveRoomDataToDB(gameItems: ItemMap) {
         gameItems.addItem(closet)
         gameItems.addItem(poison)
     }
 
-    override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
+    override fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]

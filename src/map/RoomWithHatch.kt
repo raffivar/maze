@@ -11,13 +11,13 @@ class RoomWithHatch(roomId: String, hatch: Hatch): Room(roomId), SavableRoom {
         addConstraint(Direction.UP, Constraint(hatch::isTooHigh, "This [${hatch.name}] is out of reach!"))
     }
 
-    override fun saveRoom(gameItems: ItemMap) {
+    override fun saveRoomDataToDB(gameItems: ItemMap) {
         for (item in items) {
             gameItems.addItem(item.value)
         }
     }
 
-    override fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap) {
+    override fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]

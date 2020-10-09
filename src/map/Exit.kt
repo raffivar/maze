@@ -8,7 +8,7 @@ class Exit : Room("exit") {
         return GameResult(GameResultCode.GAME_OVER, "Congrats! You made it out of the maze!")
     }
 
-    override fun examine(): GameResult {
+    override fun peekResult(): GameResult {
         return GameResult(GameResultCode.SUCCESS, "You can see the exit! You're almost out!!")
     }
 }

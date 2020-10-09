@@ -5,6 +5,7 @@ import data.RoomData
 import game.*
 import items.Item
 import items.ItemMap
+import items.Tiger
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -75,18 +76,28 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
             }
         }
 
+        var message = ""
         val events = eventsUponMovement[direction]
         events?.let {
             for (event in it) {
-                event.invoke()
+                val eventResult = event.invoke()
+                when (eventResult.gameResultCode) {
+                    GameResultCode.GAME_OVER -> return eventResult
+                    else -> {
+                        if (!message.isBlank())  {
+                            message += eventResult.message + "\n"
+                        }
+                    }
+                }
             }
         }
 
         player.currentRoom = nextRoom
-        return GameResult(GameResultCode.SUCCESS, "Moved ${direction.name}")
+        message + "Moved ${direction.name}"
+        return GameResult(GameResultCode.SUCCESS, message)
     }
 
-    open fun getData(): RoomData {
+    open fun getBaseData(): RoomData {
         val itemsData = ArrayList<SerializableItemData>()
         for (item in items.values) {
             itemsData.add(item.getData())

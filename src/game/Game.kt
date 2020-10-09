@@ -38,10 +38,10 @@ class Game(private val ioHandler: IOHandler) {
             val commandResult = executeCommand(command)
             var messageToPrint = commandResult.message
             if (commandResult.gameResultCode == GameResultCode.GAME_OVER) {
-                messageToPrint += " [Game Over]"
+                messageToPrint += "\n[Game Over]"
             }
             ioHandler.printMessage(messageToPrint)
-        } while (true)
+        } while (commandResult.gameResultCode != GameResultCode.GAME_OVER)
     }
 
     private fun getIntro(): String {

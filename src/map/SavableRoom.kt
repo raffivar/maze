@@ -4,6 +4,6 @@ import data.SerializableRoomData
 import items.ItemMap
 
 interface SavableRoom {
-    fun saveRoom(gameItems: ItemMap)
-    fun loadRoom(roomData: SerializableRoomData, gameItems: ItemMap)
+    fun saveRoomDataToDB(gameItems: ItemMap)
+    fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap)
 }
