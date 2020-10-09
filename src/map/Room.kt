@@ -5,13 +5,12 @@ import data.RoomData
 import game.*
 import items.Item
 import items.ItemMap
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.") {
     val items = ItemMap()
-    private val rooms = HashMap<Direction, Room>()
+    val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
     private val eventsUponMovement = HashMap<Direction, ArrayList<() -> GameResult>>()
 

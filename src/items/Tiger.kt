@@ -3,6 +3,8 @@ package items
 import data.ItemData
 import data.TigerData
 import game.*
+import map.Room
+import java.util.*
 
 class Tiger : Item("Tiger", null), SavableItem {
     var isAlive = true
@@ -10,6 +12,7 @@ class Tiger : Item("Tiger", null), SavableItem {
     var facingSouth = true
     private val aliveDescription = "This is a really big, fat, lazy [$name]."
     private val deadDescription = "This gigantic [$name] seems to be dead."
+    lateinit var endRoom: Room
 
     override fun examine(): GameResult {
         return when (isAlive) {
@@ -18,12 +21,32 @@ class Tiger : Item("Tiger", null), SavableItem {
         }
     }
 
+    override fun take(player: Player): GameResult {
+        if (this.isAlive) {
+            return GameResult(GameResultCode.FAIL, "Seriously?? When the [${this.name}] is still alive??")
+        }
+        player.inventory.add(this)
+        player.currentRoom.removeItem(this)
+        return GameResult(GameResultCode.SUCCESS, "Obtained an extremely heavy [${this.name}]. Good luck with that.")
+    }
+
     fun poison() {
         isPoisoned = true
     }
 
-    fun kill() {
+    fun kill(startRoom: Room) {
         isAlive = false
+        moveRoom(startRoom)
+    }
+
+    private fun moveRoom(startRoom: Room) {
+        val adjacentRooms = startRoom.rooms
+        val random = Random()
+        endRoom = adjacentRooms.entries.elementAt(random.nextInt(adjacentRooms.size)).value
+        if (endRoom.roomId != startRoom.roomId) {
+            startRoom.removeItem(this)
+            endRoom.addItem(this)
+        }
     }
 
     override fun getData() : ItemData {

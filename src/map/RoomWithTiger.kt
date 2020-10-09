@@ -58,7 +58,9 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
                 GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] is not looking so good.")
             }
             else -> {
-                tiger.kill()
+                if (tiger.isAlive) {
+                    tiger.kill(this)
+                }
                 GameResult(GameResultCode.SUCCESS, "The [${tiger.name}]... might be dead?")
             }
         }
