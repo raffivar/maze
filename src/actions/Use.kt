@@ -9,13 +9,15 @@ class Use : Action("Use", "Use [item1] on [item2]") {
         if (args.isNullOrEmpty() || args.size < 3 || !args[1].equals("on", true)) {
             return GameResult(GameResultCode.ERROR, "Invalid arguments. Please use the format: '$howToUse'")
         }
+
         val item1Name = args[0]
         val item2Name = args[2]
 
         val item1 = player.inventory[item1Name] ?: player.currentRoom.items[item1Name] ?: return GameResult(
             GameResultCode.FAIL,
-            "No [$item1Name] in inventory"
+            "No [$item1Name] in inventory or current room"
         )
+
         val item2 = player.inventory[item2Name] ?: player.currentRoom.items[item2Name] ?: return GameResult(
             GameResultCode.FAIL,
             "No [$item2Name] in inventory or current room"
