@@ -2,11 +2,13 @@ package map
 
 import data.ItemData
 import data.SerializableRoomData
+import game.Constraint
 import items.*
 
 class RoomWithHatch(roomId: String, hatch: Hatch): Room(roomId), SavableRoom {
     init {
         addItem(hatch)
+        addConstraint(Direction.UP, Constraint(hatch::isTooHigh, "This [${hatch.name}] is out of reach!"))
     }
 
     override fun saveRoom(gameItems: ItemMap) {

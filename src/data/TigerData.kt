@@ -1,4 +1,6 @@
 package data
 
 class TigerData(name: String,
-              val isAlive: Boolean) : ItemData(name)
+                val isAlive: Boolean,
+                val isPoisoned: Boolean,
+                val facingSouth: Boolean) : ItemData(name)

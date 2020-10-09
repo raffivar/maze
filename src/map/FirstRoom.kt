@@ -82,6 +82,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         gameItems.add(door)
         gameItems.add(mirror)
         gameItems.add(brokenMirror)
+        gameItems.add(shard)
     }
 
     override fun getData(): RoomData {

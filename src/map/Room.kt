@@ -6,14 +6,20 @@ import game.*
 import items.Item
 import items.ItemMap
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.") {
     val items = ItemMap()
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
+    private val eventsUponMovement = HashMap<Direction, ArrayList<() -> GameResult>>()
 
     open fun triggerEntranceEvent(): GameResult  {
+        return examine()
+    }
+
+    open fun peekResult(): GameResult {
         return examine()
     }
 
@@ -49,13 +55,18 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     }
 
     fun addConstraint(direction: Direction, constraint: Constraint) {
-        val constraints =
-            constraintsToMove[direction] ?: ArrayList<Constraint>().also { constraintsToMove[direction] = it }
+        val constraints = constraintsToMove[direction] ?: ArrayList<Constraint>().also { constraintsToMove[direction] = it }
         constraints.add(constraint)
+    }
+
+    fun addEventUponMovement(direction: Direction, event: () -> (GameResult)) {
+        val events = eventsUponMovement[direction] ?: ArrayList<() -> GameResult>().also { eventsUponMovement[direction] = it }
+        events.add(event)
     }
 
     fun move(player: Player, direction: Direction): GameResult {
         val nextRoom = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
+
         val constraints = constraintsToMove[direction]
         constraints?.let {
             for (constraint in it) {
@@ -64,6 +75,14 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
                 }
             }
         }
+
+        val events = eventsUponMovement[direction]
+        events?.let {
+            for (event in it) {
+                event.invoke()
+            }
+        }
+
         player.currentRoom = nextRoom
         return GameResult(GameResultCode.SUCCESS, "Moved ${direction.name}")
     }
@@ -78,6 +97,6 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
 
     open fun peek(direction: Direction): GameResult {
         val roomToPeek = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
-        return roomToPeek.examine()
+        return roomToPeek.peekResult()
     }
 }

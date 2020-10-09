@@ -5,12 +5,9 @@ import game.GameResultCode
 import game.Player
 
 class Poison : Item("Poison", "This (edible) poison looks like it can... poison... someone.") {
-    var bowl: Bowl? = null
-
     override fun take(player: Player): GameResult {
         player.inventory.add(this)
         player.currentRoom.removeItem(this)
-        bowl?.empty()
         return GameResult(GameResultCode.SUCCESS, "Obtained [${this.name}]")
     }
 

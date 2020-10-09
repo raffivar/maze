@@ -3,7 +3,6 @@ package map
 import data.ItemData
 import data.MapData
 import data.PlayerData
-import game.Constraint
 import game.GameData
 import game.Player
 import items.*
@@ -19,14 +18,14 @@ class MapBuilder {
         val firstRoom = FirstRoom()
         val roomSouthToTiger = Room("roomSouthToTiger")
         val poison = Poison()
-        val tiger = Tiger(poison)
+        val tiger = Tiger()
         val roomWithCloset = RoomWithCloset(poison)
-        val roomWithTiger = Room("roomWithTiger")
+        val roomWithTiger = RoomWithTiger("roomWithTiger", tiger, Bowl(poison))
         roomWithTiger.addItem(tiger)
         val ladder = Ladder()
         val hatch = Hatch(ladder)
         val roomBelowHatch = RoomWithHatch("roomBelowHatch", hatch)
-        roomBelowHatch.addConstraint(Direction.UP, Constraint(hatch::isTooHigh, "This [${hatch.name}] is out of reach!"))
+
         val rope = Rope()
         val roomWithRope = RoomWithRope(rope)
         val roomWithLadder = RoomWithLadder(ladder)
