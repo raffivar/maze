@@ -15,8 +15,8 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
     private val eventsUponMovement = HashMap<Direction, ArrayList<() -> GameResult>>()
 
-    open fun triggerEntranceEvent(): GameResult  {
-        return examine()
+    open fun triggerEntranceEvent(moveResult: GameResult): GameResult  {
+        return examine(moveResult.message)
     }
 
     open fun peekResult(): GameResult {
@@ -76,7 +76,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
             }
         }
 
-        var message = ""
+        var eventsMessage = ""
         val events = eventsUponMovement[direction]
         events?.let {
             for (event in it) {
@@ -84,8 +84,8 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
                 when (eventResult.gameResultCode) {
                     GameResultCode.GAME_OVER -> return eventResult
                     else -> {
-                        if (!eventResult.message.isBlank())  {
-                            message += eventResult.message + "\n"
+                        if (eventResult.message.isNotBlank())  {
+                            eventsMessage += eventResult.message
                         }
                     }
                 }
@@ -93,8 +93,11 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         }
 
         player.currentRoom = nextRoom
-        message += "Moved ${direction.name}"
-        return GameResult(GameResultCode.SUCCESS, message)
+        var finalMessage  = "Moved [${direction.name}]."
+        if (eventsMessage.isNotBlank()) {
+            finalMessage += "\n$eventsMessage"
+        }
+        return GameResult(GameResultCode.SUCCESS, finalMessage)
     }
 
     open fun getBaseData(): RoomData {

@@ -23,14 +23,14 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         addEventUponMovement(Direction.SOUTH, this::playerWentSouthEvent)
     }
 
-    override fun triggerEntranceEvent(): GameResult {
+    override fun triggerEntranceEvent(moveResult: GameResult): GameResult {
         if (tiger.isAlive() && tiger.facingSouth) {
             return GameResult(
                 GameResultCode.GAME_OVER,
                 "Eaten by a tiger, b!tch! Try peeking into a room before entering it next time."
             )
         }
-        return super.triggerEntranceEvent()
+        return super.triggerEntranceEvent(moveResult)
     }
 
     override fun peekResult(): GameResult {

@@ -4,7 +4,7 @@ import game.GameResult
 import game.GameResultCode
 
 class Exit : Room("exit") {
-    override fun triggerEntranceEvent(): GameResult {
+    override fun triggerEntranceEvent(moveResult: GameResult): GameResult {
         return GameResult(GameResultCode.GAME_OVER, "Congrats! You made it out of the maze!")
     }
 
