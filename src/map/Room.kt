@@ -15,7 +15,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     private val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
 
     open fun triggerEntranceEvent(moveResult: GameResult): GameResult  {
-        return examine(moveResult.message)
+        return examine(moveResult.message, null)
     }
 
     open fun peekResult(): GameResult {
@@ -23,11 +23,22 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     }
 
     open fun examine(): GameResult {
-        return examine(null)
+        return examine(null, null)
     }
 
-    open fun examine(extraInfo: String?): GameResult {
-        var description = (extraInfo ?: baseDescription) + "\n"
+    open fun examine(alternativeDescription: String?): GameResult {
+        return examine(null, alternativeDescription)
+    }
+
+    open fun examine(additionalInfo: String?, alternativeDescription: String?): GameResult {
+        var description = (alternativeDescription ?: baseDescription) + "\n"
+
+        additionalInfo?.let {
+            if (it.isNotBlank()) {
+                description = "$it\n$description"
+            }
+        }
+
         description += if (items.isEmpty()) {
             "This room is empty.\n"
         } else {
