@@ -26,8 +26,8 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         return examine(null)
     }
 
-    open fun examine(externalDescription: String?): GameResult {
-        var description = (externalDescription ?: baseDescription) + "\n"
+    open fun examine(extraInfo: String?): GameResult {
+        var description = (extraInfo ?: baseDescription) + "\n"
         description += if (items.isEmpty()) {
             "This room is empty.\n"
         } else {

@@ -32,7 +32,8 @@ class Game(private val ioHandler: IOHandler) {
     }
 
     fun run() {
-        println(getIntro())
+        ioHandler.printMessage(getIntro())
+        ioHandler.printMessage(player.currentRoom.examine().message)
         do {
             val command = ioHandler.readCommand()
             val commandResult = executeCommand(command)
@@ -46,8 +47,8 @@ class Game(private val ioHandler: IOHandler) {
 
     private fun getIntro(): String {
         val sb = StringBuilder()
+        sb.append("=============================================\n")
         sb.append("Welcome to the maze!\n")
-        sb.append("You've been thrown into the first room!\n")
         sb.append("=============================================\n")
         sb.append(helpAction.execute(player, listOf()).message)
         return sb.toString()

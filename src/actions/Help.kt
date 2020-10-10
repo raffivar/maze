@@ -10,6 +10,7 @@ class Help(private val actions: List<Action>) : Action("Help", "Help - prints ou
         for ((i, action) in actions.withIndex()) {
             helpMenu += "${i + 1}. ${action.howToUse}\n"
         }
+        helpMenu = helpMenu.substring(0, helpMenu.length - 1)
         return GameResult(GameResultCode.SUCCESS, helpMenu)
     }
 }
