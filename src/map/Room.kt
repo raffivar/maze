@@ -13,7 +13,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     val items = ItemMap()
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
-    private val eventsUponMovement = HashMap<Direction, ArrayList<() -> GameResult>>()
+    private val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
 
     open fun triggerEntranceEvent(moveResult: GameResult): GameResult  {
         return examine(moveResult.message)
@@ -59,8 +59,8 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         constraints.add(constraint)
     }
 
-    fun addEventUponMovement(direction: Direction, event: () -> (GameResult)) {
-        val events = eventsUponMovement[direction] ?: ArrayList<() -> GameResult>().also { eventsUponMovement[direction] = it }
+    fun addEventUponMovement(direction: Direction, event: (Direction) -> (GameResult)) {
+        val events = eventsUponMovement[direction] ?: ArrayList<(Direction) -> GameResult>().also { eventsUponMovement[direction] = it }
         events.add(event)
     }
 
@@ -80,7 +80,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         val events = eventsUponMovement[direction]
         events?.let {
             for (event in it) {
-                val eventResult = event.invoke()
+                val eventResult = event.invoke(direction)
                 when (eventResult.gameResultCode) {
                     GameResultCode.GAME_OVER -> return eventResult
                     else -> {

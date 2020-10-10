@@ -79,9 +79,9 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         }
     }
 
-    private fun playerWentSouthEvent(): GameResult {
+    private fun playerWentSouthEvent(direction: Direction): GameResult {
         return when (bowl.status) {
-            Bowl.BowlStatus.PRE_EATEN -> GameResult(GameResultCode.SUCCESS, "You run south quickly, because you're scared. What a wimp.")
+            Bowl.BowlStatus.PRE_EATEN -> GameResult(GameResultCode.SUCCESS, "You run [${direction.name}] quickly, because you're scared. What a wimp.")
             Bowl.BowlStatus.POISONED -> {
                 tiger.setSmellsPoison()
                 tiger.facingSouth = true
