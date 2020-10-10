@@ -1,3 +1,3 @@
 package data
 
-class RopeDependedItemData(name: String, val hasRopeAttached: Boolean) : ItemData(name)
+open class RopeDependedItemData(name: String, val hasNothingAttached: Boolean) : ItemData(name)

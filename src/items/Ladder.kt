@@ -34,6 +34,6 @@ class Ladder : Item("Ladder", "This ladder is useless for now."), SavableItem {
 
     override fun loadItem(itemData: ItemData) {
         val data = itemData as RopeDependedItemData
-        isInUse = data.hasRopeAttached
+        isInUse = data.hasNothingAttached
     }
 }

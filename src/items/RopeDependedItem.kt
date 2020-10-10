@@ -3,7 +3,6 @@ package items
 import data.ItemData
 import data.RopeDependedItemData
 import game.GameResult
-import game.GameResultCode
 import game.Player
 
 open class RopeDependedItem(name: String) : Item(name, null), SavableItem {
@@ -31,6 +30,6 @@ open class RopeDependedItem(name: String) : Item(name, null), SavableItem {
 
     override fun loadItem(itemData: ItemData) {
         val data = itemData as RopeDependedItemData
-        hasNothingAttached = data.hasRopeAttached
+        hasNothingAttached = data.hasNothingAttached
     }
 }
