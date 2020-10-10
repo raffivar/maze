@@ -8,8 +8,9 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class Tiger : Item("Tiger", null), SavableItem {
-    var isAlive = true
-    var isPoisoned = false
+    enum class TigerStatus { STANDARD, SMELLS_POISON, EATS_POISON, DEAD }
+    var timesPeekedAt = 0
+    var status = TigerStatus.STANDARD
     var facingSouth = true
     private val aliveDescription = "This is a really big, fat, lazy [$name]."
     private val deadDescription = "This gigantic [$name] seems to be dead."
@@ -17,20 +18,29 @@ class Tiger : Item("Tiger", null), SavableItem {
     lateinit var possibleDeathRooms: HashMap<String, Room>
     lateinit var forbiddenToLeaveRooms: HashMap<String, Room>
 
+    fun isAlive(): Boolean {
+        return status != TigerStatus.DEAD
+    }
+
     override fun examine(): GameResult {
-        return when (isAlive) {
-            true -> examine(aliveDescription)
-            false -> examine(deadDescription)
+        return when (status) {
+            TigerStatus.DEAD -> examine(deadDescription)
+            else -> examine(aliveDescription)
         }
     }
 
     override fun take(player: Player): GameResult {
-        if (this.isAlive) {
-            return GameResult(GameResultCode.FAIL, "Seriously?? When the [${this.name}] is still alive??")
+        return when (status) {
+            TigerStatus.DEAD -> {
+                player.inventory.addItem(this)
+                player.currentRoom.removeItem(this)
+                GameResult(GameResultCode.SUCCESS, "Obtained an extremely heavy [${this.name}]. Good luck with that.")
+            }
+            else -> {
+                GameResult(GameResultCode.FAIL, "Seriously?? When the [${this.name}] is still alive??")
+            }
         }
-        player.inventory.addItem(this)
-        player.currentRoom.removeItem(this)
-        return GameResult(GameResultCode.SUCCESS, "Obtained an extremely heavy [${this.name}]. Good luck with that.")
+
     }
 
     override fun drop(player: Player): GameResult {
@@ -38,12 +48,21 @@ class Tiger : Item("Tiger", null), SavableItem {
         return super.drop(player)
     }
 
-    fun poison() {
-        isPoisoned = true
+    private fun setTigerStatus(newStatus: TigerStatus) {
+        status = newStatus
+        timesPeekedAt = 0
+    }
+
+    fun setSmellsPoison() {
+        setTigerStatus(TigerStatus.SMELLS_POISON)
+    }
+
+    fun setEatsPoison() {
+        setTigerStatus(TigerStatus.EATS_POISON)
     }
 
     fun kill(startRoom: Room) {
-        isAlive = false
+        setTigerStatus(TigerStatus.DEAD)
         moveRoomUponDeath(startRoom)
     }
 
@@ -66,13 +85,13 @@ class Tiger : Item("Tiger", null), SavableItem {
     }
 
     override fun getData(): ItemData {
-        return TigerData(name, isAlive, isPoisoned, facingSouth, currentRoomId)
+        return TigerData(name, status, timesPeekedAt, facingSouth, currentRoomId)
     }
 
     override fun loadItem(itemData: ItemData) {
         val data = itemData as TigerData
-        isAlive = data.isAlive
-        isPoisoned = data.isPoisoned
+        status = data.status
+        timesPeekedAt = data.timesPeeked
         facingSouth = data.facingSouth
         currentRoomId = data.currentRoomId
     }

@@ -1,5 +1,7 @@
 package data
 
+import items.Bowl
+
 class BowlData(name: String,
                val wasExaminedBefore: Boolean,
-               val containsPoison: Boolean) : ItemData(name)
+               val status: Bowl.BowlStatus) : ItemData(name)

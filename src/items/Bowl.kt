@@ -5,10 +5,11 @@ import data.ItemData
 import game.GameResult
 import game.GameResultCode
 import game.Player
-import map.Room
 
 class Bowl(private val poison: Poison) : Item("Bowl", ""), SavableItem {
-    var hasPoison = false
+    enum class BowlStatus { PRE_EATEN, POISONED, POST_EATEN }
+
+    var status = BowlStatus.PRE_EATEN
     private var wasExaminedBefore = false
     private val itemsToFunctions = HashMap<Item, (Player) -> GameResult>()
 
@@ -17,11 +18,12 @@ class Bowl(private val poison: Poison) : Item("Bowl", ""), SavableItem {
     }
 
     override fun examine(): GameResult {
-        description = if (hasPoison) {
-            "This bowl is full of poison."
-        } else {
-            "Just a regular empty bowl with poison leftovers in it."
+        description = when (status) {
+            BowlStatus.PRE_EATEN -> "Looks like this bowl is full with tiger food. Whatever that means."
+            BowlStatus.POISONED -> "If only people knew that this food is poisoned..."
+            BowlStatus.POST_EATEN -> "An almost empty bowls, just a few scraps of tiger food and poison in it."
         }
+
         return super.examine()
     }
 
@@ -31,21 +33,28 @@ class Bowl(private val poison: Poison) : Item("Bowl", ""), SavableItem {
     }
 
     private fun addPoison(player: Player): GameResult {
-        if (hasPoison) {
-            return GameResult(GameResultCode.FAIL, "[${this.name}] already contains poison.")
+        return when (status) {
+            BowlStatus.PRE_EATEN -> {
+                status = BowlStatus.POISONED
+                GameResult(GameResultCode.SUCCESS, "Filled some [${poison.name}] into the [${this.name}].")
+            }
+            BowlStatus.POISONED -> GameResult(GameResultCode.FAIL, "[${this.name}] already contains poison.")
+            BowlStatus.POST_EATEN -> GameResult(GameResultCode.FAIL, "[${this.name}] is empty, there's nothing to hide the poison in between.")
         }
-        hasPoison = true
-        return GameResult(GameResultCode.SUCCESS, "Filled some [${poison.name}] into the [${this.name}].")
+    }
+
+    fun setFoodEaten() {
+        status = BowlStatus.POST_EATEN
     }
 
     override fun getData(): ItemData {
-        return BowlData(name, wasExaminedBefore, hasPoison)
+        return BowlData(name, wasExaminedBefore, status)
     }
 
     override fun loadItem(itemData: ItemData) {
         val data = itemData as BowlData
         wasExaminedBefore = data.wasExaminedBefore
-        hasPoison = data.containsPoison
+        status = data.status
     }
 
 

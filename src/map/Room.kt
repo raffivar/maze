@@ -93,7 +93,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         }
 
         player.currentRoom = nextRoom
-        message + "Moved ${direction.name}"
+        message += "Moved ${direction.name}"
         return GameResult(GameResultCode.SUCCESS, message)
     }
 
