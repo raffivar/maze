@@ -11,7 +11,7 @@ import kotlin.collections.HashMap
 
 open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.") {
     val items = ItemMap()
-    val rooms = HashMap<Direction, Room>()
+    private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
     private val eventsUponMovement = HashMap<Direction, ArrayList<() -> GameResult>>()
 
@@ -84,7 +84,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
                 when (eventResult.gameResultCode) {
                     GameResultCode.GAME_OVER -> return eventResult
                     else -> {
-                        if (!message.isBlank())  {
+                        if (!eventResult.message.isBlank())  {
                             message += eventResult.message + "\n"
                         }
                     }
