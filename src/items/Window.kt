@@ -7,8 +7,9 @@ import game.GameResultCode
 import game.Player
 
 class Window(name: String, private val pole: Pole, private val rope: Rope = pole.rope, override var isClosed: Boolean = true) : RopeDependedItem(name), Openable {
-    private val closedDescription = "This [${name}] is closed."
-    private val openDescription = "This [${name}] is open."
+    private val exitInfo = "You might be able to climb [DOWN] through."
+    private val closedDescription = "This [${name}] is closed. $exitInfo"
+    private val openDescription = "This [${name}] is open. $exitInfo"
 
     init {
         itemsToFunctions[rope] = this::throwRope

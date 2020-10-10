@@ -7,7 +7,7 @@ import game.GameResult
 import game.GameResultCode
 import items.*
 
-class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "With a little help, you might be able to sneak down outside through that window!"), SavableRoom {
+class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "There's only a window and a pole in this room. You might want to peek out the window."), SavableRoom {
     private val pole = Pole("Pole", rope)
     private val window = Window("Window", pole, rope)
 

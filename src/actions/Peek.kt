@@ -16,7 +16,13 @@ class Peek : Action("Peek", "Peek [direction], given a certain item") {
         )
         return when (player.inventory.containsKey("shard")) {
             false -> GameResult(GameResultCode.ERROR, "You can't peek anywhere without something shiny.")
-            true -> player.currentRoom.peek(player, direction)
+            true -> {
+                val peekResult = player.currentRoom.peek(player, direction)
+                when (peekResult.gameResultCode) {
+                    GameResultCode.SUCCESS -> GameResult(peekResult.gameResultCode, "Peeking [${direction.name}]:\n${peekResult.message}")
+                    else -> peekResult
+                }
+            }
         }
     }
 }
