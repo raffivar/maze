@@ -25,13 +25,20 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
     }
 
     override fun triggerEntranceEvent(moveResult: GameResult): GameResult {
-        if (tiger.isAlive() && tiger.facingSouth) {
-            return GameResult(
-                GameResultCode.GAME_OVER,
-                "Eaten by a tiger, b!tch! Try peeking into a room before entering it next time."
-            )
+        return when (tiger.isAlive()) {
+            true -> {
+                when (tiger.facingSouth) {
+                    true -> GameResult(GameResultCode.GAME_OVER, "You just got mauled by a gigantic tiger! Try peeking into a room before entering it next time.")
+                    false -> super.triggerEntranceEvent(moveResult)
+                }
+            }
+            false ->  {
+                if (tiger.timesPeekedAt == 0) {
+                    tiger.timesPeekedAt++
+                }
+                super.triggerEntranceEvent(moveResult)
+            }
         }
-        return super.triggerEntranceEvent(moveResult)
     }
 
     override fun peekResult(player: Player): GameResult {
@@ -39,9 +46,9 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
             return super.peekResult(player)
         }
         tiger.timesPeekedAt++
-        when (tiger.status) {
+        return when (tiger.status) {
             TigerStatus.STANDARD -> {
-                return when (tiger.timesPeekedAt) {
+                when (tiger.timesPeekedAt) {
                     1 -> GameResult(GameResultCode.SUCCESS, "WOAH! there's an incredibly large [${tiger.name}] in that room.")
                     2 -> {
                         tiger.facingSouth = false
@@ -51,7 +58,7 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
                 }
             }
             TigerStatus.SMELLS_POISON -> {
-                return when (tiger.timesPeekedAt) {
+                when (tiger.timesPeekedAt) {
                     1 -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] is turning around, slowly.")
                     2 -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] is getting closer to the bowl..!!")
                     else -> {
@@ -61,17 +68,17 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
                 }
             }
             TigerStatus.EATS_POISON -> {
-                return when (tiger.timesPeekedAt) {
-                    1 -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] is not looking so good...!!")
+                when (tiger.timesPeekedAt) {
+                    1 -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] has eaten the whole thing, and is not looking so good...!!")
                     else -> {
                         bowl.setFoodEaten()
                         tiger.kill(this)
                         when (items.containsKey(tiger.name)) {
-                            true -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}]... might be dead?")
+                            true -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] is just laying there, on the floor...")
                             false -> {
                                 when (tiger.currentRoomId == player.currentRoom.roomId) {
                                     true -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] slowly waddles into the room you're in, falls heavily on the floor, and stops moving.")
-                                    false -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] is no longer there..!! it might be dead?")
+                                    false -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] is no longer there..! Good chance it just collapsed in another room.")
                                 }
                             }
                         }
@@ -79,7 +86,10 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
                 }
             }
             TigerStatus.DEAD -> {
-                return GameResult(GameResultCode.SUCCESS, "Looks like the [${tiger.name}] is not moving.")
+                when (tiger.timesPeekedAt) {
+                    1 -> GameResult(GameResultCode.SUCCESS, "Looks like the [${tiger.name}] is stopped moving.")
+                    else -> return super.peekResult(player)
+                }
             }
         }
     }
