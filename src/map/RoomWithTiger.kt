@@ -85,7 +85,7 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
             Bowl.BowlStatus.POISONED -> {
                 tiger.setSmellsPoison()
                 tiger.facingSouth = true
-                GameResult(GameResultCode.SUCCESS, "When moving south, you can hear some movement behind you. You escape quickly.")
+                GameResult(GameResultCode.SUCCESS, "When moving [${direction.name}], you can hear some movement behind you. You escape quickly.")
             }
             Bowl.BowlStatus.POST_EATEN -> GameResult(GameResultCode.SUCCESS, "")
         }

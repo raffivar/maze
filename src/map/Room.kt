@@ -5,7 +5,6 @@ import data.RoomData
 import game.*
 import items.Item
 import items.ItemMap
-import items.Tiger
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -93,11 +92,12 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         }
 
         player.currentRoom = nextRoom
-        var finalMessage  = "Moved [${direction.name}]."
-        if (eventsMessage.isNotBlank()) {
-            finalMessage += "\n$eventsMessage"
+
+        val moveMessage  = "Moved [${direction.name}]."
+        return when (eventsMessage.isBlank()) {
+            true -> GameResult(GameResultCode.SUCCESS, moveMessage)
+            false -> GameResult(GameResultCode.SUCCESS, "$eventsMessage\n$moveMessage")
         }
-        return GameResult(GameResultCode.SUCCESS, finalMessage)
     }
 
     open fun getBaseData(): RoomData {
