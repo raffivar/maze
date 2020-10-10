@@ -16,7 +16,7 @@ class Peek : Action("Peek", "Peek [direction], given a certain item") {
         )
         return when (player.inventory.containsKey("shard")) {
             false -> GameResult(GameResultCode.ERROR, "You can't peek anywhere without something shiny.")
-            true -> player.currentRoom.peek(direction)
+            true -> player.currentRoom.peek(player, direction)
         }
     }
 }

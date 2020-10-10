@@ -5,6 +5,7 @@ import data.SerializableRoomData
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
+import game.Player
 import items.Tiger.TigerStatus
 import items.*
 
@@ -33,9 +34,9 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         return super.triggerEntranceEvent(moveResult)
     }
 
-    override fun peekResult(): GameResult {
+    override fun peekResult(player: Player): GameResult {
         if (!items.containsKey(tiger.name)) {
-            return super.peekResult()
+            return super.peekResult(player)
         }
         tiger.timesPeekedAt++
         when (tiger.status) {
@@ -67,8 +68,12 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
                         tiger.kill(this)
                         when (items.containsKey(tiger.name)) {
                             true -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}]... might be dead?")
-                            false -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] is no longer there..!! it might be dead?"
-                            )
+                            false -> {
+                                when (tiger.currentRoomId == player.currentRoom.roomId) {
+                                    true -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] slowly waddles into the room you're in, falls heavily on the floor, and stops moving.")
+                                    false -> GameResult(GameResultCode.SUCCESS, "The [${tiger.name}] is no longer there..!! it might be dead?")
+                                }
+                            }
                         }
                     }
                 }

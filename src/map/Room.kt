@@ -18,7 +18,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         return examine(moveResult.message, null)
     }
 
-    open fun peekResult(): GameResult {
+    open fun peekResult(player: Player): GameResult {
         return examine()
     }
 
@@ -119,8 +119,8 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         return RoomData(roomId, itemsData)
     }
 
-    open fun peek(direction: Direction): GameResult {
+    open fun peek(player: Player, direction: Direction): GameResult {
         val roomToPeek = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
-        return roomToPeek.peekResult()
+        return roomToPeek.peekResult(player)
     }
 }

@@ -4,6 +4,7 @@ import data.*
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
+import game.Player
 
 import items.*
 import java.util.ArrayList
@@ -109,11 +110,11 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         }
     }
 
-    override fun peek(direction: Direction): GameResult {
+    override fun peek(player: Player, direction: Direction): GameResult {
         if (direction == Direction.WEST && door.isClosed) {
             return GameResult(GameResultCode.FAIL, "Yeah, no, you can't peek into the next room while the [${door.name}] is closed. Nice try, though. :)")
         }
 
-        return super.peek(direction)
+        return super.peek(player, direction)
     }
 }
