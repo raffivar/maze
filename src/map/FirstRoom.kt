@@ -42,7 +42,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
             false -> {
                 wasExaminedBefore = !wasExaminedBefore
                 baseDescription = defaultRoomDescription
-                super.examine(firstTimeDescription)
+                super.examineWithAlternativeDescription(firstTimeDescription)
             }
             true -> {
                 super.examine()

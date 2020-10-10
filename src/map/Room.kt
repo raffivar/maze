@@ -15,7 +15,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     private val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
 
     open fun triggerEntranceEvent(moveResult: GameResult): GameResult  {
-        return examine(moveResult.message, null)
+        return examineWithExtraInfo(moveResult.message)
     }
 
     open fun peekResult(player: Player): GameResult {
@@ -26,14 +26,18 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         return examine(null, null)
     }
 
-    open fun examine(alternativeDescription: String?): GameResult {
+    open fun examineWithExtraInfo(extraInfo: String?): GameResult {
+        return examine(extraInfo, null)
+    }
+
+    open fun examineWithAlternativeDescription(alternativeDescription: String?): GameResult {
         return examine(null, alternativeDescription)
     }
 
-    open fun examine(additionalInfo: String?, alternativeDescription: String?): GameResult {
+    open fun examine(extraInfo: String?, alternativeDescription: String?): GameResult {
         var description = (alternativeDescription ?: baseDescription) + "\n"
 
-        additionalInfo?.let {
+        extraInfo?.let {
             if (it.isNotBlank()) {
                 description = "$it\n$description"
             }

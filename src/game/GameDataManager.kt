@@ -23,7 +23,7 @@ class GameDataManager(private val player: Player, private val mapBuilder: MapBui
         val gameData = mapBuilder.collectBaseData()
         val roomToJson = gson.toJson(gameData)
         file.writeText(roomToJson)
-        return GameResult(GameResultCode.SUCCESS, "Game saved.")
+        return GameResult(GameResultCode.SUCCESS, "[Game saved]")
     }
 
     fun load(): GameResult {
@@ -34,7 +34,7 @@ class GameDataManager(private val player: Player, private val mapBuilder: MapBui
         val data = file.readText()
         val gameData = gson.fromJson(data, GameData::class.java)
         mapBuilder.loadData(gameData)
-        return GameResult(GameResultCode.SUCCESS, "Game loaded.")
+        return GameResult(GameResultCode.SUCCESS, "[Game loaded]")
     }
 
     private fun getFile(): File {
