@@ -28,7 +28,7 @@ class MapBuilder {
         val roomWithLadder = RoomWithLadder(ladder)
 
         val hatch = Hatch(ladder)
-        val roomBelowHatch = RoomWithHatch("roomBelowHatch", hatch)
+        val roomBelowHatch = RoomWithHatch("roomBelowHatch", "A regular room with a hatch in the ceiling.", hatch)
 
         val possibleTigerDeathRooms: HashMap<String, Room> = hashMapOf(
             roomWithTiger.roomId to roomWithTiger,
@@ -48,7 +48,7 @@ class MapBuilder {
         val roomWithGuard1 = RoomWithGuard()
 
         //Floor #2
-        val roomAboveHatch = RoomWithHatch("roomAboveHatch", hatch)
+        val roomAboveHatch = RoomWithHatch("roomAboveHatch", "A regular room with a hatch in the floor.", hatch)
         val roomWithGuard2 = RoomWithGuard()
         val escapeRoom = EscapeRoom(rope, tiger)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")

@@ -4,8 +4,9 @@ import data.ItemData
 import data.SerializableRoomData
 import game.Constraint
 import items.*
+import jdk.jfr.Description
 
-class RoomWithHatch(roomId: String, hatch: Hatch): Room(roomId), SavableRoom {
+class RoomWithHatch(roomId: String, description: String, hatch: Hatch): Room(roomId, description), SavableRoom {
     init {
         addItem(hatch)
         addConstraint(Direction.UP, Constraint(hatch::isTooHigh, "This [${hatch.name}] is out of reach!"))

@@ -13,6 +13,10 @@ class Hatch(private val ladder: Ladder) : Item("Hatch", "A small hatch"), Savabl
         itemsToFunctions[ladder] = this::makeAccessible
     }
 
+    override fun take(player: Player): GameResult {
+        return GameResult(GameResultCode.SUCCESS, "... You can't be serious.")
+    }
+
     override fun usedBy(player: Player, itemUsed: Item): GameResult {
         val funToRun = itemsToFunctions[itemUsed] ?: return super.usedBy(player, itemUsed)
         return funToRun.invoke(player, itemUsed)

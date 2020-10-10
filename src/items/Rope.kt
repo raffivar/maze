@@ -4,7 +4,7 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Rope : Item("Rope", "This rope is useless for now."), UsableWithoutTaking {
+class Rope : Item("Rope", "An old, thick, rope. Looks like it's really strong."), UsableWithoutTaking {
     private var isInUse = false
 
     override fun take(player: Player): GameResult {
