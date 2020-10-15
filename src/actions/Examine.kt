@@ -7,10 +7,7 @@ import game.Player
 class Examine : Action("Examine", "Examine [room/item]") {
     override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty()) {
-            return GameResult(
-                GameResultCode.ERROR,
-                "Please choose either the subject [room/item] you'd like to examine"
-            )
+            return GameResult(GameResultCode.ERROR, "Please choose the subject (room/item) to examine")
         }
         val subject = args[0]
         if (subject == "room") {
@@ -18,7 +15,7 @@ class Examine : Action("Examine", "Examine [room/item]") {
         }
         val item = player.inventory[subject] ?: player.currentRoom.items[subject] ?: return GameResult(
             GameResultCode.FAIL,
-            "No [$subject] in inventory or current room"
+            "No [$subject] in inventory or current room."
         )
         return item.examine()
     }

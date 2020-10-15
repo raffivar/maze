@@ -6,7 +6,7 @@ import game.GameResultCode
 
 class Help(private val actions: List<Action>) : Action("Help", "Help - prints out this menu") {
     override fun execute(player: Player, args: List<String>): GameResult {
-        var helpMenu = "The operations available to you are:\n"
+        var helpMenu = "Available actions:\n"
         for ((i, action) in actions.withIndex()) {
             helpMenu += "${i + 1}. ${action.howToUse}\n"
         }
