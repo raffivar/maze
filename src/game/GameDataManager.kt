@@ -2,6 +2,7 @@ package game
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import data.GameData
 import data.MazeSerializer
 import data.SerializableItemData
 import data.SerializableRoomData

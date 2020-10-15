@@ -3,7 +3,7 @@ package map
 import data.ItemData
 import data.MapData
 import data.PlayerData
-import game.GameData
+import data.GameData
 import game.Player
 import items.*
 
