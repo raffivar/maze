@@ -6,7 +6,7 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "This is an old, uncomfortable bed."), SavableItem {
+class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "An old, extremely uncomfortable bed."), SavableItem {
     private var wasExaminedBefore = false
 
     override fun examine(): GameResult {

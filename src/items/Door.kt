@@ -9,8 +9,8 @@ import game.Player
 import java.util.ArrayList
 
 class Door(override var isClosed: Boolean = true) : Item("Door", null), Openable, SavableItem {
-    private val closedDescription = "An old, closed door."
-    private val openDescription = "An old, open door."
+    private val closedDescription = "An old wooden door, with little lines carved on it. Seems like someone has been marking their jail time (The door is closed)."
+    private val openDescription = "Love is an... <Insert Disney Line here>."
     private val constraintsToOpen = ArrayList<Constraint>()
 
     fun addConstraintToOpen(constraint: Constraint) {

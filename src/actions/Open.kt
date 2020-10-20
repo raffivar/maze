@@ -13,10 +13,10 @@ class Open : Action("Open", "Open [item]") {
         val itemName = args[0]
         val itemToOpen = player.currentRoom.items[itemName] ?: return GameResult(GameResultCode.FAIL, "No [$itemName] in current room.")
         if (itemToOpen !is Openable) {
-            return GameResult(GameResultCode.FAIL, "Item [${itemToOpen.name}] is not something you can open.")
+            return GameResult(GameResultCode.FAIL, "The [${itemToOpen.name}] is not something you can open.")
         }
         if (!itemToOpen.isClosed) {
-            return GameResult(GameResultCode.FAIL, "[${itemToOpen.name}] is already open.")
+            return GameResult(GameResultCode.FAIL, "The [${itemToOpen.name}] is already open.")
         }
         return itemToOpen.open(player)
     }

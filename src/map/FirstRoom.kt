@@ -54,7 +54,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         wasExaminedBefore = true
         addItem(key)
         baseDescription = defaultRoomDescription
-        return GameResult(GameResultCode.SUCCESS, "${bed.description}\nYou discover a small [${key.name}] under it.")
+        return GameResult(GameResultCode.SUCCESS, "You're curious as to why this bed is so excruciatingly uncomfortable.\nYou thoroughly examine it from all angles and discover a small [${key.name}] under it.")
     }
 
     private fun keyTaken() {
@@ -67,7 +67,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         baseDescription = defaultRoomDescription
         removeItem(mirror)
         addItem(brokenMirror)
-        val message = "You broke the [${mirror.name}]. You monster. Look what you did to the floor."
+        val message = "You broke the [${mirror.name}]. You monster. Look what you did to the floor of this room!!"
         return GameResult(GameResultCode.SUCCESS, message)
     }
 
