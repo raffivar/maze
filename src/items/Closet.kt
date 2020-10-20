@@ -7,8 +7,8 @@ import game.GameResultCode
 import game.Player
 
 class Closet(override var isClosed: Boolean = true, private val modifyRoomWhenExamined: () -> GameResult) : Item("Closet", null), Openable, SavableItem {
-    private val closedDescription = "This [${name}] is closed."
-    private val openDescription = "This [${name}] is open."
+    private val closedDescription = "A standard, boring [${name}]. It is closed."
+    private val openDescription = "A standard, boring [${name}]. It is open."
 
     override fun examine(): GameResult {
         return when (isClosed) {
