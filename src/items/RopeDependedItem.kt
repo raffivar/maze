@@ -7,8 +7,8 @@ import game.Player
 
 open class RopeDependedItem(name: String) : Item(name, null), SavableItem {
     var hasNothingAttached: Boolean = true
-    internal val beforeRope = "This is just a standard [${this.name}]"
-    internal val afterRope = "This is just a standard [${this.name}]. There's a rope attached to it."
+    private val beforeRope = "This is just a standard [${this.name}]"
+    private val afterRope = "This is just a standard [${this.name}]. There's a rope attached to it."
     internal val itemsToFunctions = HashMap<Item, (Player) -> GameResult>()
 
 

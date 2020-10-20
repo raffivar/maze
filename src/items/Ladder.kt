@@ -6,7 +6,7 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Ladder : Item("Ladder", "A standard, metal, relatively big ladder."), SavableItem {
+class Ladder : Item("Ladder", "A standard, metal ladder. Big enough to reach the ceiling."), SavableItem {
     private var isInUse = false
 
     override fun take(player: Player): GameResult {

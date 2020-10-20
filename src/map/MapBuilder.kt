@@ -28,7 +28,7 @@ class MapBuilder {
         val roomWithLadder = RoomWithLadder(ladder)
 
         val hatch = Hatch(ladder)
-        val roomBelowHatch = RoomWithHatch("roomBelowHatch", "A regular room with a hatch in the ceiling.", hatch)
+        val roomBelowHatch = RoomWithHatch("roomBelowHatch", "A room with nothing but a hatch in the ceiling.", hatch)
 
         val possibleTigerDeathRooms: HashMap<String, Room> = hashMapOf(
             roomWithTiger.roomId to roomWithTiger,
@@ -48,11 +48,11 @@ class MapBuilder {
         val roomWithGuard1 = RoomWithGuard()
 
         //Floor #2
-        val roomAboveHatch = RoomWithHatch("roomAboveHatch", "A regular room with a hatch in the floor.", hatch)
+        val roomAboveHatch = RoomWithHatch("roomAboveHatch", "A room with nothing but a hatch in the floor.", hatch)
         val roomWithGuard2 = RoomWithGuard()
         val escapeRoom = EscapeRoom(rope, tiger)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")
-        val boringRoom2 = Room("boringRoom2", "This room is even more boring. It doesn't even lead anywhere.")
+        val boringRoom2 = Room("boringRoom2", "This room is even more boring. It doesn't even lead anywhere (besides where you came from).")
         val exit = Exit()
 
         //Link rooms together

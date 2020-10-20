@@ -5,7 +5,7 @@ import data.ItemData
 import data.TigerData
 import game.*
 
-class Hatch(private val ladder: Ladder) : Item("Hatch", "A small hatch"), SavableItem {
+class Hatch(private val ladder: Ladder) : Item("Hatch", "A small hatch. Seems like a human can fit in it."), SavableItem {
     var isTooHigh = true
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 
