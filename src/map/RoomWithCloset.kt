@@ -12,13 +12,13 @@ class RoomWithCloset(private val poison: Poison) : Room("RoomWithCloset"), Savab
     init {
         closet = Closet(true, this::addPoisonToRoom)
         addItem(closet)
-        baseDescription = "This room only has a [${closet.name}] in it."
+        baseDescription = "This room nothing but a [${closet.name}] in it."
         addItem(Door(false))
     }
 
     private fun addPoisonToRoom(): GameResult {
         addItem(poison)
-        return GameResult(GameResultCode.SUCCESS, "You discover [${poison.name}] in the [${closet.name}].")
+        return GameResult(GameResultCode.SUCCESS, "Opened the [${closet.name}]. You discover some [${poison.name}] inside.")
     }
 
     override fun saveRoomDataToDB(gameItems: ItemMap) {

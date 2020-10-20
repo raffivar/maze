@@ -18,7 +18,7 @@ class MapBuilder {
         val poison = Poison()
         val roomWithCloset = RoomWithCloset(poison)
 
-        val roomBeforeTiger = Room("roomBeforeTiger")
+        val roomBeforeTiger = Room("roomBeforeTiger", "This room is completely empty. Like your life.\nIt does make you think about your past actions, and what led you here.\nFrom time to time it's good to... reflect. ")
         val tiger = Tiger()
         val roomWithTiger = RoomWithTiger("roomWithTiger", tiger, Bowl(poison))
         roomWithTiger.addItem(tiger)
@@ -100,11 +100,11 @@ class MapBuilder {
         //Save room data
         saveRoomToDB(firstRoom)
         saveRoomToDB(roomWithCloset)
-        saveRoomToDB(roomWithTiger)
         saveRoomToDB(roomBeforeTiger)
-        saveRoomToDB(roomBelowHatch)
-        saveRoomToDB(roomWithRope)
+        saveRoomToDB(roomWithTiger)
         saveRoomToDB(roomWithLadder)
+        saveRoomToDB(roomWithRope)
+        saveRoomToDB(roomBelowHatch)
         saveRoomToDB(roomAboveHatch)
         saveRoomToDB(escapeRoom)
         saveRoomToDB(boringRoom1)

@@ -43,15 +43,18 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
             }
         }
 
+        description += "Items in room: "
         description += if (items.isEmpty()) {
-            "This room is empty.\n"
+            "[This room is empty].\n"
         } else {
-            "Items in room: ${items.values}.\n"
+            "${items.values}.\n"
         }
+
+        description += "This room leads: "
         description += if (rooms.isEmpty()) {
-            "It seems this room doesn't lead anywhere else."
+            "[Absolutely nowhere]."
         } else {
-            "This room leads: ${rooms.keys}."
+            "${rooms.keys}."
         }
         return GameResult(GameResultCode.SUCCESS, description)
     }
