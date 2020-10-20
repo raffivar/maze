@@ -9,7 +9,7 @@ import game.Player
 import items.Tiger.TigerStatus
 import items.*
 
-class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId), SavableRoom {
+class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. There are tiger hairs all over the floor."), SavableRoom {
     init {
         addItem(tiger)
         addItem(bowl)

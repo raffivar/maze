@@ -19,9 +19,9 @@ class Bowl(private val poison: Poison) : Item("Bowl", ""), SavableItem {
 
     override fun examine(): GameResult {
         description = when (status) {
-            BowlStatus.PRE_EATEN -> "Looks like this bowl is full with tiger food. Whatever that means."
+            BowlStatus.PRE_EATEN -> "This bowl is full with tiger food. Whatever that means."
             BowlStatus.POISONED -> "If only people knew that this food is poisoned..."
-            BowlStatus.POST_EATEN -> "An almost empty bowls, just a few scraps of tiger food and poison in it."
+            BowlStatus.POST_EATEN -> "An almost empty bowls, just a few scraps of tiger food and (edible) poison in it."
         }
 
         return super.examine()

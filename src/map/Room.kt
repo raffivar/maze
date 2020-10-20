@@ -43,9 +43,9 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
             }
         }
 
-        description += "Items in room: "
+        description += "This room contains: "
         description += if (items.isEmpty()) {
-            "[This room is empty].\n"
+            "[Absolutely nothing].\n"
         } else {
             "${items.values}.\n"
         }
