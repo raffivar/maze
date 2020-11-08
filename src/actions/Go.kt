@@ -18,9 +18,9 @@ class Go : Action("Go", "Go [direction]") {
         val moveResult = player.currentRoom.move(player, direction)
 
         return when (moveResult.gameResultCode) {
-            GameResultCode.ERROR -> moveResult
-            GameResultCode.FAIL -> moveResult
-            GameResultCode.GAME_OVER -> moveResult
+            GameResultCode.ERROR, GameResultCode.FAIL, GameResultCode.GAME_OVER  ->  {
+                moveResult
+            }
             GameResultCode.SUCCESS -> {
                 player.currentRoom.triggerEntranceEvent(moveResult)
             }
