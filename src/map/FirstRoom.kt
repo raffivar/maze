@@ -9,11 +9,10 @@ import game.Player
 import items.*
 import java.util.ArrayList
 
-class FirstRoom : Room("firstRoom"), SavableRoom {
+class FirstRoom(private val door: Door) : Room("firstRoom") {
     private var bed: Bed
     private var key: Key
     private var lock: Lock
-    private var door: Door
     private var mirror: Mirror
     private var brokenMirror: BrokenMirror
     private var shard: Shard
@@ -27,12 +26,11 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         key = Key(this::keyTaken)
         lock = Lock(key)
         addItem(lock)
-        door = Door()
-        addItem(door)
         mirror = Mirror(this::mirrorBroken)
         addItem(mirror)
         brokenMirror = BrokenMirror()
         shard = Shard(this::shardTaken)
+        addItem(door)
         addConstraint(Direction.WEST, Constraint(door::isClosed, "The [${door.name}] is closed."))
         door.addConstraintToOpen(Constraint(lock::isLocked, "Looks like you have to to do something about the [${lock.name}] first."))
     }
@@ -76,11 +74,8 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
     }
 
     override fun saveRoomDataToDB(gameItems: ItemMap) {
-        gameItems.addItem(bed)
+        super.saveRoomDataToDB(gameItems)
         gameItems.addItem(key)
-        gameItems.addItem(lock)
-        gameItems.addItem(door)
-        gameItems.addItem(mirror)
         gameItems.addItem(brokenMirror)
         gameItems.addItem(shard)
     }
@@ -97,17 +92,7 @@ class FirstRoom : Room("firstRoom"), SavableRoom {
         val data = roomData as FirstRoomData
         wasExaminedBefore = data.wasExaminedBefore
         baseDescription = data.baseDescription
-
-        items.clear()
-        for (itemData in roomData.itemsData) {
-            val item = gameItems[itemData.name]
-            item?.let {
-                items.addItem(item)
-            }
-            if (item is SavableItem) {
-                item.loadItem(itemData as ItemData)
-            }
-        }
+        super.loadFromDB(roomData, gameItems)
     }
 
     override fun peek(player: Player, direction: Direction): GameResult {

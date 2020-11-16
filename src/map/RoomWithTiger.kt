@@ -1,7 +1,5 @@
 package map
 
-import data.ItemData
-import data.SerializableRoomData
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
@@ -9,7 +7,7 @@ import game.Player
 import items.Tiger.TigerStatus
 import items.*
 
-class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. There are tiger hairs all over the floor."), SavableRoom {
+class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. There are tiger hairs all over the floor.") {
     init {
         addItem(tiger)
         addItem(bowl)
@@ -103,25 +101,6 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
                 GameResult(GameResultCode.SUCCESS, "When moving [${direction.name}], you can hear some movement behind you. You escape quickly.")
             }
             Bowl.BowlStatus.POST_EATEN -> GameResult(GameResultCode.SUCCESS, "")
-        }
-    }
-
-    override fun saveRoomDataToDB(gameItems: ItemMap) {
-        for (item in items) {
-            gameItems.addItem(item.value)
-        }
-    }
-
-    override fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
-        items.clear()
-        for (itemData in roomData.itemsData) {
-            val item = gameItems[itemData.name]
-            item?.let {
-                items.addItem(item)
-            }
-            if (item is SavableItem) {
-                item.loadItem(itemData as ItemData)
-            }
         }
     }
 }

@@ -1,10 +1,13 @@
 package map
 
+import data.ItemData
 import data.SerializableItemData
 import data.RoomData
+import data.SerializableRoomData
 import game.*
 import items.Item
 import items.ItemMap
+import items.SavableItem
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -14,7 +17,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
     private val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
 
-    open fun triggerEntranceEvent(moveResult: GameResult): GameResult  {
+    open fun triggerEntranceEvent(moveResult: GameResult): GameResult {
         return examineWithExtraInfo(moveResult.message)
     }
 
@@ -101,7 +104,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
                 when (eventResult.gameResultCode) {
                     GameResultCode.GAME_OVER -> return eventResult
                     else -> {
-                        if (eventResult.message.isNotBlank())  {
+                        if (eventResult.message.isNotBlank()) {
                             eventsMessage += eventResult.message
                         }
                     }
@@ -111,7 +114,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
 
         player.currentRoom = nextRoom
 
-        val moveMessage  = "Moved [${direction.name}]."
+        val moveMessage = "Moved [${direction.name}]."
         return when (eventsMessage.isBlank()) {
             true -> GameResult(GameResultCode.SUCCESS, moveMessage)
             false -> GameResult(GameResultCode.SUCCESS, "$eventsMessage\n$moveMessage")
@@ -129,5 +132,24 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     open fun peek(player: Player, direction: Direction): GameResult {
         val roomToPeek = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
         return roomToPeek.peekResult(player)
+    }
+
+    open fun saveRoomDataToDB(gameItems: ItemMap) {
+        for (item in items) {
+            gameItems.addItem(item.value)
+        }
+    }
+
+    open fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
+        items.clear()
+        for (itemData in roomData.itemsData) {
+            val item = gameItems[itemData.name]
+            item?.let {
+                items.addItem(item)
+            }
+            if (item is SavableItem) {
+                item.loadItem(itemData as ItemData)
+            }
+        }
     }
 }

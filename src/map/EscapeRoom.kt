@@ -1,13 +1,11 @@
 package map
 
-import data.ItemData
-import data.SerializableRoomData
 import game.Constraint
 import game.GameResult
 import game.GameResultCode
 import items.*
 
-class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "There's only a window and a pole in this room. You might want to peek out the window."), SavableRoom {
+class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "There's only a window and a pole in this room. You might want to peek out the window.") {
     private val pole = Pole("Pole", rope)
     private val window = Window("Window", pole, rope)
 
@@ -28,23 +26,5 @@ class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "Ther
                         "This is what happens when you leave a corpse in an exposed area.")
         }
         return GameResult(GameResultCode.SUCCESS, "")
-    }
-
-    override fun saveRoomDataToDB(gameItems: ItemMap) {
-        gameItems.addItem(pole)
-        gameItems.addItem(window)
-    }
-
-    override fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
-        items.clear()
-        for (itemData in roomData.itemsData) {
-            val item = gameItems[itemData.name]
-            item?.let {
-                items.addItem(item)
-            }
-            if (item is SavableItem) {
-                item.loadItem(itemData as ItemData)
-            }
-        }
     }
 }

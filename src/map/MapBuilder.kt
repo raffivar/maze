@@ -1,9 +1,6 @@
 package map
 
-import data.ItemData
-import data.MapData
-import data.PlayerData
-import data.GameData
+import data.*
 import game.Player
 import items.*
 
@@ -14,11 +11,15 @@ class MapBuilder {
 
     fun build(): Room {
         //Floor #1
-        val firstRoom = FirstRoom()
+        val door = Door("Door")
+        val firstRoom = FirstRoom(door)
         val poison = Poison()
-        val roomWithCloset = RoomWithCloset(poison)
+        val roomWithCloset = RoomWithCloset(door, poison)
 
-        val roomBeforeTiger = Room("roomBeforeTiger", "This room is completely empty. Like your life.\nIt does make you think about your past actions, and what led you here.\nFrom time to time it's good to... reflect. ")
+        val roomBeforeTiger = Room(
+            "roomBeforeTiger",
+            "This room is completely empty. Like your life.\nIt does make you think about your past actions, and what led you here.\nFrom time to time it's good to... reflect. "
+        )
         val tiger = Tiger()
         val roomWithTiger = RoomWithTiger("roomWithTiger", tiger, Bowl(poison))
         roomWithTiger.addItem(tiger)
@@ -34,11 +35,13 @@ class MapBuilder {
             roomWithTiger.roomId to roomWithTiger,
             roomBeforeTiger.roomId to roomBeforeTiger,
             roomWithTiger.roomId to roomWithTiger,
-            roomBelowHatch.roomId to roomBelowHatch)
+            roomBelowHatch.roomId to roomBelowHatch
+        )
 
         val forbiddenToLeaveTigerRooms: HashMap<String, Room> = hashMapOf(
             roomWithTiger.roomId to roomWithTiger,
-            roomBelowHatch.roomId to roomBelowHatch)
+            roomBelowHatch.roomId to roomBelowHatch
+        )
 
         tiger.possibleDeathRooms = possibleTigerDeathRooms
         tiger.forbiddenToLeaveRooms = forbiddenToLeaveTigerRooms
@@ -52,7 +55,10 @@ class MapBuilder {
         val roomWithGuard2 = RoomWithGuard()
         val escapeRoom = EscapeRoom(rope, tiger)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")
-        val boringRoom2 = Room("boringRoom2", "This room is even more boring. It doesn't even lead anywhere (besides where you came from).")
+        val boringRoom2 = Room(
+            "boringRoom2",
+            "This room is even more boring. It doesn't even lead anywhere (besides where you came from)."
+        )
         val exit = Exit()
 
         //Link rooms together
@@ -114,21 +120,24 @@ class MapBuilder {
 
     private fun saveRoomToDB(room: Room) {
         roomDB.add(room)
-        if (room is SavableRoom) {
-            room.saveRoomDataToDB(itemDB)
-        }
+        room.saveRoomDataToDB(itemDB)
     }
 
-    fun collectBaseData(): GameData {
+    private fun loadRoomFromDB(roomData: SerializableRoomData) {
+        val room = roomDB[roomData.roomId] ?: return
+        room.loadFromDB(roomData, itemDB)
+    }
+
+    fun collectGameDataToSave(): GameData {
         val playerData = player.getBaseData()
-        val roomsData = MapData(ArrayList())
+        val mapData = MapData(ArrayList())
         for (room in roomDB.values) {
-            roomsData.roomsData.add(room.getBaseData())
+            mapData.roomsData.add(room.getBaseData())
         }
-        return GameData(playerData, roomsData)
+        return GameData(playerData, mapData)
     }
 
-    fun loadData(gameData: GameData) {
+    fun loadSavedGameData(gameData: GameData) {
         loadPlayerData(gameData.playerData)
         loadMapData(gameData.mapData)
     }
@@ -156,12 +165,7 @@ class MapBuilder {
 
     private fun loadMapData(mapData: MapData) {
         for (roomData in mapData.roomsData) {
-            val room = roomDB[roomData.roomId]
-            room?.let {
-                if (room is SavableRoom) {
-                    room.loadFromDB(roomData, itemDB)
-                }
-            }
+            loadRoomFromDB(roomData)
         }
     }
 }
