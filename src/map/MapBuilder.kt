@@ -35,7 +35,7 @@ class MapBuilder {
         tiger.currentRoomId = roomWithTiger.roomId
 
         val ladder = Ladder()
-        val roomWithLadder = RoomWithLadder(ladder)
+        val roomWithLadder = Room("roomWithLadder", itemsToAdd = arrayListOf(ladder))
 
         val hatch = Hatch(ladder)
         val roomBelowHatch = RoomWithHatch(
@@ -60,15 +60,11 @@ class MapBuilder {
         tiger.forbiddenToLeaveRooms = forbiddenToLeaveTigerRooms
 
         val rope = Rope()
-        val roomWithRope = RoomWithRope(rope)
+        val roomWithRope = Room("roomWithRope", itemsToAdd = arrayListOf(rope))
         val roomWithGuard1 = RoomWithGuard()
 
         //Floor #2
-        val roomAboveHatch = RoomWithHatch(
-            "roomAboveHatch",
-            "A room with nothing but a hatch in the floor.",
-            hatch
-        )
+        val roomAboveHatch = RoomWithHatch("roomAboveHatch", "A room with nothing but a hatch in the floor.", hatch)
         val roomWithGuard2 = RoomWithGuard()
         val escapeRoom = EscapeRoom(rope, tiger)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")
@@ -76,6 +72,7 @@ class MapBuilder {
             "boringRoom2",
             "This room is even more boring. It doesn't even lead anywhere (besides where you came from)."
         )
+
         val exit = Exit()
 
         //Link rooms together

@@ -14,11 +14,19 @@ import player.Player
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.") {
+open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", itemsToAdd: ArrayList<Item>? = null) {
     val items = ItemMap()
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
     private val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
+
+    init {
+        itemsToAdd?.let {
+            for (item in itemsToAdd) {
+                addItem(item)
+            }
+        }
+    }
 
     open fun triggerEntranceEvent(moveResult: GameResult): GameResult {
         return examineWithExtraInfo(moveResult.message)
