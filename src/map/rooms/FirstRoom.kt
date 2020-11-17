@@ -34,7 +34,7 @@ class FirstRoom(private val door: Door) : Room("firstRoom") {
         mirror = Mirror(this::mirrorBroken)
         addItem(mirror)
         brokenMirror = BrokenMirror()
-        shard = Shard(this::shardTaken)
+        shard = Shard()
         addItem(door)
         addConstraint(Direction.WEST,
             Constraint({ !door.isOpen }, "The [${door.name}] is closed.")
@@ -49,13 +49,13 @@ class FirstRoom(private val door: Door) : Room("firstRoom") {
 
     override fun examine(): GameResult {
         return when (wasExaminedBefore) {
-            false -> {
-                wasExaminedBefore = !wasExaminedBefore
-                baseDescription = defaultRoomDescription
-                super.examineWithAlternativeDescription(firstTimeDescription)
-            }
             true -> {
                 super.examine()
+            }
+            false -> {
+                wasExaminedBefore = true
+                baseDescription = defaultRoomDescription
+                super.examineWithAlternativeDescription(firstTimeDescription)
             }
         }
     }
@@ -63,26 +63,18 @@ class FirstRoom(private val door: Door) : Room("firstRoom") {
     private fun bedExamined(): GameResult {
         wasExaminedBefore = true
         addItem(key)
-        baseDescription = defaultRoomDescription
         return GameResult(GameResultCode.SUCCESS, "You're curious as to why this bed is so excruciatingly uncomfortable.\nYou thoroughly examine it from all angles and discover a small [${key.name}] under it.")
     }
 
     private fun keyTaken() {
-        baseDescription = defaultRoomDescription
     }
 
     private fun mirrorBroken(): GameResult {
-        wasExaminedBefore = true
         addItem(shard)
-        baseDescription = defaultRoomDescription
         removeItem(mirror)
         addItem(brokenMirror)
         val message = "You broke the [${mirror.name}]. You monster. Look what you did to the floor of this room!!"
         return GameResult(GameResultCode.SUCCESS, message)
-    }
-
-    private fun shardTaken() {
-        baseDescription = defaultRoomDescription
     }
 
     override fun saveRoomDataToDB(gameItems: ItemMap) {
