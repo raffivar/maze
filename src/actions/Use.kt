@@ -25,7 +25,7 @@ class Use : Action("Use", "Use [item1] on [item2]") {
         )
 
         if (!player.inventory.containsKey(item1.name) && item1 !is UsableWithoutTaking) {
-            return GameResult(GameResultCode.FAIL, "Try taking the [$item1Name] first.")
+            return GameResult(GameResultCode.FAIL, "Try taking the [${item1.name}] first.")
         }
 
         return item1.useOn(player, item2)

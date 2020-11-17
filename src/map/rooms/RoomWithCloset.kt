@@ -12,7 +12,7 @@ class RoomWithCloset(door: Door, private val poison: Poison) : Room("RoomWithClo
     init {
         closet = Closet(true, this::addPoisonToRoom)
         addItem(closet)
-        baseDescription = "This room nothing but a [${closet.name}] in it."
+        baseDescription = "This room has nothing but a [${closet.name}] in it."
         addItem(door)
     }
 

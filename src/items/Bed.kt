@@ -30,6 +30,6 @@ class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "A
     }
 
     override fun take(player: Player): GameResult {
-        return GameResult(GameResultCode.SUCCESS, "You're seriously try to take this?")
+        return GameResult(GameResultCode.SUCCESS, "You're seriously trying to take this?")
     }
 }

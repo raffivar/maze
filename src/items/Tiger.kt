@@ -39,10 +39,13 @@ class Tiger : Item("Tiger", null), SavableItem {
                 GameResult(GameResultCode.SUCCESS, "Obtained an extremely heavy [${this.name}]. Good luck with that.")
             }
             else -> {
-                GameResult(GameResultCode.FAIL, "Seriously?? When the [${this.name}] is still alive??")
+                GameResult(GameResultCode.FAIL, "Seriously?? When the [${this.name}] is still alive?? No way. You're stupid, but not *THAT* stupid.")
             }
         }
+    }
 
+    override fun breakItem(player: Player): GameResult {
+        return GameResult(GameResultCode.FAIL, "Err... Yeah, you choose to NOT attempt to do that, especially when the [${this.name}] is still alive.")
     }
 
     override fun drop(player: Player): GameResult {
