@@ -6,7 +6,7 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Window(name: String, private val pole: Pole, private val rope: Rope = pole.rope, override var isClosed: Boolean = true) : RopeDependedItem(name), Openable {
+class Window(name: String, private val pole: Pole, private val rope: Rope = pole.rope, override var isOpen: Boolean = true) : RopeDependedItem(name), Openable {
     private val exitInfo = "You might be able to climb [DOWN] through."
     private val closedDescription = "This [${name}] is closed. $exitInfo"
     private val openDescription = "This [${name}] is open. $exitInfo"
@@ -16,14 +16,14 @@ class Window(name: String, private val pole: Pole, private val rope: Rope = pole
     }
 
     override fun examine(): GameResult {
-        return when (isClosed) {
+        return when (isOpen) {
             true -> examine(closedDescription)
             false -> examine(openDescription)
         }
     }
 
     override fun open(player: Player): GameResult {
-        isClosed = false
+        isOpen = false
         description = openDescription
         return GameResult(GameResultCode.FAIL, "Opened [${this.name}].")
     }
@@ -34,13 +34,13 @@ class Window(name: String, private val pole: Pole, private val rope: Rope = pole
     }
 
     override fun getData() : WindowData {
-        return WindowData(name, hasNothingAttached, isClosed)
+        return WindowData(name, hasNothingAttached, isOpen)
     }
 
     override fun loadItem(itemData: ItemData) {
         val data = itemData as WindowData
         hasNothingAttached = data.hasNothingAttached
-        isClosed = data.isClosed
+        isOpen = data.isClosed
     }
 
     private fun throwRope(player: Player): GameResult {
@@ -50,7 +50,7 @@ class Window(name: String, private val pole: Pole, private val rope: Rope = pole
         if (pole.hasNothingAttached) {
             return GameResult(GameResultCode.SUCCESS, "You might want to attach the [${rope.name}] to the [${pole.name}] first.")
         }
-        if (isClosed) {
+        if (isOpen) {
             return GameResult(GameResultCode.FAIL, "Still can't do that if the [${this.name}] is closed.")
         }
         hasNothingAttached = false

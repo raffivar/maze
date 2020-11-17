@@ -6,30 +6,30 @@ import game.GameResult
 import game.GameResultCode
 import game.Player
 
-class Closet(override var isClosed: Boolean = true, private val modifyRoomWhenExamined: () -> GameResult) : Item("Closet", null), Openable, SavableItem {
+class Closet(override var isOpen: Boolean = true, private val modifyRoomWhenExamined: () -> GameResult) : Item("Closet", null), Openable, SavableItem {
     private val closedDescription = "A standard, boring [${name}]. It is closed."
     private val openDescription = "A standard, boring [${name}]. It is open."
 
     override fun examine(): GameResult {
-        return when (isClosed) {
-            true -> examine(closedDescription)
-            false -> examine(openDescription)
+        return when (isOpen) {
+            true -> examine(openDescription)
+            false -> examine(closedDescription)
         }
     }
 
     override fun open(player: Player): GameResult {
-        isClosed = false
+        isOpen = true
         description = openDescription
         return modifyRoomWhenExamined.invoke()
     }
 
     override fun getData() : ItemData {
-        return ClosetData(name, isClosed)
+        return ClosetData(name, isOpen)
     }
 
     override fun loadItem(itemData: ItemData) {
         val data = itemData as ClosetData
-        isClosed = data.isClosed
+        isOpen = data.isOpen
     }
 
     override fun take(player: Player): GameResult {

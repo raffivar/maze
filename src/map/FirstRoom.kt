@@ -31,7 +31,7 @@ class FirstRoom(private val door: Door) : Room("firstRoom") {
         brokenMirror = BrokenMirror()
         shard = Shard(this::shardTaken)
         addItem(door)
-        addConstraint(Direction.WEST, Constraint(door::isClosed, "The [${door.name}] is closed."))
+        addConstraint(Direction.WEST, Constraint( { !door.isOpen }, "The [${door.name}] is closed."))
         door.addConstraintToOpen(Constraint(lock::isLocked, "Looks like you have to to do something about the [${lock.name}] first."))
     }
 
@@ -96,7 +96,7 @@ class FirstRoom(private val door: Door) : Room("firstRoom") {
     }
 
     override fun peek(player: Player, direction: Direction): GameResult {
-        if (direction == Direction.WEST && door.isClosed) {
+        if (direction == Direction.WEST && !door.isOpen) {
             return GameResult(GameResultCode.FAIL, "Yeah, no, you can't peek into the next room while the [${door.name}] is closed. Nice try, though. :)")
         }
 

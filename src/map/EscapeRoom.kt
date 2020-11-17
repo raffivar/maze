@@ -12,7 +12,7 @@ class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "Ther
     init {
         addItem(pole)
         addItem(window)
-        addConstraint(Direction.DOWN, Constraint(window::isClosed, "You try to climb down a closed [${window.name}]. You fail."))
+        addConstraint(Direction.DOWN, Constraint(window::isOpen, "You try to climb down a closed [${window.name}]. You fail."))
         addConstraint(Direction.DOWN, Constraint(pole::hasNothingAttached, "You can't really jump from there, it's too high."))
         addConstraint(Direction.DOWN, Constraint(window::hasNothingAttached, "Man, you already tied the [${rope.name}] to the [${pole.name}]. Think a bit more."))
         addEventUponMovement(Direction.DOWN, this::playerFailedToEscapeEvent)

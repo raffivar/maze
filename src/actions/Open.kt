@@ -15,7 +15,7 @@ class Open : Action("Open", "Open [item]") {
         if (itemToOpen !is Openable) {
             return GameResult(GameResultCode.FAIL, "The [${itemToOpen.name}] is not something you can open.")
         }
-        if (!itemToOpen.isClosed) {
+        if (!itemToOpen.isOpen) {
             return GameResult(GameResultCode.FAIL, "The [${itemToOpen.name}] is already open.")
         }
         return itemToOpen.open(player)

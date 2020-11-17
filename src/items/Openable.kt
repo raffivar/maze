@@ -4,6 +4,6 @@ import game.GameResult
 import game.Player
 
 interface Openable {
-    var isClosed: Boolean
+    var isOpen: Boolean
     fun open(player: Player): GameResult
 }
