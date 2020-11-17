@@ -2,7 +2,8 @@ package items
 
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
+import items.interfaces.SavableItem
 
 class Pole(name: String, val rope: Rope) : RopeDependedItem(name), SavableItem {
     init {

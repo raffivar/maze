@@ -1,9 +1,11 @@
 package items
 
-import data.ItemData
-import data.TigerData
+import data.items.ItemData
+import data.items.TigerData
 import game.*
-import map.Room
+import items.interfaces.SavableItem
+import map.rooms.Room
+import player.Player
 import java.util.*
 import kotlin.collections.HashMap
 

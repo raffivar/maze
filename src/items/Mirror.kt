@@ -2,7 +2,7 @@ package items
 
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
 
 class Mirror(private val modifyRoomWhenExamined: () -> GameResult) : Item("Mirror", "This mirror doesn't even have a frame! How untasteful!") {
     override fun breakItem(player: Player): GameResult {

@@ -1,7 +1,7 @@
 package actions
 
 import game.GameResult
-import game.Player
+import player.Player
 import game.GameResultCode
 
 class Help(private val actions: List<Action>) : Action("Help", "Help - prints out this menu") {

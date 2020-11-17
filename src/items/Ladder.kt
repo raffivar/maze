@@ -1,12 +1,14 @@
 package items
 
-import data.ItemData
-import data.RopeDependedItemData
+import data.items.ItemData
+import data.items.RopeDependedItemData
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
+import items.interfaces.SavableItem
 
-class Ladder : Item("Ladder", "A standard, metal ladder. Big enough to reach the ceiling."), SavableItem {
+class Ladder : Item("Ladder", "A standard, metal ladder. Big enough to reach the ceiling."),
+    SavableItem {
     private var isInUse = false
 
     override fun take(player: Player): GameResult {

@@ -1,11 +1,16 @@
 package game
 
 import actions.*
+import actions.maps.ActionMap
+import game.interfaces.IOHandler
 import map.MapBuilder
+import player.Inventory
+import player.Player
 import java.lang.StringBuilder
 
 class Game(private val ioHandler: IOHandler) {
-    private val actions = arrayListOf(Examine(), Peek(), Go(), Take(), Drop(), Use(), Open(), Break(), Inventory(), Exit())
+    private val actions = arrayListOf(Examine(), Peek(), Go(), Take(), Drop(), Use(), Open(), Break(),
+        Inventory(), Exit())
     private val helpAction = Help(actions)
     private val actionsByName = ActionMap()
     private val player: Player

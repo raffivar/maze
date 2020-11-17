@@ -2,11 +2,12 @@ package game
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import data.GameData
+import data.game.GameData
 import data.MazeSerializer
-import data.SerializableItemData
-import data.SerializableRoomData
+import data.serializables.SerializableItemData
+import data.serializables.SerializableRoomData
 import map.MapBuilder
+import player.Player
 import java.io.File
 
 class GameDataManager(private val player: Player, private val mapBuilder: MapBuilder) {

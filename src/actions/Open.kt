@@ -1,9 +1,9 @@
 package actions
 
 import game.GameResult
-import game.Player
+import player.Player
 import game.GameResultCode
-import items.Openable
+import items.interfaces.Openable
 
 class Open : Action("Open", "Open [item]") {
     override fun execute(player: Player, args: List<String>): GameResult {

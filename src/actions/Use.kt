@@ -2,8 +2,8 @@ package actions
 
 import game.GameResult
 import game.GameResultCode
-import game.Player
-import items.UsableWithoutTaking
+import player.Player
+import items.interfaces.UsableWithoutTaking
 
 class Use : Action("Use", "Use [item1] on [item2]") {
     override fun execute(player: Player, args: List<String>): GameResult {

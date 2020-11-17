@@ -1,9 +1,10 @@
 package items
 
-import data.ItemData
-import data.RopeDependedItemData
+import data.items.ItemData
+import data.items.RopeDependedItemData
 import game.GameResult
-import game.Player
+import player.Player
+import items.interfaces.SavableItem
 
 open class RopeDependedItem(name: String) : Item(name, null), SavableItem {
     var hasNothingAttached: Boolean = true

@@ -1,12 +1,14 @@
 package items
 
-import data.BedData
-import data.ItemData
+import data.items.BedData
+import data.items.ItemData
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
+import items.interfaces.SavableItem
 
-class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "An old, extremely uncomfortable bed."), SavableItem {
+class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "An old, extremely uncomfortable bed."),
+    SavableItem {
     private var wasExaminedBefore = false
 
     override fun examine(): GameResult {

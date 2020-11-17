@@ -1,11 +1,13 @@
 package items
 
-import data.HatchData
-import data.ItemData
-import data.TigerData
+import data.items.HatchData
+import data.items.ItemData
 import game.*
+import items.interfaces.SavableItem
+import player.Player
 
-class Hatch(private val ladder: Ladder) : Item("Hatch", "A small hatch. Seems like a human can fit in it."), SavableItem {
+class Hatch(private val ladder: Ladder) : Item("Hatch", "A small hatch. Seems like a human can fit in it."),
+    SavableItem {
     var isTooHigh = true
     private val itemsToFunctions = HashMap<Item, (Player, Item) -> GameResult>()
 

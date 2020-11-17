@@ -2,7 +2,7 @@ package actions
 
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
 
 class Break : Action("Break", "Break [item]") {
     override fun execute(player: Player, args: List<String>): GameResult {

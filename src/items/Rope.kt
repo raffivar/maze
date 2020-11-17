@@ -2,9 +2,11 @@ package items
 
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
+import items.interfaces.UsableWithoutTaking
 
-class Rope : Item("Rope", "An old, thick, rope. Looks like it's relatively strong."), UsableWithoutTaking {
+class Rope : Item("Rope", "An old, thick, rope. Looks like it's relatively strong."),
+    UsableWithoutTaking {
     private var isInUse = false
 
     override fun take(player: Player): GameResult {

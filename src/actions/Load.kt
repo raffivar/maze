@@ -1,7 +1,7 @@
 package actions
 
-import com.sun.net.httpserver.Authenticator
 import game.*
+import player.Player
 
 class Load(private val gameDataManager: GameDataManager) : Action("Load", "Load - load saved game") {
     override fun execute(player: Player, args: List<String>): GameResult {

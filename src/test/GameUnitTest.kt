@@ -1,7 +1,7 @@
 package test
 
 import game.Game
-import game.IOHandler
+import game.interfaces.IOHandler
 
 fun main() {
     val ioHandler = object : IOHandler {

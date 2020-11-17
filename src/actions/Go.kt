@@ -1,9 +1,9 @@
 package actions
 
 import game.GameResult
-import game.Player
+import player.Player
 import game.GameResultCode
-import map.Direction
+import map.directions.Direction
 
 class Go : Action("Go", "Go [direction]") {
     override fun execute(player: Player, args: List<String>): GameResult {

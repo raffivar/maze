@@ -1,14 +1,17 @@
 package items
 
-import data.DoorData
-import data.ItemData
-import game.Constraint
+import data.items.DoorData
+import data.items.ItemData
+import actions.constraints.Constraint
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
+import items.interfaces.Openable
+import items.interfaces.SavableItem
 import java.util.ArrayList
 
-class Door(val doorId: String, override var isOpen: Boolean = true) : Item(doorId, null), Openable, SavableItem {
+class Door(val doorId: String, override var isOpen: Boolean = true) : Item(doorId, null),
+    Openable, SavableItem {
     private val closedDescription = "An old wooden door, with little lines carved on it. Seems like someone has been marking their jail time (The door is closed)."
     private val openDescription = "Love is an... <Insert Disney Line here>."
     private val constraintsToOpen = ArrayList<Constraint>()

@@ -2,7 +2,7 @@ package items
 
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
 
 class Poison : Item("Poison", "This (edible) poison looks like it can... poison... someone.") {
     override fun take(player: Player): GameResult {

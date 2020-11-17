@@ -1,10 +1,11 @@
 package items
 
-import data.BowlData
-import data.ItemData
+import data.items.BowlData
+import data.items.ItemData
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
+import items.interfaces.SavableItem
 
 class Bowl(private val poison: Poison) : Item("Bowl", ""), SavableItem {
     enum class BowlStatus { PRE_EATEN, POISONED, POST_EATEN }

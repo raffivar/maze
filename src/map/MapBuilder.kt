@@ -1,8 +1,17 @@
 package map
 
-import data.*
-import game.Player
+import data.game.GameData
+import data.items.ItemData
+import data.player.PlayerData
+import data.map.MapData
+import data.serializables.SerializableRoomData
+import player.Player
 import items.*
+import items.interfaces.SavableItem
+import items.maps.ItemMap
+import map.directions.Direction
+import map.maps.RoomMap
+import map.rooms.*
 
 class MapBuilder {
     private val roomDB = RoomMap()
@@ -29,7 +38,11 @@ class MapBuilder {
         val roomWithLadder = RoomWithLadder(ladder)
 
         val hatch = Hatch(ladder)
-        val roomBelowHatch = RoomWithHatch("roomBelowHatch", "A room with nothing but a hatch in the ceiling.", hatch)
+        val roomBelowHatch = RoomWithHatch(
+            "roomBelowHatch",
+            "A room with nothing but a hatch in the ceiling.",
+            hatch
+        )
 
         val possibleTigerDeathRooms: HashMap<String, Room> = hashMapOf(
             roomWithTiger.roomId to roomWithTiger,
@@ -51,7 +64,11 @@ class MapBuilder {
         val roomWithGuard1 = RoomWithGuard()
 
         //Floor #2
-        val roomAboveHatch = RoomWithHatch("roomAboveHatch", "A room with nothing but a hatch in the floor.", hatch)
+        val roomAboveHatch = RoomWithHatch(
+            "roomAboveHatch",
+            "A room with nothing but a hatch in the floor.",
+            hatch
+        )
         val roomWithGuard2 = RoomWithGuard()
         val escapeRoom = EscapeRoom(rope, tiger)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")

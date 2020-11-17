@@ -1,12 +1,15 @@
 package items
 
-import data.ClosetData
-import data.ItemData
+import data.items.ClosetData
+import data.items.ItemData
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
+import items.interfaces.Openable
+import items.interfaces.SavableItem
 
-class Closet(override var isOpen: Boolean = true, private val modifyRoomWhenExamined: () -> GameResult) : Item("Closet", null), Openable, SavableItem {
+class Closet(override var isOpen: Boolean = true, private val modifyRoomWhenExamined: () -> GameResult) : Item("Closet", null),
+    Openable, SavableItem {
     private val closedDescription = "A standard, boring [${name}]. It is closed."
     private val openDescription = "A standard, boring [${name}]. It is open."
 

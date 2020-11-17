@@ -2,8 +2,8 @@ package actions
 
 import game.GameResult
 import game.GameResultCode
-import game.Player
-import map.Direction
+import player.Player
+import map.directions.Direction
 
 class Peek : Action("Peek", "Peek [direction], given a certain item") {
     override fun execute(player: Player, args: List<String>): GameResult {

@@ -1,12 +1,14 @@
 package items
 
-import data.LockData
-import data.ItemData
+import data.items.LockData
+import data.items.ItemData
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
+import items.interfaces.SavableItem
 
-class Lock(itemToUnlock: Item, var isLocked: Boolean = true) : Item("Lock", null), SavableItem {
+class Lock(itemToUnlock: Item, var isLocked: Boolean = true) : Item("Lock", null),
+    SavableItem {
     private val lockedDescription = "This lock is old and rusty. It's also locked."
     private val unlockedDescription = "It's unlocked, so you don't really care about it. It's also rusty, so you don't really want to touch it *AGAIN*."
     private val itemsToFunctions = HashMap<Item, (Player) -> GameResult>()

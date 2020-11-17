@@ -2,7 +2,7 @@ package items
 
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
 
 class Shard(private val executeWhenTaken: () -> Unit) : Item("Shard", "This is shiny.") {
     override fun take(player: Player): GameResult {

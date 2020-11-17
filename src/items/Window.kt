@@ -1,12 +1,14 @@
 package items
 
-import data.ItemData
-import data.WindowData
+import data.items.ItemData
+import data.items.WindowData
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
+import items.interfaces.Openable
 
-class Window(name: String, private val pole: Pole, private val rope: Rope = pole.rope, override var isOpen: Boolean = true) : RopeDependedItem(name), Openable {
+class Window(name: String, private val pole: Pole, private val rope: Rope = pole.rope, override var isOpen: Boolean = true) : RopeDependedItem(name),
+    Openable {
     private val exitInfo = "You might be able to climb [DOWN] through."
     private val closedDescription = "This [${name}] is closed. $exitInfo"
     private val openDescription = "This [${name}] is open. $exitInfo"

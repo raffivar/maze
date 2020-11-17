@@ -2,7 +2,7 @@ package items
 
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
 
 class Key(private val executeWhenTaken: () -> Unit) : Item("Key", "A tiny key, covered in dust.") {
     override fun take(player: Player): GameResult {

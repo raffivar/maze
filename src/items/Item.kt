@@ -1,9 +1,9 @@
 package items
 
-import data.ItemData
+import data.items.ItemData
 import game.GameResult
 import game.GameResultCode
-import game.Player
+import player.Player
 
 open class Item(var name: String, var description: String?) {
     open fun examine(): GameResult {
