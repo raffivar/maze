@@ -8,7 +8,7 @@ import items.Tiger.TigerStatus
 import items.*
 import map.directions.Direction
 
-class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. There are tiger hairs all over the floor.") {
+class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room's floor is just covered with fur.") {
     init {
         addTiger(tiger)
         addItem(bowl)
