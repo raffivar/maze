@@ -34,10 +34,10 @@ class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "Ther
                 "Man, you already tied the [${rope.name}] to the [${pole.name}]. Think a bit more."
             )
         )
-        addEventUponMovement(Direction.DOWN, this::playerFailedToEscapeEvent)
+        addEventUponMovement(Direction.DOWN, this::attemptEscape)
     }
 
-    private fun playerFailedToEscapeEvent(direction: Direction): GameResult {
+    private fun attemptEscape(direction: Direction): GameResult {
         if (tiger.isInForbiddenRoom()) {
             return GameResult(
                 GameResultCode.GAME_OVER,
