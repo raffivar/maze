@@ -29,20 +29,16 @@ class MapBuilder {
             "roomBeforeTiger",
             "This room is completely empty. Like your life.\nIt does make you think about your past actions, and what led you here.\nFrom time to time it's good to... reflect. "
         )
-        val tiger = Tiger()
-        val roomWithTiger = RoomWithTiger("roomWithTiger", tiger, Bowl(poison))
-        roomWithTiger.addItem(tiger)
-        tiger.currentRoomId = roomWithTiger.roomId
+
+        val bowl = Bowl(poison)
+        val tiger = Tiger(bowl)
+        val roomWithTiger = RoomWithTiger("roomWithTiger", tiger, bowl)
 
         val ladder = Ladder()
         val roomWithLadder = Room("roomWithLadder", itemsToAdd = arrayListOf(ladder))
 
         val hatch = Hatch(ladder)
-        val roomBelowHatch = RoomWithHatch(
-            "roomBelowHatch",
-            "A room with nothing but a hatch in the ceiling.",
-            hatch
-        )
+        val roomBelowHatch = RoomWithHatch("roomBelowHatch", "A room with nothing but a hatch in the ceiling.", hatch)
 
         val possibleTigerDeathRooms: HashMap<String, Room> = hashMapOf(
             roomWithTiger.roomId to roomWithTiger,
@@ -68,10 +64,7 @@ class MapBuilder {
         val roomWithGuard2 = RoomWithGuard()
         val escapeRoom = EscapeRoom(rope, tiger)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")
-        val boringRoom2 = Room(
-            "boringRoom2",
-            "This room is even more boring. It doesn't even lead anywhere (besides where you came from)."
-        )
+        val boringRoom2 = Room("boringRoom2", "This room is even more boring. It doesn't even lead anywhere (besides where you came from).")
 
         val exit = Exit()
 
