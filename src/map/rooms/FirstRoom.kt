@@ -38,7 +38,7 @@ class FirstRoom(private val door: Door) : Room("firstRoom", "This room's only fu
     }
 
     override fun getFirstLook():  GameResult {
-            return GameResult(GameResultCode.SUCCESS, "You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it.")
+        return GameResult(GameResultCode.SUCCESS, "You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it.")
     }
 
     private fun bedExamined(): GameResult {
