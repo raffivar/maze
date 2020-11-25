@@ -1,6 +1,5 @@
 package data.items
 
-import data.items.ItemData
 import items.Tiger.TigerStatus
 
 class TigerData(name: String,
