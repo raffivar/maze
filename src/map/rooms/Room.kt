@@ -29,48 +29,51 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     }
 
     open fun triggerEntranceEvent(moveResult: GameResult): GameResult {
-        return examineWithExtraInfo(moveResult.message)
+        return examineWithPrefix(moveResult.message)
     }
 
     open fun peekResult(player: Player): GameResult {
         return examine()
     }
 
+    open fun getFirstLook(): GameResult {
+        return examine()
+    }
+
     open fun examine(): GameResult {
-        return examine(null, null)
+        return examine(null)
     }
 
-    open fun examineWithExtraInfo(extraInfo: String?): GameResult {
-        return examine(extraInfo, null)
+    open fun examineWithPrefix(prefix: String?): GameResult {
+        return examine(prefix)
     }
 
-    open fun examineWithAlternativeDescription(alternativeDescription: String?): GameResult {
-        return examine(null, alternativeDescription)
-    }
-
-    open fun examine(extraInfo: String?, alternativeDescription: String?): GameResult {
-        var description = (alternativeDescription ?: baseDescription) + "\n"
-
-        extraInfo?.let {
+    open fun examine(prefix: String?): GameResult {
+        var description = baseDescription + "\n" + getExtraDetails()
+        prefix?.let {
             if (it.isNotBlank()) {
                 description = "$it\n$description"
             }
         }
+        return GameResult(GameResultCode.SUCCESS, description)
+    }
 
-        description += "This room contains: "
-        description += if (items.isEmpty()) {
+    private fun getExtraDetails(): String {
+        var extraDetails = "This room contains: "
+        extraDetails += if (items.isEmpty()) {
             "[Absolutely nothing].\n"
         } else {
             "${items.values}.\n"
         }
 
-        description += "This room leads: "
-        description += if (rooms.isEmpty()) {
+        extraDetails += "This room leads: "
+        extraDetails += if (rooms.isEmpty()) {
             "[Absolutely nowhere]."
         } else {
             "${rooms.keys}."
         }
-        return GameResult(GameResultCode.SUCCESS, description)
+
+        return extraDetails
     }
 
     fun addItem(item: Item) {
@@ -86,17 +89,20 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     }
 
     fun addConstraint(direction: Direction, constraint: Constraint) {
-        val constraints = constraintsToMove[direction] ?: ArrayList<Constraint>().also { constraintsToMove[direction] = it }
+        val constraints =
+            constraintsToMove[direction] ?: ArrayList<Constraint>().also { constraintsToMove[direction] = it }
         constraints.add(constraint)
     }
 
     fun addEventUponMovement(direction: Direction, event: (Direction) -> (GameResult)) {
-        val events = eventsUponMovement[direction] ?: ArrayList<(Direction) -> GameResult>().also { eventsUponMovement[direction] = it }
+        val events = eventsUponMovement[direction]
+            ?: ArrayList<(Direction) -> GameResult>().also { eventsUponMovement[direction] = it }
         events.add(event)
     }
 
     fun move(player: Player, direction: Direction): GameResult {
-        val nextRoom = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
+        val nextRoom =
+            rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
 
         val constraints = constraintsToMove[direction]
         constraints?.let {
@@ -132,26 +138,19 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         }
     }
 
-    open fun getBaseData(): RoomData {
-        val itemsData = ArrayList<SerializableItemData>()
-        for (item in items.values) {
-            itemsData.add(item.getData())
-        }
-        return RoomData(roomId, itemsData)
-    }
-
     open fun peek(player: Player, direction: Direction): GameResult {
-        val roomToPeek = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
+        val roomToPeek =
+            rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
         return roomToPeek.peekResult(player)
     }
 
-    open fun saveRoomDataToDB(gameItems: ItemMap) {
+    open fun saveDataToDB(gameItems: ItemMap) {
         for (item in items) {
             gameItems.addItem(item.value)
         }
     }
 
-    open fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
+    open fun loadDataFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
         items.clear()
         for (itemData in roomData.itemsData) {
             val item = gameItems[itemData.name]
@@ -162,5 +161,13 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
                 item.loadItem(itemData as ItemData)
             }
         }
+    }
+
+    open fun getDataToSaveToFile(): RoomData {
+        val itemsData = ArrayList<SerializableItemData>()
+        for (item in items.values) {
+            itemsData.add(item.getDataToSaveToFile())
+        }
+        return RoomData(roomId, itemsData)
     }
 }

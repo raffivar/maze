@@ -25,7 +25,7 @@ open class RopeDependedItem(name: String) : Item(name, null), SavableItem {
         return funToRun.invoke(player)
     }
 
-    override fun getData() : ItemData {
+    override fun getDataToSaveToFile() : ItemData {
         return RopeDependedItemData(name, hasNothingAttached)
     }
 

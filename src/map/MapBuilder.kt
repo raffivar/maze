@@ -20,7 +20,7 @@ class MapBuilder {
 
     fun build(): Room {
         //Floor #1
-        val door = Door("Door")
+        val door = Door("Door", false)
         val firstRoom = FirstRoom(door)
         val poison = Poison()
         val roomWithCloset = RoomWithCloset(door, poison)
@@ -127,19 +127,19 @@ class MapBuilder {
 
     private fun saveRoomToDB(room: Room) {
         roomDB.add(room)
-        room.saveRoomDataToDB(itemDB)
+        room.saveDataToDB(itemDB)
     }
 
     private fun loadRoomFromDB(roomData: SerializableRoomData) {
         val room = roomDB[roomData.roomId] ?: return
-        room.loadFromDB(roomData, itemDB)
+        room.loadDataFromDB(roomData, itemDB)
     }
 
     fun collectGameDataToSave(): GameData {
-        val playerData = player.getBaseData()
+        val playerData = player.getDataToSaveToFile()
         val mapData = MapData(ArrayList())
         for (room in roomDB.values) {
-            mapData.roomsData.add(room.getBaseData())
+            mapData.roomsData.add(room.getDataToSaveToFile())
         }
         return GameData(playerData, mapData)
     }

@@ -37,7 +37,7 @@ open class Item(var name: String, var description: String?) {
         return GameResult(GameResultCode.FAIL, "[${itemUsed.name}] cannot be used on [${this.name}]")
     }
 
-    open fun getData(): ItemData {
+    open fun getDataToSaveToFile(): ItemData {
         return ItemData(name)
     }
 

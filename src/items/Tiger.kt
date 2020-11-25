@@ -140,7 +140,7 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
         return forbiddenToLeaveRooms.containsKey(currentRoomId)
     }
 
-    override fun getData(): ItemData {
+    override fun getDataToSaveToFile(): ItemData {
         return TigerData(name, status, timesPeekedAt, facingSouth, currentRoomId)
     }
 

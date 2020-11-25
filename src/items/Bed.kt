@@ -20,7 +20,7 @@ class Bed(private val modifyRoomWhenExamined: () -> GameResult) : Item("Bed", "A
         }
     }
 
-    override fun getData(): ItemData {
+    override fun getDataToSaveToFile(): ItemData {
         return BedData(name, wasExaminedBefore)
     }
 

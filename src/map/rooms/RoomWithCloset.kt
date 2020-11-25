@@ -4,7 +4,6 @@ import game.GameResult
 import game.GameResultCode
 import items.*
 import items.maps.ItemMap
-import map.rooms.Room
 
 class RoomWithCloset(door: Door, private val poison: Poison) : Room("RoomWithCloset") {
     private var closet: Closet
@@ -21,8 +20,8 @@ class RoomWithCloset(door: Door, private val poison: Poison) : Room("RoomWithClo
         return GameResult(GameResultCode.SUCCESS, "Opened the [${closet.name}]. You discover some [${poison.name}] inside.")
     }
 
-    override fun saveRoomDataToDB(gameItems: ItemMap) {
-        super.saveRoomDataToDB(gameItems)
+    override fun saveDataToDB(gameItems: ItemMap) {
+        super.saveDataToDB(gameItems)
         gameItems.addItem(poison)
     }
 }

@@ -41,7 +41,7 @@ class Door(val doorId: String, override var isOpen: Boolean = true) : Item(doorI
         )
     }
 
-    override fun getData(): ItemData {
+    override fun getDataToSaveToFile(): ItemData {
         return DoorData(name, isOpen)
     }
 

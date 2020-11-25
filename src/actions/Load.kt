@@ -8,7 +8,7 @@ class Load(private val gameDataManager: GameDataManager) : Action("Load", "Load 
         val loadResult = gameDataManager.load()
         return when (loadResult.gameResultCode) {
             GameResultCode.SUCCESS -> {
-                player.currentRoom.examineWithExtraInfo(loadResult.message)
+                player.currentRoom.examineWithPrefix(loadResult.message)
             }
             else -> loadResult
         }

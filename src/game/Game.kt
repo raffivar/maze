@@ -9,8 +9,7 @@ import player.Player
 import java.lang.StringBuilder
 
 class Game(private val ioHandler: IOHandler) {
-    private val actions = arrayListOf(Examine(), Peek(), Go(), Take(), Drop(), Use(), Open(), Break(),
-        Inventory(), Exit())
+    private val actions = arrayListOf(Examine(), Peek(), Go(), Take(), Drop(), Use(), Open(), Break(), Inventory(), Exit())
     private val helpAction = Help(actions)
     private val actionsByName = ActionMap()
     private val player: Player
@@ -38,7 +37,7 @@ class Game(private val ioHandler: IOHandler) {
 
     fun run() {
         ioHandler.printMessage(getIntro())
-        ioHandler.printMessage(player.currentRoom.examine().message)
+        ioHandler.printMessage(player.currentRoom.getFirstLook().message)
         do {
             val command = ioHandler.readCommand()
             val commandResult = executeCommand(command)

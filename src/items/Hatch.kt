@@ -29,7 +29,7 @@ class Hatch(private val ladder: Ladder) : Item("Hatch", "A small hatch. Seems li
         return GameResult(GameResultCode.SUCCESS, "Placed [${ladder.name}] beneath [${this.name}], making it now accessible.")
     }
 
-    override fun getData(): ItemData {
+    override fun getDataToSaveToFile(): ItemData {
         return HatchData(name, isTooHigh)
     }
 

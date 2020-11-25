@@ -1,34 +1,25 @@
 package map.rooms
 
-import data.rooms.FirstRoomData
-import data.rooms.RoomData
-import data.serializables.SerializableItemData
-import data.serializables.SerializableRoomData
 import actions.constraints.Constraint
 import game.GameResult
 import game.GameResultCode
 import player.Player
-
 import items.*
 import items.maps.ItemMap
 import map.directions.Direction
-import java.util.ArrayList
 
-class FirstRoom(private val door: Door) : Room("firstRoom") {
+class FirstRoom(private val door: Door) : Room("firstRoom", "This room's only furniture is an extremely uncomfortable bed.") {
     private var bed: Bed
     private var key: Key
     private var lock: Lock
     private var mirror: Mirror
     private var brokenMirror: BrokenMirror
     private var shard: Shard
-    private var wasExaminedBefore = false
-    private val firstTimeDescription = "You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it."
-    private val defaultRoomDescription = "This room's only furniture is an extremely uncomfortable bed."
 
     init {
         bed = Bed(this::bedExamined)
         addItem(bed)
-        key = Key(this::keyTaken)
+        key = Key()
         lock = Lock(key)
         addItem(lock)
         mirror = Mirror(this::mirrorBroken)
@@ -40,33 +31,19 @@ class FirstRoom(private val door: Door) : Room("firstRoom") {
             Constraint({ !door.isOpen }, "The [${door.name}] is closed.")
         )
         door.addConstraintToOpen(
-            Constraint(
-                lock::isLocked,
+            Constraint(lock::isLocked,
                 "Looks like you have to to do something about the [${lock.name}] first."
             )
         )
     }
 
-    override fun examine(): GameResult {
-        return when (wasExaminedBefore) {
-            true -> {
-                super.examine()
-            }
-            false -> {
-                wasExaminedBefore = true
-                baseDescription = defaultRoomDescription
-                super.examineWithAlternativeDescription(firstTimeDescription)
-            }
-        }
+    override fun getFirstLook():  GameResult {
+            return GameResult(GameResultCode.SUCCESS, "You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it.")
     }
 
     private fun bedExamined(): GameResult {
-        wasExaminedBefore = true
         addItem(key)
         return GameResult(GameResultCode.SUCCESS, "You're curious as to why this bed is so excruciatingly uncomfortable.\nYou thoroughly examine it from all angles and discover a small [${key.name}] under it.")
-    }
-
-    private fun keyTaken() {
     }
 
     private fun mirrorBroken(): GameResult {
@@ -77,33 +54,18 @@ class FirstRoom(private val door: Door) : Room("firstRoom") {
         return GameResult(GameResultCode.SUCCESS, message)
     }
 
-    override fun saveRoomDataToDB(gameItems: ItemMap) {
-        super.saveRoomDataToDB(gameItems)
-        gameItems.addItem(key)
-        gameItems.addItem(brokenMirror)
-        gameItems.addItem(shard)
-    }
-
-    override fun getBaseData(): RoomData {
-        val itemsData = ArrayList<SerializableItemData>()
-        for (item in items.values) {
-            itemsData.add(item.getData())
-        }
-        return FirstRoomData(roomId, itemsData, wasExaminedBefore, baseDescription)
-    }
-
-    override fun loadFromDB(roomData: SerializableRoomData, gameItems: ItemMap) {
-        val data = roomData as FirstRoomData
-        wasExaminedBefore = data.wasExaminedBefore
-        baseDescription = data.baseDescription
-        super.loadFromDB(roomData, gameItems)
-    }
-
     override fun peek(player: Player, direction: Direction): GameResult {
         if (direction == Direction.WEST && !door.isOpen) {
             return GameResult(GameResultCode.FAIL, "Yeah, no, you can't peek into the next room while the [${door.name}] is closed. Nice try, though. :)")
         }
 
         return super.peek(player, direction)
+    }
+
+    override fun saveDataToDB(gameItems: ItemMap) {
+        super.saveDataToDB(gameItems)
+        gameItems.addItem(key)
+        gameItems.addItem(brokenMirror)
+        gameItems.addItem(shard)
     }
 }

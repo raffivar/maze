@@ -8,10 +8,10 @@ import map.rooms.Room
 class Player(var currentRoom: Room) {
     val inventory = ItemMap()
     
-    fun getBaseData(): PlayerData {
+    fun getDataToSaveToFile(): PlayerData {
         val itemsData = ArrayList<SerializableItemData>()
         for (item in inventory.values) {
-            itemsData.add(item.getData())
+            itemsData.add(item.getDataToSaveToFile())
         }
         return PlayerData(currentRoom.roomId, itemsData)
     }

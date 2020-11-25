@@ -48,7 +48,7 @@ class Bowl(private val poison: Poison) : Item("Bowl", ""), SavableItem {
         status = BowlStatus.POST_EATEN
     }
 
-    override fun getData(): ItemData {
+    override fun getDataToSaveToFile(): ItemData {
         return BowlData(name, wasExaminedBefore, status)
     }
 

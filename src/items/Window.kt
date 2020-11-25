@@ -35,7 +35,7 @@ class Window(name: String, private val pole: Pole, private val rope: Rope = pole
         return funToRun.invoke(player)
     }
 
-    override fun getData() : WindowData {
+    override fun getDataToSaveToFile() : WindowData {
         return WindowData(name, hasNothingAttached, isOpen)
     }
 

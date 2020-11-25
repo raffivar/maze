@@ -30,7 +30,7 @@ class Ladder : Item("Ladder", "A standard, metal ladder. Big enough to reach the
         return useResult
     }
 
-    override fun getData() : ItemData {
+    override fun getDataToSaveToFile() : ItemData {
         return RopeDependedItemData(name, isInUse)
     }
 

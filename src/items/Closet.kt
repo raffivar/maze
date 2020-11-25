@@ -26,7 +26,7 @@ class Closet(override var isOpen: Boolean = true, private val modifyRoomWhenExam
         return modifyRoomWhenExamined.invoke()
     }
 
-    override fun getData() : ItemData {
+    override fun getDataToSaveToFile() : ItemData {
         return ClosetData(name, isOpen)
     }
 

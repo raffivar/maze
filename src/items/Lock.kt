@@ -37,7 +37,7 @@ class Lock(itemToUnlock: Item, var isLocked: Boolean = true) : Item("Lock", null
         return GameResult(GameResultCode.SUCCESS, "The [${this.name}] is extremely rusty,\nso it's a bit difficult,\nnot to mention, you feel the rust on your hands (so ew, ew, EWWWWW),\nbut after a few tries, you eventually manage to unlock it.")
     }
 
-    override fun getData() : ItemData {
+    override fun getDataToSaveToFile() : ItemData {
         return LockData(name, isLocked)
     }
 
