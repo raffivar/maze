@@ -16,7 +16,7 @@ class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "Ther
         addConstraint(
             Direction.DOWN,
             Constraint(
-                window::isOpen,
+                { !window.isOpen },
                 "You try to climb down a closed [${window.name}]. You fail."
             )
         )
@@ -42,7 +42,8 @@ class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "Ther
             return GameResult(
                 GameResultCode.GAME_OVER,
                 "You were so close to escape...!! alas, you got caught by the guards last minute.\n" +
-                        "This is what happens when you leave a corpse in an exposed area.")
+                        "This is what happens when you leave a corpse in an exposed area.\n" +
+                        "You might want to pay close attention to the [${tiger.name}] and where you leave it...")
         }
         return GameResult(GameResultCode.SUCCESS, "")
     }

@@ -16,6 +16,7 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
     var facingSouth = true
     private val aliveDescription = "This is a really big, fat, lazy [$name]."
     private val deadDescription = "This gigantic [$name] seems to be dead."
+    private val inForbiddenRoomWarning = "... Hmph. You might not want to leave this tiger carcass in the same room it died... or rooms where it can easily be found."
     lateinit var startRoomId: String
     lateinit var currentRoomId: String
     lateinit var possibleDeathRooms: HashMap<String, Room>
@@ -27,7 +28,12 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
 
     override fun examine(): GameResult {
         return when (status) {
-            TigerStatus.DEAD -> examine(deadDescription)
+            TigerStatus.DEAD -> {
+                when (isInForbiddenRoom()) {
+                    true -> examine(deadDescription + "\n" + inForbiddenRoomWarning)
+                    false -> examine(deadDescription)
+                }
+            }
             else -> examine(aliveDescription)
         }
     }
@@ -37,6 +43,7 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
             TigerStatus.DEAD -> {
                 player.inventory.addItem(this)
                 player.currentRoom.removeItem(this)
+                currentRoomId = ""
                 GameResult(GameResultCode.SUCCESS, "Obtained an extremely heavy [${this.name}]. Good luck with that.")
             }
             else -> {
@@ -70,10 +77,10 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
             TigerStatus.SMELLS_POISON -> {
                 when (timesPeekedAt) {
                     1 -> GameResult(GameResultCode.SUCCESS, "The [${this.name}] is turning around, slowly.")
-                    2 -> GameResult(GameResultCode.SUCCESS, "The [${this.name}] is getting closer to the bowl..!!")
+                    2 -> GameResult(GameResultCode.SUCCESS, "The [${this.name}] is getting closer to the [${bowl.name}]..!!")
                     else -> {
                         this.setEatsPoison()
-                        GameResult(GameResultCode.SUCCESS, "The [${this.name}] is now eating from the bowl!")
+                        GameResult(GameResultCode.SUCCESS, "The [${this.name}] is now eating from the [${bowl.name}]!")
                     }
                 }
             }

@@ -15,7 +15,7 @@ class Shard : Item("Shard", "This is shiny.") {
 
     fun getErrorMessage(error: Error): String {
         when (error) {
-            Error.NOT_IN_INVENTORY -> return "You can't peek anywhere without something shiny!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            Error.NOT_IN_INVENTORY -> return "You can't peek anywhere without something shiny...!!"
         }
     }
 }

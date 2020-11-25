@@ -7,7 +7,7 @@ import game.GameResultCode
 import player.Player
 import items.interfaces.Openable
 
-class Window(name: String, private val pole: Pole, private val rope: Rope = pole.rope, override var isOpen: Boolean = true) : RopeDependedItem(name),
+class Window(name: String, private val pole: Pole, private val rope: Rope = pole.rope, override var isOpen: Boolean = false) : RopeDependedItem(name),
     Openable {
     private val exitInfo = "You might be able to climb [DOWN] through."
     private val closedDescription = "This [${name}] is closed. $exitInfo"
@@ -19,13 +19,13 @@ class Window(name: String, private val pole: Pole, private val rope: Rope = pole
 
     override fun examine(): GameResult {
         return when (isOpen) {
-            true -> examine(closedDescription)
-            false -> examine(openDescription)
+            true -> examine(openDescription)
+            false -> examine(closedDescription)
         }
     }
 
     override fun open(player: Player): GameResult {
-        isOpen = false
+        isOpen = true
         description = openDescription
         return GameResult(GameResultCode.FAIL, "Opened [${this.name}].")
     }
@@ -52,7 +52,7 @@ class Window(name: String, private val pole: Pole, private val rope: Rope = pole
         if (pole.hasNothingAttached) {
             return GameResult(GameResultCode.SUCCESS, "You might want to attach the [${rope.name}] to the [${pole.name}] first.")
         }
-        if (isOpen) {
+        if (!isOpen) {
             return GameResult(GameResultCode.FAIL, "Still can't do that if the [${this.name}] is closed.")
         }
         hasNothingAttached = false

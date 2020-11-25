@@ -8,7 +8,7 @@ import player.Player
 import items.interfaces.Openable
 import items.interfaces.SavableItem
 
-class Closet(override var isOpen: Boolean = true, private val modifyRoomWhenExamined: () -> GameResult) : Item("Closet", null),
+class Closet(override var isOpen: Boolean = false, private val modifyRoomWhenExamined: () -> GameResult) : Item("Closet", null),
     Openable, SavableItem {
     private val closedDescription = "A standard, boring [${name}]. It is closed."
     private val openDescription = "A standard, boring [${name}]. It is open."
