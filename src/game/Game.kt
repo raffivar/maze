@@ -3,20 +3,22 @@ package game
 import actions.*
 import actions.maps.ActionMap
 import game.interfaces.IOHandler
+import items.Shard
 import map.MapBuilder
 import player.Inventory
 import player.Player
 import java.lang.StringBuilder
 
 class Game(private val ioHandler: IOHandler) {
-    private val actions = arrayListOf(Examine(), Peek(), Go(), Take(), Drop(), Use(), Open(), Break(), Inventory(), Exit())
+    private val peekItem = Shard()
+    private val actions = arrayListOf(Examine(), Peek(peekItem), Go(), Take(), Drop(), Use(), Open(), Break(), Inventory(), Exit())
     private val helpAction = Help(actions)
     private val actionsByName = ActionMap()
     private val player: Player
     private val gameDataManager: GameDataManager
 
     init {
-        val mapBuilder = MapBuilder()
+        val mapBuilder = MapBuilder(peekItem)
         val firstRoom = mapBuilder.build()
         player = Player(firstRoom)
         mapBuilder.player = player

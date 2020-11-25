@@ -13,7 +13,7 @@ import map.directions.Direction
 import map.maps.RoomMap
 import map.rooms.*
 
-class MapBuilder {
+class MapBuilder(private val shard: Shard) {
     private val roomDB = RoomMap()
     private val itemDB = ItemMap()
     lateinit var player: Player
@@ -21,7 +21,7 @@ class MapBuilder {
     fun build(): Room {
         //Floor #1
         val door = Door("Door", false)
-        val firstRoom = FirstRoom(door)
+        val firstRoom = FirstRoom(door, shard)
         val poison = Poison()
         val roomWithCloset = RoomWithCloset(door, poison)
 
