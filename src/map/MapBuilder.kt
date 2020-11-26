@@ -27,7 +27,10 @@ class MapBuilder(private val shard: Shard) {
 
         val roomBeforeTiger = Room(
             "roomBeforeTiger",
-            "This room is completely empty. Like your life.\nIt does make you think about your past actions, and what led you here.\nFrom time to time it's good to... reflect. "
+            "This room is completely empty. Like your life.\n" +
+                    "It does make you think about your past actions, and what led you here.\n" +
+                    "From time to time it's good to... reflect.",
+            "The room doesn't seem to contain anything special."
         )
 
         val bowl = Bowl(poison)

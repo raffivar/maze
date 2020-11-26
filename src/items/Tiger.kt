@@ -61,7 +61,7 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
         return super.drop(player)
     }
 
-    fun peekedAt(player: Player, room: Room): GameResult {
+    fun peekedAt(player: Player, room: Room, defaultResult: () -> GameResult): GameResult {
         timesPeekedAt++
         return when (status) {
             TigerStatus.STANDARD -> {
@@ -105,7 +105,7 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
             TigerStatus.DEAD -> {
                 when (timesPeekedAt) {
                     1 -> GameResult(GameResultCode.SUCCESS, "Looks like the [${this.name}] is stopped moving.")
-                    else -> return room.examine()
+                    else -> return defaultResult.invoke()
                 }
             }
         }

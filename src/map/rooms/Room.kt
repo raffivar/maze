@@ -14,7 +14,7 @@ import player.Player
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", itemsToAdd: ArrayList<Item>? = null) {
+open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", private val peekDescription: String = baseDescription, itemsToAdd: ArrayList<Item>? = null) {
     val items = ItemMap()
     private val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
@@ -32,24 +32,25 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         return examineWithPrefix(moveResult.message)
     }
 
-    open fun peekResult(player: Player): GameResult {
-        return examine()
-    }
-
     open fun getFirstLook(): GameResult {
         return examine()
     }
 
     open fun examine(): GameResult {
-        return examine(null)
+        return examine(null, null)
+    }
+
+    open fun peekResult(player: Player): GameResult {
+        return examine(null, peekDescription)
     }
 
     open fun examineWithPrefix(prefix: String?): GameResult {
-        return examine(prefix)
+        return examine(prefix, null)
     }
 
-    open fun examine(prefix: String?): GameResult {
-        var description = baseDescription + "\n" + getExtraDetails()
+    open fun examine(prefix: String?, baseDescription: String?): GameResult {
+        var description = (baseDescription ?: this.baseDescription) + "\n"
+        description += getExtraDetails()
         prefix?.let {
             if (it.isNotBlank()) {
                 description = "$it\n$description"

@@ -4,11 +4,10 @@ import actions.constraints.Constraint
 import game.GameResult
 import game.GameResultCode
 import player.Player
-import items.Tiger.TigerStatus
 import items.*
 import map.directions.Direction
 
-class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room's floor is just covered with fur.") {
+class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. The floor is covered with it.", "This room's floor seems to be covered with some kind of furry material.") {
     init {
         addTiger(tiger)
         addItem(bowl)
@@ -57,7 +56,7 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
             return super.peekResult(player)
         }
 
-        return tiger.peekedAt(player, this)
+        return tiger.peekedAt(player, this) { super.peekResult(player) }
     }
 
     private fun playerWentSouthEvent(direction: Direction): GameResult {
