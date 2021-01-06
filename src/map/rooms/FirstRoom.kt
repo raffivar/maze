@@ -54,12 +54,12 @@ class FirstRoom(private val door: Door) : Room("firstRoom", "This room's only fu
         return GameResult(GameResultCode.SUCCESS, message)
     }
 
-    override fun peek(player: Player, direction: Direction): GameResult {
+    override fun peek(player: Player, direction: Direction, roomToPeek: Room, item: Item): GameResult {
         if (direction == Direction.WEST && !door.isOpen) {
             return GameResult(GameResultCode.FAIL, "Yeah, no, you can't peek into the next room while the [${door.name}] is closed. Nice try, though. :)")
         }
 
-        return super.peek(player, direction)
+        return super.peek(player, direction, roomToPeek, item)
     }
 
     override fun saveDataToDB(gameItems: ItemMap) {

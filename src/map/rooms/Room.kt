@@ -16,7 +16,7 @@ import kotlin.collections.HashMap
 
 open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", private val peekDescription: String = baseDescription, itemsToAdd: ArrayList<Item>? = null) {
     val items = ItemMap()
-    private val rooms = HashMap<Direction, Room>()
+    val rooms = HashMap<Direction, Room>()
     private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
     private val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
 
@@ -139,8 +139,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         }
     }
 
-    open fun peek(player: Player, direction: Direction): GameResult {
-        val roomToPeek = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
+    open fun peek(player: Player, direction: Direction, roomToPeek: Room, item: Item): GameResult {
         return roomToPeek.peekResult(player)
     }
 

@@ -23,11 +23,13 @@ class Peek : Action("Peek", "Peek [direction] with [with], given the item is you
             GameResultCode.FAIL, "No [$itemName] in inventory or current room."
         )
 
+        val roomToPeek = player.currentRoom.rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
+
         if (item !is Reflective) {
             return GameResult(GameResultCode.ERROR, "The [${item.name}] does not seem very... reflective...")
         }
 
-        val peekResult = player.currentRoom.peek(player, direction)
+        val peekResult = player.currentRoom.peek(player, direction, roomToPeek, item)
 
         return when (peekResult.gameResultCode) {
             GameResultCode.SUCCESS -> GameResult(peekResult.gameResultCode, "Peeking [${direction.name}]:\n${peekResult.message}")

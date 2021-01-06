@@ -71,11 +71,11 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         }
     }
 
-    override fun peek(player: Player, direction: Direction): GameResult {
+    override fun peek(player: Player, direction: Direction, roomToPeek: Room, item: Item): GameResult {
         if (direction == Direction.NORTH && items.containsKey(tiger.name) && tiger.isAlive()) {
             return GameResult(GameResultCode.FAIL, "You try peeking [${direction.name}], but the [${tiger.name}] is too fat, and is blocking the way.")
         }
 
-        return super.peek(player, direction)
+        return super.peek(player, direction, roomToPeek, item)
     }
 }
