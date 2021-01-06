@@ -2,9 +2,10 @@ package items
 
 import game.GameResult
 import game.GameResultCode
+import items.interfaces.Reflective
 import player.Player
 
-class Shard : Item("Shard", "This is shiny.") {
+class Shard : Item("Shard", "This is shiny."), Reflective {
     enum class Error { NOT_IN_INVENTORY }
 
     override fun take(player: Player): GameResult {

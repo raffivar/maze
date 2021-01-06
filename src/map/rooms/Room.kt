@@ -140,8 +140,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     }
 
     open fun peek(player: Player, direction: Direction): GameResult {
-        val roomToPeek =
-            rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
+        val roomToPeek = rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
         return roomToPeek.peekResult(player)
     }
 

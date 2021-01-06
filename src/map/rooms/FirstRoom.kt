@@ -8,11 +8,12 @@ import items.*
 import items.maps.ItemMap
 import map.directions.Direction
 
-class FirstRoom(private val door: Door, private val shard: Shard) : Room("firstRoom", "This room's only furniture is an extremely uncomfortable bed.") {
+class FirstRoom(private val door: Door) : Room("firstRoom", "This room's only furniture is an extremely uncomfortable bed.") {
     private var bed: Bed
     private var key: Key
     private var lock: Lock
     private var mirror: Mirror
+    private var shard: Shard
     private var brokenMirror: BrokenMirror
 
     init {
@@ -23,6 +24,7 @@ class FirstRoom(private val door: Door, private val shard: Shard) : Room("firstR
         addItem(lock)
         mirror = Mirror(this::mirrorBroken)
         addItem(mirror)
+        shard = Shard()
         brokenMirror = BrokenMirror()
         addItem(door)
         addConstraint(Direction.WEST,

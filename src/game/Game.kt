@@ -10,15 +10,14 @@ import player.Player
 import java.lang.StringBuilder
 
 class Game(private val ioHandler: IOHandler) {
-    private val shard = Shard()
-    private val actions = arrayListOf(Examine(), Peek(shard), Go(), Take(), Drop(), Use(), Open(), Break(), Inventory(), Exit())
+    private val actions = arrayListOf(Examine(), Peek(), Go(), Take(), Drop(), Use(), Open(), Break(), Inventory(), Exit())
     private val helpAction = Help(actions)
     private val actionsByName = ActionMap()
     private val player: Player
     private val gameDataManager: GameDataManager
 
     init {
-        val mapBuilder = MapBuilder(shard)
+        val mapBuilder = MapBuilder()
         val firstRoom = mapBuilder.build()
         player = Player(firstRoom)
         mapBuilder.player = player
