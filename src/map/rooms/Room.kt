@@ -101,10 +101,6 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         events.add(event)
     }
 
-    open fun peek(player: Player, direction: Direction, roomToPeek: Room, item: Item): GameResult {
-        return roomToPeek.peekResult(player)
-    }
-
     open fun saveDataToDB(gameItems: ItemMap) {
         for (item in items) {
             gameItems.addItem(item.value)

@@ -3,7 +3,6 @@ package map.rooms
 import actions.constraints.Constraint
 import game.GameResult
 import game.GameResultCode
-import player.Player
 import items.*
 import items.maps.ItemMap
 import map.directions.Direction
@@ -52,14 +51,6 @@ class FirstRoom(private val door: Door) : Room("firstRoom", "This room's only fu
         addItem(brokenMirror)
         val message = "You broke the [${mirror.name}]. You monster. Look what you did to the floor of this room!!"
         return GameResult(GameResultCode.SUCCESS, message)
-    }
-
-    override fun peek(player: Player, direction: Direction, roomToPeek: Room, item: Item): GameResult {
-        if (direction == Direction.WEST && !door.isOpen) {
-            return GameResult(GameResultCode.FAIL, "Yeah, no, you can't peek into the next room while the [${door.name}] is closed. Nice try, though. :)")
-        }
-
-        return super.peek(player, direction, roomToPeek, item)
     }
 
     override fun saveDataToDB(gameItems: ItemMap) {

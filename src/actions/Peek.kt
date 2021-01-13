@@ -29,7 +29,16 @@ class Peek : Action("Peek", "Peek [direction] with [with], given the item is you
             return GameResult(GameResultCode.ERROR, "The [${item.name}] does not seem very... reflective...")
         }
 
-        val peekResult = player.currentRoom.peek(player, direction, roomToPeek, item)
+        val constraints = player.currentRoom.constraintsToMove[direction]
+        constraints?.let {
+            for (constraint in it) {
+                if (constraint.isConstraining.invoke()) {
+                    return GameResult(GameResultCode.FAIL, "Cannot peek [${direction.name}] - ${constraint.message}")
+                }
+            }
+        }
+
+        val peekResult = roomToPeek.peekResult(player)
 
         return when (peekResult.gameResultCode) {
             GameResultCode.SUCCESS -> GameResult(peekResult.gameResultCode, "Peeking [${direction.name}]:\n${peekResult.message}")
