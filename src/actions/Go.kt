@@ -20,7 +20,7 @@ class Go : Action("Go", "Go [direction]") {
             "This room does not lead [$direction]"
         )
 
-        val constraints = player.currentRoom.constraintsToMove[direction]
+        val constraints = player.currentRoom.constraintsToMoveOrPeek[direction]
         constraints?.let {
             for (constraint in it) {
                 if (constraint.isConstraining.invoke()) {

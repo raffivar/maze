@@ -17,7 +17,7 @@ import kotlin.collections.HashMap
 open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", private val peekDescription: String = baseDescription, itemsToAdd: ArrayList<Item>? = null) {
     val items = ItemMap()
     val rooms = HashMap<Direction, Room>()
-    val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
+    val constraintsToMoveOrPeek = HashMap<Direction, ArrayList<Constraint>>()
     val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
 
     init {
@@ -91,7 +91,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
 
     fun addConstraint(direction: Direction, constraint: Constraint) {
         val constraints =
-            constraintsToMove[direction] ?: ArrayList<Constraint>().also { constraintsToMove[direction] = it }
+            constraintsToMoveOrPeek[direction] ?: ArrayList<Constraint>().also { constraintsToMoveOrPeek[direction] = it }
         constraints.add(constraint)
     }
 
