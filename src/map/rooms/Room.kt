@@ -40,7 +40,7 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         return examine(null, null)
     }
 
-    open fun peekResult(player: Player): GameResult {
+    open fun peek(player: Player): GameResult {
         return examine(null, peekDescription)
     }
 

@@ -65,7 +65,7 @@ class MapBuilder {
         //Floor #2
         val roomAboveHatch = RoomWithHatch("roomAboveHatch", "A room with nothing but a hatch in the floor.", hatch)
         val roomWithGuard2 = RoomWithGuard()
-        val escapeRoom = EscapeRoom(rope, tiger)
+        val escapeRoom = LastRoom(rope, tiger)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")
         val boringRoom2 = Room("boringRoom2", "This room is even more boring. It doesn't even lead anywhere (besides where you came from).")
 

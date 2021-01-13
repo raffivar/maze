@@ -6,7 +6,7 @@ import game.GameResultCode
 import items.*
 import map.directions.Direction
 
-class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "There's only a window and a pole in this room. You might want to peek out the window.") {
+class LastRoom(rope: Rope, private val tiger: Tiger): Room("lastRoom", "There's only a window and a pole in this room. You might want to peek out the window.") {
     private val pole = Pole("Pole", rope)
     private val window = Window("Window", pole, rope)
 
@@ -17,14 +17,14 @@ class EscapeRoom(rope: Rope, private val tiger: Tiger): Room("escapeRoom", "Ther
             Direction.DOWN,
             Constraint(
                 { !window.isOpen },
-                "You try to climb down a closed [${window.name}]. You fail."
+                "The [${window.name}] is closed."
             )
         )
         addConstraint(
             Direction.DOWN,
             Constraint(
                 pole::hasNothingAttached,
-                "You can't really jump from there, it's too high."
+                "It's too high."
             )
         )
         addConstraint(

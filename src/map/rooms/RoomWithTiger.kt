@@ -51,12 +51,12 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         }
     }
 
-    override fun peekResult(player: Player): GameResult {
+    override fun peek(player: Player): GameResult {
         if (!items.containsKey(tiger.name)) {
-            return super.peekResult(player)
+            return super.peek(player)
         }
 
-        return tiger.peekedAt(player, this) { super.peekResult(player) }
+        return tiger.peekedAt(player, this) { super.peek(player) }
     }
 
     private fun playerWentSouthEvent(direction: Direction): GameResult {

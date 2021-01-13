@@ -38,7 +38,7 @@ class Peek : Action("Peek", "Peek [direction] with [with], given the item is you
             }
         }
 
-        val peekResult = roomToPeek.peekResult(player)
+        val peekResult = roomToPeek.peek(player)
 
         return when (peekResult.gameResultCode) {
             GameResultCode.SUCCESS -> GameResult(peekResult.gameResultCode, "Peeking [${direction.name}]:\n${peekResult.message}")
