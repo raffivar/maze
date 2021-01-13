@@ -17,8 +17,8 @@ import kotlin.collections.HashMap
 open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", private val peekDescription: String = baseDescription, itemsToAdd: ArrayList<Item>? = null) {
     val items = ItemMap()
     val rooms = HashMap<Direction, Room>()
-    private val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
-    private val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
+    val constraintsToMove = HashMap<Direction, ArrayList<Constraint>>()
+    val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
 
     init {
         itemsToAdd?.let {
@@ -99,44 +99,6 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         val events = eventsUponMovement[direction]
             ?: ArrayList<(Direction) -> GameResult>().also { eventsUponMovement[direction] = it }
         events.add(event)
-    }
-
-    fun move(player: Player, direction: Direction): GameResult {
-        val nextRoom =
-            rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
-
-        val constraints = constraintsToMove[direction]
-        constraints?.let {
-            for (constraint in it) {
-                if (constraint.isConstraining.invoke()) {
-                    return GameResult(GameResultCode.FAIL, "Cannot move [${direction.name}] - ${constraint.message}")
-                }
-            }
-        }
-
-        var eventsMessage = ""
-        val events = eventsUponMovement[direction]
-        events?.let {
-            for (event in it) {
-                val eventResult = event.invoke(direction)
-                when (eventResult.gameResultCode) {
-                    GameResultCode.GAME_OVER -> return eventResult
-                    else -> {
-                        if (eventResult.message.isNotBlank()) {
-                            eventsMessage += eventResult.message
-                        }
-                    }
-                }
-            }
-        }
-
-        player.currentRoom = nextRoom
-
-        val moveMessage = "Moved [${direction.name}]."
-        return when (eventsMessage.isBlank()) {
-            true -> GameResult(GameResultCode.SUCCESS, moveMessage)
-            false -> GameResult(GameResultCode.SUCCESS, "$eventsMessage\n$moveMessage")
-        }
     }
 
     open fun peek(player: Player, direction: Direction, roomToPeek: Room, item: Item): GameResult {
