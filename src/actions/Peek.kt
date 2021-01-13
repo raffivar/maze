@@ -6,7 +6,7 @@ import items.interfaces.Reflective
 import player.Player
 import map.directions.Direction
 
-class Peek : Action("Peek", "Peek [direction] with [with], given the item is your inventory") {
+class Peek : Action("Peek", "Peek [direction] with [item], given the item is your inventory") {
     override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty() || args.size < 3 || !args[1].equals("with", true)) {
             return GameResult(GameResultCode.ERROR, "Invalid arguments. Please use the format: '$howToUse'.")
