@@ -6,9 +6,10 @@ import game.GameResultCode
 import player.Player
 import items.*
 import map.directions.Direction
+import map.rooms.interfaces.EnterEventRoom
 import map.rooms.interfaces.PeekEventRoom
 
-class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. The floor is covered with it.", "This room's floor seems to be covered with some kind of furry material."), PeekEventRoom {
+class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. The floor is covered with it.", "This room's floor seems to be covered with some kind of furry material."), PeekEventRoom, EnterEventRoom {
     init {
         addTiger(tiger)
         addItem(bowl)
@@ -35,19 +36,19 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         tiger.currentRoomId = this.roomId
     }
 
-    override fun triggerEntranceEvent(moveResult: GameResult): GameResult {
+    override fun onRoomEntered(defaultResult: () -> GameResult, player: Player): GameResult {
         return when (tiger.isAlive()) {
             true -> {
                 when (tiger.facingSouth) {
                     true -> GameResult(GameResultCode.GAME_OVER, "You just got mauled by a gigantic tiger! Try peeking into a room before entering it next time.")
-                    false -> super.triggerEntranceEvent(moveResult)
+                    false -> defaultResult.invoke()
                 }
             }
             false ->  {
                 if (tiger.timesPeekedAt == 0) {
                     tiger.timesPeekedAt++
                 }
-                super.triggerEntranceEvent(moveResult)
+                defaultResult.invoke()
             }
         }
     }

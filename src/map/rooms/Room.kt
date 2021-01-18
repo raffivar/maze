@@ -27,10 +27,6 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         }
     }
 
-    open fun triggerEntranceEvent(moveResult: GameResult): GameResult {
-        return examineWithPrefix(moveResult.message)
-    }
-
     open fun getFirstLook(): GameResult {
         return examine()
     }

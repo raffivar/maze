@@ -4,6 +4,7 @@ import game.GameResult
 import player.Player
 import game.GameResultCode
 import map.directions.Direction
+import map.rooms.interfaces.EnterEventRoom
 
 class Go : Action("Go", "Go [direction]") {
     override fun execute(player: Player, args: List<String>): GameResult {
@@ -15,7 +16,7 @@ class Go : Action("Go", "Go [direction]") {
             GameResultCode.ERROR, "[$directionAsText] is not a valid direction."
         )
 
-        val nextRoom = player.currentRoom.rooms[direction] ?: return GameResult(
+        val roomToMove = player.currentRoom.rooms[direction] ?: return GameResult(
             GameResultCode.FAIL,
             "This room does not lead [$direction]"
         )
@@ -45,19 +46,19 @@ class Go : Action("Go", "Go [direction]") {
             }
         }
 
-        player.currentRoom = nextRoom
+        player.currentRoom = roomToMove
 
         val moveMessage = "Moved [${direction.name}]."
+
         val moveResult = when (eventsMessage.isBlank()) {
             true -> GameResult(GameResultCode.SUCCESS, moveMessage)
             false -> GameResult(GameResultCode.SUCCESS, "$eventsMessage\n$moveMessage")
         }
 
-        return when (moveResult.gameResultCode) {
-            GameResultCode.ERROR, GameResultCode.FAIL, GameResultCode.GAME_OVER -> moveResult
-            GameResultCode.SUCCESS -> {
-                player.currentRoom.triggerEntranceEvent(moveResult)
-            }
+        val defaultResult = {roomToMove.examineWithPrefix(moveResult.message)}
+        return when (roomToMove is EnterEventRoom) {
+            true -> roomToMove.onRoomEntered(defaultResult, player)
+            false -> defaultResult.invoke()
         }
     }
 }
