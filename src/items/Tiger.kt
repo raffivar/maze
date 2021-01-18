@@ -61,7 +61,7 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
         return super.drop(player)
     }
 
-    fun peekedAt(player: Player, room: Room, defaultResult: () -> GameResult): GameResult {
+    fun peekedAt(defaultResult: () -> GameResult, player: Player, room: Room): GameResult {
         timesPeekedAt++
         return when (status) {
             TigerStatus.STANDARD -> {

@@ -6,8 +6,9 @@ import game.GameResultCode
 import player.Player
 import items.*
 import map.directions.Direction
+import map.rooms.interfaces.PeekEventRoom
 
-class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. The floor is covered with it.", "This room's floor seems to be covered with some kind of furry material.") {
+class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. The floor is covered with it.", "This room's floor seems to be covered with some kind of furry material."), PeekEventRoom {
     init {
         addTiger(tiger)
         addItem(bowl)
@@ -51,12 +52,12 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         }
     }
 
-    override fun peek(player: Player): GameResult {
+    override fun onRoomPeeked(defaultResult: () -> GameResult, player: Player): GameResult {
         if (!items.containsKey(tiger.name)) {
-            return super.peek(player)
+            return defaultResult.invoke()
         }
 
-        return tiger.peekedAt(player, this) { super.peek(player) }
+        return tiger.peekedAt(defaultResult, player, this)
     }
 
     private fun playerWentSouthEvent(direction: Direction): GameResult {

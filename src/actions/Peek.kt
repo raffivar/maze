@@ -5,6 +5,7 @@ import game.GameResultCode
 import items.interfaces.Reflective
 import player.Player
 import map.directions.Direction
+import map.rooms.interfaces.PeekEventRoom
 
 class Peek : Action("Peek", "Peek [direction] with [item], given the item is your inventory") {
     override fun execute(player: Player, args: List<String>): GameResult {
@@ -23,7 +24,9 @@ class Peek : Action("Peek", "Peek [direction] with [item], given the item is you
             GameResultCode.FAIL, "No [$itemName] in inventory or current room."
         )
 
-        val roomToPeek = player.currentRoom.rooms[direction] ?: return GameResult(GameResultCode.FAIL, "This room does not lead [$direction]")
+        val roomToPeek = player.currentRoom.rooms[direction] ?: return GameResult(GameResultCode.FAIL,
+            "This room does not lead [$direction]"
+        )
 
         if (item !is Reflective) {
             return GameResult(GameResultCode.ERROR, "The [${item.name}] does not seem very... reflective...")
@@ -38,7 +41,11 @@ class Peek : Action("Peek", "Peek [direction] with [item], given the item is you
             }
         }
 
-        val peekResult = roomToPeek.peek(player)
+        val defaultResult = {roomToPeek.examine(null, roomToPeek.peekDescription)}
+        val peekResult = when (roomToPeek is PeekEventRoom) {
+            true -> roomToPeek.onRoomPeeked(defaultResult, player)
+            false -> defaultResult.invoke()
+        }
 
         return when (peekResult.gameResultCode) {
             GameResultCode.SUCCESS -> GameResult(peekResult.gameResultCode, "Peeking [${direction.name}]:\n${peekResult.message}")

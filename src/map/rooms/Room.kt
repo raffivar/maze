@@ -10,11 +10,10 @@ import items.Item
 import items.maps.ItemMap
 import items.interfaces.SavableItem
 import map.directions.Direction
-import player.Player
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", private val peekDescription: String = baseDescription, itemsToAdd: ArrayList<Item>? = null) {
+open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", val peekDescription: String = baseDescription, itemsToAdd: ArrayList<Item>? = null) {
     val items = ItemMap()
     val rooms = HashMap<Direction, Room>()
     val constraintsToMoveOrPeek = HashMap<Direction, ArrayList<Constraint>>()
@@ -38,10 +37,6 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
 
     open fun examine(): GameResult {
         return examine(null, null)
-    }
-
-    open fun peek(player: Player): GameResult {
-        return examine(null, peekDescription)
     }
 
     open fun examineWithPrefix(prefix: String?): GameResult {
