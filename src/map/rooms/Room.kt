@@ -17,7 +17,6 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     val items = ItemMap()
     val rooms = HashMap<Direction, Room>()
     val constraintsToMoveOrPeek = HashMap<Direction, ArrayList<Constraint>>()
-    val eventsUponMovement = HashMap<Direction, ArrayList<(Direction) -> GameResult>>()
 
     init {
         itemsToAdd?.let {
@@ -84,12 +83,6 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         val constraints =
             constraintsToMoveOrPeek[direction] ?: ArrayList<Constraint>().also { constraintsToMoveOrPeek[direction] = it }
         constraints.add(constraint)
-    }
-
-    fun addEventUponMovement(direction: Direction, event: (Direction) -> (GameResult)) {
-        val events = eventsUponMovement[direction]
-            ?: ArrayList<(Direction) -> GameResult>().also { eventsUponMovement[direction] = it }
-        events.add(event)
     }
 
     open fun saveDataToDB(gameItems: ItemMap) {

@@ -5,6 +5,7 @@ import player.Player
 import game.GameResultCode
 import map.directions.Direction
 import map.rooms.interfaces.EnterEventRoom
+import map.rooms.interfaces.ExitEventRoom
 
 class Go : Action("Go", "Go [direction]") {
     override fun execute(player: Player, args: List<String>): GameResult {
@@ -30,30 +31,23 @@ class Go : Action("Go", "Go [direction]") {
             }
         }
 
-        var eventsMessage = ""
-        val events = player.currentRoom.eventsUponMovement[direction]
-        events?.let {
-            for (event in it) {
-                val eventResult = event.invoke(direction)
-                when (eventResult.gameResultCode) {
-                    GameResultCode.GAME_OVER -> return eventResult
-                    else -> {
-                        if (eventResult.message.isNotBlank()) {
-                            eventsMessage += eventResult.message
-                        }
-                    }
-                }
+        val roomMovedFrom = player.currentRoom
+        var moveMessage = "Moved [${direction.name}]."
+
+        val onRoomExitEvent = when (roomMovedFrom is ExitEventRoom) {
+            true -> roomMovedFrom.onRoomExited(direction, player)
+            false -> null
+        }
+
+        onRoomExitEvent?.let {
+            when (it.gameResultCode) {
+                GameResultCode.SUCCESS -> moveMessage = "${it.message}\n$moveMessage"
+                else -> return it
             }
         }
 
         player.currentRoom = roomToMove
-
-        val moveMessage = "Moved [${direction.name}]."
-
-        val moveResult = when (eventsMessage.isBlank()) {
-            true -> GameResult(GameResultCode.SUCCESS, moveMessage)
-            false -> GameResult(GameResultCode.SUCCESS, "$eventsMessage\n$moveMessage")
-        }
+        val moveResult = GameResult(GameResultCode.SUCCESS, moveMessage)
 
         val defaultResult = {roomToMove.examineWithPrefix(moveResult.message)}
         return when (roomToMove is EnterEventRoom) {
