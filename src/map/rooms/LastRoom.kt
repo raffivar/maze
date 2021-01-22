@@ -26,14 +26,15 @@ class LastRoom(rope: Rope, private val tiger: Tiger): Room("lastRoom", "There's 
             Direction.DOWN,
             Constraint(
                 pole::hasNothingAttached,
-                "It's too high."
+                "It's too high jump or to peek down without falling.\n" +
+                        "Better to find something to grab onto."
             )
         )
         addConstraint(
             Direction.DOWN,
             Constraint(
                 window::hasNothingAttached,
-                "Man, you already tied the [${rope.name}] to the [${pole.name}]. Think a bit more."
+                "Hmm... Still too high. The [${rope.name}] attached to [${pole.name}] the might help."
             )
         )
     }
