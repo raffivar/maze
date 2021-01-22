@@ -10,10 +10,9 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
-    enum class TigerStatus { STANDARD, SMELLS_POISON, EATS_POISON, DEAD }
+    enum class TigerStatus { FACING_SOUTH, FACING_NORTH, SMELLS_POISON, EATS_POISON, DEAD }
     var timesPeekedAt = 0
-    var status = TigerStatus.STANDARD
-    var facingSouth = true
+    var status = TigerStatus.FACING_SOUTH
     private val aliveDescription = "This is a really big, fat, lazy [$name]."
     private val deadDescription = "This gigantic [$name] seems to be dead."
     private val inForbiddenRoomWarning = "... Hmph. You might not want to leave this tiger carcass in the same room it died... or rooms where it can easily be found."
@@ -64,15 +63,17 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
     fun peekedAt(defaultResult: () -> GameResult, player: Player, room: Room): GameResult {
         timesPeekedAt++
         return when (status) {
-            TigerStatus.STANDARD -> {
+            TigerStatus.FACING_SOUTH -> {
                 when (timesPeekedAt) {
                     1 -> GameResult(GameResultCode.SUCCESS, "WOAH! there's an incredibly large [${this.name}] in that room.")
-                    2 -> {
-                        this.facingSouth = false
+                    else -> {
+                        setTigerStatus(TigerStatus.FACING_NORTH)
                         GameResult(GameResultCode.SUCCESS, "The [${this.name}] is now facing the other way!")
                     }
-                    else -> GameResult(GameResultCode.SUCCESS, "The [${this.name}] is still facing the other way...")
                 }
+            }
+            TigerStatus.FACING_NORTH -> {
+                GameResult(GameResultCode.SUCCESS, "The [${this.name}] is still facing the other way...")
             }
             TigerStatus.SMELLS_POISON -> {
                 when (timesPeekedAt) {
@@ -125,8 +126,8 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
     }
 
     private fun setTigerStatus(newStatus: TigerStatus) {
-        status = newStatus
         timesPeekedAt = 0
+        status = newStatus
     }
 
     private fun moveRoomUponDeath(currentRoom: Room) {
@@ -148,14 +149,13 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
     }
 
     override fun getDataToSaveToFile(): ItemData {
-        return TigerData(name, status, timesPeekedAt, facingSouth, currentRoomId)
+        return TigerData(name, status, timesPeekedAt, currentRoomId)
     }
 
     override fun loadItem(itemData: ItemData) {
         val data = itemData as TigerData
         status = data.status
         timesPeekedAt = data.timesPeeked
-        facingSouth = data.facingSouth
         currentRoomId = data.currentRoomId
     }
 }

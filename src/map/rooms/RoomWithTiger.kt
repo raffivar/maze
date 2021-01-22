@@ -45,19 +45,9 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
     }
 
     override fun onRoomEntered(defaultResult: GameResult, player: Player): GameResult {
-        return when (tiger.isAlive()) {
-            true -> {
-                when (tiger.facingSouth) {
-                    true -> GameResult(GameResultCode.GAME_OVER, "You just got mauled by a gigantic tiger! Try peeking into a room before entering it next time.")
-                    false -> defaultResult
-                }
-            }
-            false ->  {
-                if (tiger.timesPeekedAt == 0) {
-                    tiger.timesPeekedAt++
-                }
-                defaultResult
-            }
+        return when (items.containsKey(tiger.name) && tiger.isAlive() && tiger.status != Tiger.TigerStatus.FACING_NORTH) {
+            true -> GameResult(GameResultCode.GAME_OVER, "You just got mauled by a gigantic tiger! Try peeking into a room before entering it next time.")
+            false -> defaultResult
         }
     }
 
@@ -68,7 +58,6 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
                     Bowl.BowlStatus.PRE_EATEN -> GameResult(GameResultCode.SUCCESS, "You run [${direction.name}] quickly, because you're scared. What a wimp.")
                     Bowl.BowlStatus.POISONED -> {
                         tiger.setSmellsPoison()
-                        tiger.facingSouth = true
                         GameResult(GameResultCode.SUCCESS, "When moving [${direction.name}], you can hear some movement behind you. You escape quickly.")
                     }
                     Bowl.BowlStatus.POST_EATEN -> GameResult(GameResultCode.SUCCESS, "")
