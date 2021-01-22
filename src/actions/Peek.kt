@@ -41,7 +41,7 @@ class Peek : Action("Peek", "Peek [direction] with [item], given the item is you
             }
         }
 
-        val defaultResult = {roomToPeek.examine(null, roomToPeek.baseDescription)}
+        val defaultResult = {roomToPeek.examine()}
         val peekResult = when (roomToPeek is PeekEventRoom) {
             true -> roomToPeek.onRoomPeeked(defaultResult, player)
             false -> defaultResult.invoke()
