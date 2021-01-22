@@ -12,7 +12,7 @@ class RoomWithGuard : Room("roomWithGuard"), EnterEventRoom {
         addItem(Item("Guard", "This guard seems good at catching people"))
     }
 
-    override fun onRoomEntered(defaultResult: () -> GameResult, player: Player): GameResult {
+    override fun onRoomEntered(defaultResult: GameResult, player: Player): GameResult {
         return GameResult(GameResultCode.GAME_OVER, "Caught by a guard!!")
     }
 }

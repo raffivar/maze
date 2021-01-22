@@ -44,19 +44,19 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         return tiger.peekedAt(defaultResult, player, this)
     }
 
-    override fun onRoomEntered(defaultResult: () -> GameResult, player: Player): GameResult {
+    override fun onRoomEntered(defaultResult: GameResult, player: Player): GameResult {
         return when (tiger.isAlive()) {
             true -> {
                 when (tiger.facingSouth) {
                     true -> GameResult(GameResultCode.GAME_OVER, "You just got mauled by a gigantic tiger! Try peeking into a room before entering it next time.")
-                    false -> defaultResult.invoke()
+                    false -> defaultResult
                 }
             }
             false ->  {
                 if (tiger.timesPeekedAt == 0) {
                     tiger.timesPeekedAt++
                 }
-                defaultResult.invoke()
+                defaultResult
             }
         }
     }

@@ -11,7 +11,7 @@ class Exit : Room("exit"), PeekEventRoom, EnterEventRoom {
         return GameResult(GameResultCode.SUCCESS, "O-M-G, you can see outside! FREEDOM IS NEAR.")
     }
 
-    override fun onRoomEntered(defaultResult: () -> GameResult, player: Player): GameResult {
+    override fun onRoomEntered(defaultResult: GameResult, player: Player): GameResult {
         return GameResult(GameResultCode.GAME_OVER, "Congrats! You made it out of the maze!")
     }
 }
