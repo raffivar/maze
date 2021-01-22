@@ -27,15 +27,15 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
     }
 
     open fun examine(): GameResult {
-        return examine(null, null)
+        return examine(null)
     }
 
     open fun examineWithPrefix(prefix: String?): GameResult {
-        return examine(prefix, null)
+        return examine(prefix)
     }
 
-    open fun examine(prefix: String?, baseDescription: String?): GameResult {
-        var description = (baseDescription ?: this.baseDescription) + "\n"
+    open fun examine(prefix: String?): GameResult {
+        var description = "$baseDescription\n"
         description += getExtraDetails()
         prefix?.let {
             if (it.isNotBlank()) {
