@@ -26,10 +26,6 @@ open class Room(val roomId: String = "", var baseDescription: String = "Just a r
         }
     }
 
-    open fun getFirstLook(): GameResult {
-        return examine()
-    }
-
     open fun examine(): GameResult {
         return examine(null, null)
     }

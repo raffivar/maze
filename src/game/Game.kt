@@ -38,7 +38,7 @@ class Game(private val ioHandler: IOHandler) {
 
     fun run() {
         ioHandler.printMessage(getIntro())
-        ioHandler.printMessage(player.currentRoom.getFirstLook().message)
+        ioHandler.printMessage("You wake up in small room. There's only the bed you woke up on (which is horribly uncomfortable) and a door with a lock on it.")
         do {
             val command = ioHandler.readCommand()
             val commandResult = executeCommand(command)
