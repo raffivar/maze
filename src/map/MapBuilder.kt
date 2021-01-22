@@ -27,11 +27,8 @@ class MapBuilder {
 
         val roomBeforeTiger = Room(
             "roomBeforeTiger",
-            "This room is completely empty. Like your life.\n" +
-                    "It does make you think about your past actions, and what led you here.\n" +
-                    "From time to time it's good to... reflect.",
-            "The room doesn't seem to contain anything special."
-        )
+            "The room i completely empty.\n" +
+                    "There is, however, a small patch of fur on the floor, right near the north door...")
 
         val bowl = Bowl(poison)
         val tiger = Tiger(bowl)
@@ -67,7 +64,10 @@ class MapBuilder {
         val roomWithGuard2 = RoomWithGuard()
         val escapeRoom = LastRoom(rope, tiger)
         val boringRoom1 = Room("boringRoom1", "This is an extremely boring room.")
-        val boringRoom2 = Room("boringRoom2", "This room is even more boring. It doesn't even lead anywhere (besides where you came from).")
+        val boringRoom2 = Room(
+            "boringRoom2",
+            "This room is even more boring. It doesn't even lead anywhere (besides where you came from)."
+        )
 
         val exit = Exit()
 

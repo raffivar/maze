@@ -10,7 +10,7 @@ import map.rooms.interfaces.EnterEventRoom
 import map.rooms.interfaces.ExitEventRoom
 import map.rooms.interfaces.PeekEventRoom
 
-class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room reeks of fur. The floor is covered with it.", "This room's floor seems to be covered with some kind of furry material."), PeekEventRoom, EnterEventRoom, ExitEventRoom {
+class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room's floor seems to be covered with some kind of furry material."), PeekEventRoom, EnterEventRoom, ExitEventRoom {
     init {
         addTiger(tiger)
         addItem(bowl)

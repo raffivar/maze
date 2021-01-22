@@ -13,7 +13,7 @@ import map.directions.Direction
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", val peekDescription: String = baseDescription, itemsToAdd: ArrayList<Item>? = null) {
+open class Room(val roomId: String = "", var baseDescription: String = "Just a regular room.", itemsToAdd: ArrayList<Item>? = null) {
     val items = ItemMap()
     val rooms = HashMap<Direction, Room>()
     val constraintsToMoveOrPeek = HashMap<Direction, ArrayList<Constraint>>()
