@@ -7,7 +7,7 @@ import player.Player
 import map.directions.Direction
 import map.rooms.interfaces.PeekEventRoom
 
-class Peek : Action("Peek", "Peek [direction] with [item], given the item is your inventory") {
+class Peek : Action("Peek", "Peek [direction] with [item]") {
     override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty() || args.size < 3 || !args[1].equals("with", true)) {
             return GameResult(GameResultCode.ERROR, "Invalid arguments. Please use the format: '$howToUse'.")
