@@ -5,10 +5,10 @@ import game.GameResult
 import game.GameResultCode
 import items.*
 import map.directions.Direction
-import map.rooms.interfaces.ExitEventRoom
+import map.rooms.interfaces.HasExitEvent
 import player.Player
 
-class LastRoom(rope: Rope, private val tiger: Tiger): Room("lastRoom", "There's only a window and a pole in this room. You might want to peek out the window."), ExitEventRoom {
+class LastRoom(rope: Rope, private val tiger: Tiger): Room("lastRoom", "There's only a window and a pole in this room. You might want to peek out the window."), HasExitEvent {
     private val pole = Pole("Pole", rope)
     private val window = Window("Window", pole, rope)
 
@@ -39,7 +39,7 @@ class LastRoom(rope: Rope, private val tiger: Tiger): Room("lastRoom", "There's 
         )
     }
 
-    override fun onRoomExited(direction: Direction, player: Player): GameResult? {
+    override fun onExited(direction: Direction, player: Player): GameResult? {
         when (direction) {
             Direction.DOWN -> {
                 if (tiger.isInForbiddenRoom()) {

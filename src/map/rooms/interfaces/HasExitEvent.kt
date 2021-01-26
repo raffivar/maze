@@ -4,6 +4,6 @@ import game.GameResult
 import map.directions.Direction
 import player.Player
 
-interface ExitEventRoom {
-    fun onRoomExited(direction: Direction, player: Player): GameResult?
+interface HasExitEvent {
+    fun onExited(direction: Direction, player: Player): GameResult?
 }

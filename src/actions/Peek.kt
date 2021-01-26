@@ -5,7 +5,7 @@ import game.GameResultCode
 import items.interfaces.Reflective
 import player.Player
 import map.directions.Direction
-import map.rooms.interfaces.PeekEventRoom
+import map.rooms.interfaces.HasPeekEvent
 
 class Peek : Action("Peek", "Peek [direction] with [item]") {
     override fun execute(player: Player, args: List<String>): GameResult {
@@ -42,7 +42,7 @@ class Peek : Action("Peek", "Peek [direction] with [item]") {
         }
 
         val defaultResult = {roomToPeek.examine()}
-        val peekResult = when (roomToPeek is PeekEventRoom) {
+        val peekResult = when (roomToPeek is HasPeekEvent) {
             true -> roomToPeek.onRoomPeeked(defaultResult, player)
             false -> defaultResult.invoke()
         }

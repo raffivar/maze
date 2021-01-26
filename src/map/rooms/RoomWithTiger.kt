@@ -6,11 +6,11 @@ import game.GameResultCode
 import player.Player
 import items.*
 import map.directions.Direction
-import map.rooms.interfaces.EnterEventRoom
-import map.rooms.interfaces.ExitEventRoom
-import map.rooms.interfaces.PeekEventRoom
+import map.rooms.interfaces.HasEnterEvent
+import map.rooms.interfaces.HasExitEvent
+import map.rooms.interfaces.HasPeekEvent
 
-class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room's floor seems to be covered with some kind of furry material."), PeekEventRoom, EnterEventRoom, ExitEventRoom {
+class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: Bowl) : Room(roomId, "This room's floor seems to be covered with some kind of furry material."), HasPeekEvent, HasEnterEvent, HasExitEvent {
     init {
         addTiger(tiger)
         addItem(bowl)
@@ -44,14 +44,14 @@ class RoomWithTiger(roomId: String, private val tiger: Tiger, private val bowl: 
         return tiger.peekedAt(defaultResult, player, this)
     }
 
-    override fun onRoomEntered(defaultResult: GameResult, player: Player): GameResult {
+    override fun onEntered(defaultResult: GameResult, player: Player): GameResult {
         return when (items.containsKey(tiger.name) && tiger.isAlive() && tiger.status != Tiger.TigerStatus.FACING_NORTH) {
             true -> GameResult(GameResultCode.GAME_OVER, "You just got mauled by a gigantic tiger! Try peeking into a room before entering it next time.")
             false -> defaultResult
         }
     }
 
-    override fun onRoomExited(direction: Direction, player: Player): GameResult? {
+    override fun onExited(direction: Direction, player: Player): GameResult? {
         return when (direction) {
             Direction.SOUTH -> {
                 when (bowl.status) {

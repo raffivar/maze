@@ -4,8 +4,8 @@ import game.GameResult
 import player.Player
 import game.GameResultCode
 import map.directions.Direction
-import map.rooms.interfaces.EnterEventRoom
-import map.rooms.interfaces.ExitEventRoom
+import map.rooms.interfaces.HasEnterEvent
+import map.rooms.interfaces.HasExitEvent
 
 class Go : Action("Go", "Go [direction]") {
     override fun execute(player: Player, args: List<String>): GameResult {
@@ -35,8 +35,8 @@ class Go : Action("Go", "Go [direction]") {
         val roomMovedFrom = player.currentRoom
         var moveMessage = "Moved [${direction.name}]."
 
-        val onRoomExitEvent = when (roomMovedFrom is ExitEventRoom) {
-            true -> roomMovedFrom.onRoomExited(direction, player)
+        val onRoomExitEvent = when (roomMovedFrom is HasExitEvent) {
+            true -> roomMovedFrom.onExited(direction, player)
             false -> null
         }
 
@@ -51,8 +51,8 @@ class Go : Action("Go", "Go [direction]") {
         val examineResult = roomToMove.examine()
         val defaultResult = examineResult.createByPrefix(moveMessage)
 
-        return when (roomToMove is EnterEventRoom) {
-            true -> roomToMove.onRoomEntered(defaultResult, player)
+        return when (roomToMove is HasEnterEvent) {
+            true -> roomToMove.onEntered(defaultResult, player)
             false -> defaultResult
         }
     }

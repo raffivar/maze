@@ -3,6 +3,6 @@ package map.rooms.interfaces
 import game.GameResult
 import player.Player
 
-interface PeekEventRoom {
+interface HasPeekEvent {
     fun onRoomPeeked(defaultResult: () -> GameResult, player: Player): GameResult
 }
