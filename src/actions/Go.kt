@@ -49,7 +49,7 @@ class Go : Action("Go", "Go [direction]") {
 
         player.currentRoom = roomToMove
         val examineResult = roomToMove.examine()
-        val defaultResult = GameResult(examineResult.gameResultCode, "$moveMessage\n${examineResult.message}")
+        val defaultResult = examineResult.createByPrefix(moveMessage)
 
         return when (roomToMove is EnterEventRoom) {
             true -> roomToMove.onRoomEntered(defaultResult, player)
