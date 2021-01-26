@@ -1,3 +1,3 @@
 package items.interfaces
 
-interface Reflective {}
+interface Reflective
