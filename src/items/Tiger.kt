@@ -52,7 +52,11 @@ class Tiger(private val bowl: Bowl) : Item("Tiger", null), SavableItem {
     }
 
     override fun breakItem(player: Player): GameResult {
-        return GameResult(GameResultCode.FAIL, "Err... Yeah, you choose to NOT attempt to do that, especially when the [${this.name}] is still alive.")
+        val message = when (isAlive()) {
+            true -> "Err... Yeah, you choose to NOT attempt to do that, especially when the [${this.name}] is still alive."
+            false -> "The [${this.name}] might be dead, but is still very much unbreakable."
+        }
+        return GameResult(GameResultCode.FAIL, message)
     }
 
     override fun drop(player: Player): GameResult {
