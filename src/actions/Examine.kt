@@ -7,7 +7,7 @@ import player.Player
 class Examine : Action("Examine", "Examine [room/item]") {
     override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty()) {
-            return GameResult(GameResultCode.ERROR, "Please choose the subject (room/item) to examine")
+            return GameResult(GameResultCode.ERROR, "Invalid arguments. Please use the format: '$howToUse'.")
         }
         val subject = args[0]
         if (subject == "room") {

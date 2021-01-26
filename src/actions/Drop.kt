@@ -7,7 +7,7 @@ import game.GameResultCode
 class Drop : Action("Drop", "Drop [item]") {
     override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty()) {
-            return GameResult(GameResultCode.ERROR, "Please choose an item to drop.")
+            return GameResult(GameResultCode.ERROR, "Invalid arguments. Please use the format: '$howToUse'.")
         }
         val itemName = args[0]
         val item = player.inventory[itemName] ?: return GameResult(

@@ -10,8 +10,9 @@ import map.rooms.interfaces.ExitEventRoom
 class Go : Action("Go", "Go [direction]") {
     override fun execute(player: Player, args: List<String>): GameResult {
         if (args.isNullOrEmpty()) {
-            return GameResult(GameResultCode.ERROR, "Please choose a direction.")
+            return GameResult(GameResultCode.ERROR, "Invalid arguments. Please use the format: '$howToUse'.")
         }
+
         val directionAsText = args[0]
         val direction = Direction.values().find { it.name.equals(directionAsText, true) } ?: return GameResult(
             GameResultCode.ERROR, "[$directionAsText] is not a valid direction."
