@@ -24,10 +24,15 @@ class Window(name: String, private val pole: Pole, private val rope: Rope = pole
         }
     }
 
+    override fun breakItem(player: Player): GameResult {
+        isOpen = true
+        description = openDescription
+        return GameResult(GameResultCode.SUCCESS, "Err.. OK, this is ONE way to do it. You broke the [${this.name}].")    }
+
     override fun open(player: Player): GameResult {
         isOpen = true
         description = openDescription
-        return GameResult(GameResultCode.FAIL, "Opened [${this.name}].")
+        return GameResult(GameResultCode.SUCCESS, "Opened [${this.name}].")
     }
 
     override fun usedBy(player: Player, itemUsed: Item): GameResult {
